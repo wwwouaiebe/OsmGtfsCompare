@@ -1,1 +1,1 @@
-# OsmGtfsComare
+# OsmGtfsCompare

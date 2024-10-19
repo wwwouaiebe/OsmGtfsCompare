@@ -57,7 +57,8 @@ class GtfsDataLoader {
 							name : '',
 							platforms : '',
 							from : '',
-							to : ''
+							to : '',
+							platformNames : new Map ( )
 						};
 						let gtfsFromName = '';
 						let gtfsToName = '';
@@ -70,6 +71,7 @@ class GtfsDataLoader {
 								}
 								gtfsTreeRoute.to = gtfsPlatform.id;
 								gtfsToName = gtfsPlatform.name;
+								gtfsTreeRoute.platformNames.set ( gtfsPlatform.id, gtfsPlatform.name );
 							}
 						);
 						gtfsTreeRoute.name =

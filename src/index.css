@@ -164,6 +164,28 @@ h2 {
 	background-color: gray;
 }
 
+
+a.josmedit:visited {
+	color : gray;
+}
+
+.josmButton{
+	margin-left: 1em;
+	background-color: rgb(41, 193, 243);
+	color: white;
+}
+
+.josmButton.josmButtonVisited {
+	background-color: gray;
+	color:black;
+}
+
+.josmButton:hover, .josmButton.josmButtonVisited:hover {
+	background-color: blue;
+	color: white;
+	cursor: pointer;
+}
+
 #cyDarkLight {
 	margin-left: 2em;;
 }

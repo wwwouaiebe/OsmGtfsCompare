@@ -57,6 +57,7 @@ class OsmDataTreeBuilder {
 			osmRouteMaster => {
 				let osmTreeRouteMaster = {
 					ref : osmRouteMaster.tags.ref,
+					name : osmRouteMaster.tags.name,
 					routes : []
 				};
  				osmRouteMaster.members.forEach (
@@ -64,9 +65,11 @@ class OsmDataTreeBuilder {
 						let osmRoute = theOsmData.routes.get ( osmRouteMasterMember.ref );
 						let osmTreeRoute = {
 							name : osmRoute.tags.name,
+							id : osmRoute.id,
 							platforms : '',
 							from : '',
-							to : ''
+							to : '',
+							platformNames : new Map ( )
 						};
 						osmRoute.members.forEach (
 							( osmRouteMember, index ) => {
@@ -85,6 +88,10 @@ class OsmDataTreeBuilder {
 									osmTreeRoute.to =
 										osmPlatform.tags[ 'ref:TECL' ]
 										|| '????????';
+									osmTreeRoute.platformNames.set (
+										osmPlatform.tags[ 'ref:TECL' ] || '????????',
+										osmPlatform.tags.name || ''
+									);
 								}
 							}
 						);

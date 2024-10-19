@@ -22,6 +22,8 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
+import theReport from './Report.js';
+
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
  * Coming soon
@@ -64,17 +66,17 @@ class OsmGtfsComparator {
 		);
 		switch ( possibleGtfsRoutes.length ) {
 		case 0 :
-			console.log ( 'No gtfs route found' );
+			theReport.add ( 'p', 'No gtfs route found' );
 			break;
 		case 1 :
-			console.log ( 'A gtfs route with similar from and to stop found' );
-			console.log ( possibleGtfsRoutes [ 0 ].name );
+			theReport.add ( 'p', 'A gtfs route with similar from and to stop found' );
+			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name );
 			break;
 		default :
-			console.log ( 'Multiple gtfs routes with similar from and to stop found' );
+			theReport.add ( 'p', 'Multiple gtfs routes with similar from and to stop found' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
-					console.log ( possibleGtfsRoute.name );
+					theReport.add ( 'p', possibleGtfsRoute.name );
 				}
 			);
 			break;
@@ -100,14 +102,14 @@ class OsmGtfsComparator {
 			this.#compareFromToLow ( osmRoute );
 			break;
 		case 1 :
-			console.log ( 'A gtfs route with from and to stop found' );
-			console.log ( possibleGtfsRoutes [ 0 ].name );
+			theReport.add ( 'p', 'A gtfs route with from and to stop found' );
+			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name );
 			break;
 		default :
-			console.log ( 'Multiple gtfs routes with from and to stop found' );
+			theReport.add ( 'p', 'Multiple gtfs routes with from and to stop found' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
-					console.log ( possibleGtfsRoute.name );
+					theReport.add ( 'p', possibleGtfsRoute.name );
 				}
 			);
 			break;
@@ -131,18 +133,18 @@ class OsmGtfsComparator {
 		);
 		switch ( possibleGtfsRoutes.length ) {
 		case 0 :
-			console.log ( 'No Gtfs route with all stop found' );
+			// theReport.add ( 'p', 'No Gtfs route with all stop found' );
 			this.#compareFromToHight ( osmRoute );
 			break;
 		case 1 :
-			console.log ( 'A gtfs route with all stop found' );
-			console.log ( possibleGtfsRoutes [ 0 ].name );
+			theReport.add ( 'p', 'A gtfs route with all stop found' );
+			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name );
 			break;
 		default :
-			console.log ( 'Multiple gtfs routes with all stop found' );
+			theReport.add ( 'p', 'Multiple gtfs routes with all stop found' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
-					console.log ( possibleGtfsRoute.name );
+					theReport.add ( 'p', possibleGtfsRoute.name );
 				}
 			);
 			break;
@@ -158,10 +160,10 @@ class OsmGtfsComparator {
 	compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster ) {
 		this.#gtfsRouteMaster = gtfsRouteMaster;
 		this.#osmRouteMaster = osmRouteMaster;
-
+		theReport.add ( 'h1', this.#osmRouteMaster.name );
 		this.#osmRouteMaster.routes.forEach (
 			osmRoute => {
-				console.log ( osmRoute.name );
+				theReport.add ( 'h2', osmRoute.name, osmRoute.id );
 				this.#comparePlatformsHight ( osmRoute );
 			}
 		);

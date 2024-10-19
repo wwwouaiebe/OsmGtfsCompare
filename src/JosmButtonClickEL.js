@@ -22,65 +22,62 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import OsmDataLoader from './OsmDataLoader.js';
-import theGtfsDataLoader from './GtfsDataLoader.js';
-import theOsmDataTreeBuilder from './OsmDataTreeBuilder.js';
-import OsmGtfsComparator from './OsmGtfsComparator.js';
-import theReport from './Report.js';
-
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Simple event handler for click on the go button of the web page
+ * Event handler for click on the JOSM buttons of the web page
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class GoButtonClickEL {
+class JosmButtonClickEL {
 
 	/**
-	 * The contructor
-	 */
+     * The constructor
+     */
 
 	constructor ( ) {
 		Object.freeze ( this );
 	}
 
 	/**
-	 * Event handler
-	 */
+     * Event handler
+     * @param {Object} event The triggered event
+     */
 
-	async handleEvent ( ) {
-		theReport.open ( );
-		let osmRef = document.getElementById ( 'osmRef' ).value;
-		let osmNetwork = document.getElementById ( 'osmNetworkSelect' ).value;
-		let osmVehicle = document.getElementById ( 'osmVehicleSelect' ).value;
+	async handleEvent ( event ) {
 
-		await new OsmDataLoader ( ).fetchData (
-			{
-				osmNetwork : osmNetwork,
-				osmVehicle : osmVehicle,
-				osmRef : osmRef
-			}
-		);
-		theOsmDataTreeBuilder.buildTree ( );
+		// searching the osm id involved in the data of the button
+		let osmObjId = event.target.dataset.osmObjId;
 
-		await theGtfsDataLoader.loadData ( osmNetwork );
+		// changing the button color
+		event.target.classList.add ( 'josmButtonVisited' );
 
-		theOsmDataTreeBuilder.osmTree.routesMaster.forEach (
-			osmRouteMaster => {
-				let gtfsRouteMaster =
-					theGtfsDataLoader.gtfsTree.routesMaster.find ( element => osmRouteMaster.ref === element.ref );
-				if ( gtfsRouteMaster ) {
-					new OsmGtfsComparator ( ).compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster );
+		let newJosmLayer =
+			document.getElementById ( 'newJosmLayer' ).checked
+				?
+				'true'
+				:
+				'false';
+
+		// calling josm
+		await fetch (
+			'http://localhost:8111/load_object?new_layer=' + newJosmLayer +
+			'&relation_members=true&objects=r' + osmObjId
+		)
+			.then (
+				response => {
+					console.info ( String ( response.status ) + ' ' + response.statusText );
 				}
-				else {
-					theReport.add ( 'h2', 'The route ' + osmRouteMaster.ref + ' is not in the gtfs files.' );
+			)
+			.catch (
+				err => {
+					alert ( err + '\n\n Are you sure that JOSM is opened and ' +
+                        'the remote control activated ?' +
+                        '\n\nSee: https://josm.openstreetmap.de/wiki/Help/Preferences/RemoteControl' );
 				}
-			}
-		);
-		theReport.close ( );
+			);
 	}
 }
 
-export default GoButtonClickEL;
+export default JosmButtonClickEL;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

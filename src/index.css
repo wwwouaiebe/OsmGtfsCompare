@@ -164,7 +164,23 @@ h2 {
 	background-color: gray;
 }
 
-
 #cyDarkLight {
 	margin-left: 2em;;
 }
+
+#waitAnimation 
+{
+	margin-bottom: 0em; 
+	height: 0.2em; width: 100%; 
+	overflow: hidden;
+	visibility: hidden;
+}
+
+#waitAnimationBullet { 
+	background-color: red; 
+	height: 100%; 
+	width: 3em; 
+	animation: 2s linear 0s infinite alternate WaitAnimationBullet;
+}
+
+@keyframes WaitAnimationBullet { from { margin-left: 0%; } to { margin-left: calc(100% - 1em); } }

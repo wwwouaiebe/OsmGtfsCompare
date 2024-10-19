@@ -29,14 +29,14 @@ import OsmGtfsComparator from './OsmGtfsComparator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Simple event handler for click on the go button of the web page
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class NetworkSelectChangeEL {
+class GoButtonClickEL {
 
 	/**
-	 * The constructor
+	 * The contructor
 	 */
 
 	constructor ( ) {
@@ -44,37 +44,42 @@ class NetworkSelectChangeEL {
 	}
 
 	/**
-	 * Change event listener
-	 * @param {Event} changeEvent The change event
+	 * Event handler
 	 */
 
-	async handleEvent ( changeEvent ) {
+	async handleEvent ( ) {
+		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
+		let osmRef = document.getElementById ( 'osmRef' ).value;
+		let osmNetwork = document.getElementById ( 'osmNetworkSelect' ).value;
+		let osmVehicle = document.getElementById ( 'osmVehicleSelect' ).value;
 
 		await new OsmDataLoader ( ).fetchData (
 			{
-				osmNetwork : changeEvent.target.value,
-				osmVehicle : 'bus',
-				osmRef : '28'
+				osmNetwork : osmNetwork,
+				osmVehicle : osmVehicle,
+				osmRef : osmRef
 			}
 		);
 		theOsmDataTreeBuilder.buildTree ( );
 
-		await theGtfsDataLoader.loadData ( changeEvent.target.value );
+		await theGtfsDataLoader.loadData ( osmNetwork );
 
-		/*
-		console.log ( theOsmDataTreeBuilder.osmTree.routesMaster [ 0 ] );
-		console.log (
-			theGtfsDataLoader.gtfsTree.routesMaster.find ( element => '1' === element.ref )
+		theOsmDataTreeBuilder.osmTree.routesMaster.forEach (
+			osmRouteMaster => {
+				let gtfsRouteMaster =
+					theGtfsDataLoader.gtfsTree.routesMaster.find ( element => osmRouteMaster.ref === element.ref );
+				if ( gtfsRouteMaster ) {
+					new OsmGtfsComparator ( ).compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster );
+				}
+				else {
+					console.log ( 'This route is not in the gtfs data' );
+				}
+			}
 		);
-		*/
-
-		new OsmGtfsComparator ( ).compareRoutesMaster (
-			theOsmDataTreeBuilder.osmTree.routesMaster [ 0 ],
-			theGtfsDataLoader.gtfsTree.routesMaster.find ( element => '28' === element.ref )
-		);
+		document.getElementById ( 'waitAnimation' ).style.visibility = 'hidden';
 	}
 }
 
-export default NetworkSelectChangeEL;
+export default GoButtonClickEL;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

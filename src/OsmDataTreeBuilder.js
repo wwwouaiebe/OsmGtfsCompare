@@ -76,11 +76,15 @@ class OsmDataTreeBuilder {
                                         ||
                                         theOsmData.ways.get ( osmRouteMember.ref );
 									osmTreeRoute.platforms +=
-                                        osmPlatform.tags[ 'ref:TECL' ] + ';';
+                                        ( osmPlatform.tags[ 'ref:TECL' ] || '????????' ) + ';';
 									if ( 0 === index ) {
-										osmTreeRoute.from = osmPlatform.tags[ 'ref:TECL' ];
+										osmTreeRoute.from =
+											osmPlatform.tags[ 'ref:TECL' ]
+											|| '????????';
 									}
-									osmTreeRoute.to = osmPlatform.tags[ 'ref:TECL' ];
+									osmTreeRoute.to =
+										osmPlatform.tags[ 'ref:TECL' ]
+										|| '????????';
 								}
 							}
 						);
@@ -88,6 +92,26 @@ class OsmDataTreeBuilder {
 					}
 				);
 				this.#osmTree.routesMaster.push ( osmTreeRouteMaster );
+			}
+		);
+		this.#osmTree.routesMaster.sort (
+			( first, second ) => {
+
+				// split the name into the numeric part and the alphanumeric part:
+				// numeric part
+				let firstPrefix = String ( Number.parseInt ( first.ref ) );
+				let secondPrefix = String ( Number.parseInt ( second.ref ) );
+
+				// alpha numeric part
+				let firstPostfix = ( first.ref ?? '' ).replace ( firstPrefix, '' );
+				let secondPostfix = ( second.ref ?? '' ).replace ( secondPrefix, '' );
+
+				// complete the numeric part with spaces on the left and compare
+				let result =
+					( firstPrefix.padStart ( 5, ' ' ) + firstPostfix )
+						.localeCompare ( secondPrefix.padStart ( 5, ' ' ) + secondPostfix );
+
+				return result;
 			}
 		);
 	}

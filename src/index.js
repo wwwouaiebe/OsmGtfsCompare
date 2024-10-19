@@ -29,15 +29,33 @@ Changes:
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theVersion from './version.js';
-import NetworkSelectChangeEL from './NetworkSelectChangeEL.js';
+import GoButtonClickEL from './GoButtonClickEL.js';
 
 // all the necessary code is inside the constructor of theThemeChanger so only an import
 // is needed to enable theThemeChanger
 // eslint-disable-next-line no-unused-vars
 import theThemeChanger from './ThemeChanger.js';
 
-document.getElementById ( 'NetworkSelect' ).value = '';
-document.getElementById ( 'NetworkSelect' ).addEventListener ( 'change', new NetworkSelectChangeEL ( ), false );
+// reading url
+const docURL = new URL ( window.location );
+let network = docURL.searchParams.get ( 'network' );
+let vehicle = docURL.searchParams.get ( 'vehicle' );
+
+// verification of parameters
+if ( -1 === [ 'bus', 'tram', 'subway' ].indexOf ( vehicle ) ) {
+	alert ( 'bad value for vehicle parameter. Must be bus, tram or subway' );
+}
+else {
+	document.getElementById ( 'osmVehicleSelect' ).value = vehicle;
+}
+if ( -1 === [ 'TECB', 'TECC', 'TECH', 'TECL', 'TECN', 'TECX' ].indexOf ( network ) ) {
+	alert ( 'bad value for network parameter. Must be TECB, TECC, TECH, TECL, TECN, TECX or IBXL' );
+}
+else {
+	document.getElementById ( 'osmNetworkSelect' ).value = network;
+}
+
+document.getElementById ( 'goInput' ).addEventListener ( 'click', new GoButtonClickEL ( ), false );
 document.getElementById ( 'version' ).innerText = 'Version: ' + theVersion;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

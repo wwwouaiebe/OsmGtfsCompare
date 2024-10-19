@@ -107,7 +107,7 @@ class OsmDataLoader {
 			'rel[network=' + config.osmNetwork + ']' +
 			'[route=' + config.osmVehicle + ']' +
 			'[type=route]' +
-			'[ref=' + config.osmRef + ']' +
+			( '' === config.osmRef ? '' : '[ref=' + config.osmRef + ']' ) +
 			'->.rou;(.rou <<; - .rou;); >> ->.rm;.rm out;';
 
 		// fetch overpass-api

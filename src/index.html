@@ -20,13 +20,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>wwwouaiebe - Gtfs To Gpx</title>
+		<title>wwwouaiebe - Osm Gtfs Compare</title>
 		<link rel="stylesheet" href="index.css" />
 	</head>
 	<body class="cyLight">
         <header id="configForm">
              <label>Network: 
-                <select id="NetworkSelect">
+                <select id="osmNetworkSelect">
                     <option value="TECB">TECB</option>
                     <option value="TECC">TECC</option>
                     <option value="TECH">TECH</option>
@@ -35,13 +35,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
                     <option value="STIB">STIB</option>
                 </select>
             </label>
+            <label>Vehicle: 
+                <select id="osmVehicleSelect">
+                    <option value="bus">bus</option>
+                    <option value="tram">tram</option>
+                    <option value="subway">subway</option>
+                </select>
+            </label>
+            <label>
+                Ref: <input type="text" id="osmRef" value="" title="Add the ref an osm bus/tram/subway relation if you will limit the contro to this relation"/>
+            </label>
+            <input type="button" value="go" id="goInput" title="Start the control"/>
             <span> <a id="cyDarkLight" title="Apparence: sombre">☽</a> </span>
             <div id="waitAnimation"><div id="waitAnimationBullet"></div></div>
        </header>
         <main id="gpx">
         </main>
         <footer>
-            <p><span>Sorry, we don't have cookies 🍪🍪🍪 for you...</span> <span>© wwwouaiebe 2024</span> <span><a href="https://github.com/wwwouaiebe/Gtfs2Gpx">Sources on Github ↗</a></span><span id="version"></span></span></p>
+            <p><span>Sorry, we don't have cookies 🍪🍪🍪 for you...</span> <span>© wwwouaiebe 2024</span> <span><a href="https://github.com/wwwouaiebe/OsmGtfsCompare">Sources on Github ↗</a></span><span id="version"></span></span></p>
         </footer>
     </body>
     <script src="index.js" type="module" crossorigin="anonymous"> </script>

@@ -25,6 +25,7 @@ Changes:
 import OsmDataLoader from './OsmDataLoader.js';
 import theGtfsDataLoader from './GtfsDataLoader.js';
 import theOsmDataTreeBuilder from './OsmDataTreeBuilder.js';
+import OsmGtfsComparator from './OsmGtfsComparator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -60,8 +61,17 @@ class NetworkSelectChangeEL {
 
 		await theGtfsDataLoader.loadData ( changeEvent.target.value );
 
-		console.log ( theOsmDataTreeBuilder.osmTree );
-		console.log ( theGtfsDataLoader.gtfsTree );
+		/*
+		console.log ( theOsmDataTreeBuilder.osmTree.routesMaster [ 0 ] );
+		console.log (
+			theGtfsDataLoader.gtfsTree.routesMaster.find ( element => '1' === element.ref )
+		);
+		*/
+
+		new OsmGtfsComparator ( ).compareRoutesMaster (
+			theOsmDataTreeBuilder.osmTree.routesMaster [ 0 ],
+			theGtfsDataLoader.gtfsTree.routesMaster.find ( element => '28' === element.ref )
+		);
 	}
 }
 

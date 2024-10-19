@@ -46,6 +46,12 @@ class OsmGtfsComparator {
 
 	#osmRouteMaster;
 
+	/**
+	 * Coming soon
+	 * @param {Object} osmRoute Coming soon
+	 * @param {Object} gtfsRoute Coming soon
+	 */
+
 	#searchMissingPlatforms ( osmRoute, gtfsRoute ) {
 
 		let missingOsmPlatforms = '';

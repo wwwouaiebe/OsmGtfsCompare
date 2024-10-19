@@ -39,6 +39,11 @@ class GtfsDataLoader {
 		routesMaster : []
 	};
 
+	/**
+	 * Coming soon
+	 * @type {Object}
+	 */
+
 	#gtfsTree4Gpx;
 
 	/**
@@ -170,6 +175,11 @@ class GtfsDataLoader {
 		await this.#fetchData ( fileName );
 	}
 
+	/**
+	 * Coming soon
+	 * @param {String} shapePk Coming soon
+	 */
+
 	getRouteInfo ( shapePk ) {
 		let iShapePk = Number.parseInt ( shapePk );
 		let routeInfo = [];
@@ -179,7 +189,7 @@ class GtfsDataLoader {
 					route => {
 						if ( route.shapePk === iShapePk ) {
 							routeInfo.push (
-								[ 'Tram', 'Subway', 'Train', 'Bus', 'Ferry,' ] [ routeMaster.routeMasterType ] + 
+								[ 'Tram', 'Subway', 'Train', 'Bus', 'Ferry,' ] [ routeMaster.routeMasterType ] +
 								' ' + routeMaster.routeMasterRef
 							);
 							routeInfo.push ( route );

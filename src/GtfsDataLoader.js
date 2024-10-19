@@ -39,12 +39,16 @@ class GtfsDataLoader {
 		routesMaster : []
 	};
 
+	#gtfsTree4Gpx;
+
 	/**
 	 * Coming soon
 	 * @param {Object} jsonResponse Coming soon
 	 */
 
 	#buildGtfsTree ( jsonResponse ) {
+		this.#gtfsTree4Gpx = jsonResponse;
+
 		jsonResponse.routesMaster.forEach (
 			gtfsRouteMaster => {
 				let gtfsTreeRouteMaster = {
@@ -58,7 +62,9 @@ class GtfsDataLoader {
 							platforms : '',
 							from : '',
 							to : '',
-							platformNames : new Map ( )
+							platformNames : new Map ( ),
+							osmRoute : false,
+							shapePk : ''
 						};
 						let gtfsFromName = '';
 						let gtfsToName = '';
@@ -82,6 +88,7 @@ class GtfsDataLoader {
 							' ) to ' + gtfsToName +
 							' ( ' + gtfsTreeRoute.to +
 							' ) - ' + gtfsRoute.shapePk;
+						gtfsTreeRoute.shapePk = gtfsRoute.shapePk;
 						gtfsTreeRouteMaster.routes.push ( gtfsTreeRoute );
 					}
 				);
@@ -161,6 +168,27 @@ class GtfsDataLoader {
 		}
 
 		await this.#fetchData ( fileName );
+	}
+
+	getRouteInfo ( shapePk ) {
+		let iShapePk = Number.parseInt ( shapePk );
+		let routeInfo = [];
+		this.#gtfsTree4Gpx.routesMaster.forEach (
+			routeMaster => {
+				routeMaster.routes.forEach (
+					route => {
+						if ( route.shapePk === iShapePk ) {
+							routeInfo.push (
+								[ 'Tram', 'Subway', 'Train', 'Bus', 'Ferry,' ] [ routeMaster.routeMasterType ] + 
+								' ' + routeMaster.routeMasterRef
+							);
+							routeInfo.push ( route );
+						}
+					}
+				);
+			}
+		);
+		return routeInfo;
 	}
 
 	/**

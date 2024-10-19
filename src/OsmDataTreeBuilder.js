@@ -53,6 +53,10 @@ class OsmDataTreeBuilder {
 	 */
 
 	buildTree ( ) {
+		this.#osmTree = {
+			routesMaster : []
+		};
+
 		theOsmData.routeMasters.forEach (
 			osmRouteMaster => {
 				let osmTreeRouteMaster = {

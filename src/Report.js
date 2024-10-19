@@ -1,4 +1,5 @@
 import JosmButtonClickEL from './JosmButtonClickEL.js';
+import GpxButtonClickEL from './GpxButtonClickEL.js';
 
 class Report {
 
@@ -6,11 +7,15 @@ class Report {
 
 	close ( ) {
 		document.getElementById ( 'waitAnimation' ).style.visibility = 'hidden';
-        let josmButtons = document.getElementsByClassName ( 'josmButton' );
-        for ( let counter = 0; counter < josmButtons.length; counter ++ ) {
-            josmButtons[ counter ].addEventListener ( 'click', new JosmButtonClickEL ( ) );
-        }
-}
+		let josmButtons = document.getElementsByClassName ( 'josmButton' );
+		for ( let counter = 0; counter < josmButtons.length; counter ++ ) {
+			josmButtons[ counter ].addEventListener ( 'click', new JosmButtonClickEL ( ) );
+		}
+		let gpxButtons = document.getElementsByClassName ( 'gpxButton' );
+		for ( let counter = 0; counter < gpxButtons.length; counter ++ ) {
+			gpxButtons[ counter ].addEventListener ( 'click', new GpxButtonClickEL ( ) );
+		}
+	}
 
 	open ( ) {
 		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
@@ -20,13 +25,30 @@ class Report {
 		}
 	}
 
-	add ( htmlTag, text, osmId ) {
+	// eslint-disable-next-line max-params
+	add ( htmlTag, text, osmId, shapePk ) {
 		let htmlElement = document.createElement ( htmlTag );
-		htmlElement.innerHTML = text + this.getOsmLink ( osmId ) + this.getJosmEdit ( osmId );
+		htmlElement.innerHTML =
+			this.#getGpxDownload ( shapePk ) +
+			text +
+			this.#getOsmLink ( osmId ) +
+			this.#getJosmEdit ( osmId );
 		this.#report.appendChild ( htmlElement );
 	}
 
-	getJosmEdit ( osmId ) {
+	#getGpxDownload ( shapePk ) {
+		let gpxDownload =
+			shapePk
+				?
+				'<button title="download the gpx file" ' +
+			'class="gpxButton" data-shape-pk="' +
+			shapePk + '" >Download gpx</button>'
+				:
+				'';
+		return gpxDownload;
+	}
+
+	#getJosmEdit ( osmId ) {
 		let josmEdit =
             osmId
             	?
@@ -39,7 +61,7 @@ class Report {
 		return josmEdit;
 	}
 
-	getOsmLink ( osmId ) {
+	#getOsmLink ( osmId ) {
 		let osmLink =
             osmId
             	?

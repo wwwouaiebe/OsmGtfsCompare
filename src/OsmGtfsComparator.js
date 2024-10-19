@@ -46,13 +46,6 @@ class OsmGtfsComparator {
 
 	/**
 	 * Coming soon
-	 * @type {Array}
-	 */
-
-	#testsPassed = [];
-
-	/**
-	 * Coming soon
 	 * @param {Object} osmRoute Coming soon
 	 */
 
@@ -69,11 +62,23 @@ class OsmGtfsComparator {
  				}
 			}
 		);
-		this.#testsPassed.push (
-			'compareFromToLow ' +
-             ( 0 === possibleGtfsRoutes.length ? 'failed' : 'passed' )
-		);
-		return possibleGtfsRoutes;
+		switch ( possibleGtfsRoutes.length ) {
+		case 0 :
+			console.log ( 'No gtfs route found' );
+			break;
+		case 1 :
+			console.log ( 'A gtfs route with similar from and to stop found' );
+			console.log ( possibleGtfsRoutes [ 0 ].name );
+			break;
+		default :
+			console.log ( 'Multiple gtfs routes with similar from and to stop found' );
+			possibleGtfsRoutes.forEach (
+				possibleGtfsRoute => {
+					console.log ( possibleGtfsRoute.name );
+				}
+			);
+			break;
+		}
 	}
 
 	/**
@@ -90,11 +95,23 @@ class OsmGtfsComparator {
 				}
 			}
 		);
-		this.#testsPassed.push (
-			'compareFromToHight ' +
-             ( 0 === possibleGtfsRoutes.length ? 'failed' : 'passed' )
-		);
-		return possibleGtfsRoutes;
+		switch ( possibleGtfsRoutes.length ) {
+		case 0 :
+			this.#compareFromToLow ( osmRoute );
+			break;
+		case 1 :
+			console.log ( 'A gtfs route with from and to stop found' );
+			console.log ( possibleGtfsRoutes [ 0 ].name );
+			break;
+		default :
+			console.log ( 'Multiple gtfs routes with from and to stop found' );
+			possibleGtfsRoutes.forEach (
+				possibleGtfsRoute => {
+					console.log ( possibleGtfsRoute.name );
+				}
+			);
+			break;
+		}
 	}
 
 	/**
@@ -102,95 +119,34 @@ class OsmGtfsComparator {
 	 * @param {Object} osmRoute Coming soon
 	 */
 
-	#compareFromTo ( osmRoute ) {
-		let possibleGtfsRoutes = this.#compareFromToHight ( osmRoute );
-		if ( 0 === possibleGtfsRoutes.length ) {
-			possibleGtfsRoutes = this.#compareFromToLow ( osmRoute );
-		}
-		else {
-			this.#comparePlatforms ( osmRoute, possibleGtfsRoutes );
-		}
-	}
+	#comparePlatformsHight ( osmRoute ) {
 
-	/**
-	 * Coming soon
-	 * @param {Object} osmRoute Coming soon
-	 * @param {Array} gtfsRoutes Coming soon
-	 */
-
-	#comparePlatformsHight ( osmRoute, gtfsRoutes ) {
 		let possibleGtfsRoutes = [];
-		gtfsRoutes.forEach (
+		this.#gtfsRouteMaster.routes.forEach (
 			gtfsRoute => {
 				if ( gtfsRoute.platforms === osmRoute.platforms ) {
 					possibleGtfsRoutes.push ( gtfsRoute );
 				}
 			}
 		);
-		this.#testsPassed.push (
-			'comparePlatformsHight ' +
-             ( 0 === possibleGtfsRoutes.length ? 'failed' : 'passed' )
-		);
-
-		return possibleGtfsRoutes;
-	}
-
-	/**
-	 * Coming soon
-	 * @param {Object} osmRoute Coming soon
-	 * @param {Array} gtfsRoutes Coming soon
-	 */
-
-	#comparePlatformsLength ( osmRoute, gtfsRoutes ) {
-		let possibleGtfsRoutes = [ ];
-		let osmRouteSize = osmRoute.platforms.split ( ';' ).length;
-		gtfsRoutes.forEach (
-			gtfsRoute => {
-				if ( osmRouteSize === gtfsRoute.platforms.split ( ';' ).length ) {
-					possibleGtfsRoutes.push ( gtfsRoute );
+		switch ( possibleGtfsRoutes.length ) {
+		case 0 :
+			console.log ( 'No Gtfs route with all stop found' );
+			this.#compareFromToHight ( osmRoute );
+			break;
+		case 1 :
+			console.log ( 'A gtfs route with all stop found' );
+			console.log ( possibleGtfsRoutes [ 0 ].name );
+			break;
+		default :
+			console.log ( 'Multiple gtfs routes with all stop found' );
+			possibleGtfsRoutes.forEach (
+				possibleGtfsRoute => {
+					console.log ( possibleGtfsRoute.name );
 				}
-			}
-		);
-		this.#testsPassed.push (
-			'comparePlatformsLength ' +
-             ( 0 === possibleGtfsRoutes.length ? 'failed' : 'passed' )
-		);
-		if ( 0 === possibleGtfsRoutes.length ) {
-			console.log ( osmRoute.platforms );
-			gtfsRoutes.forEach (
-				gtfsRoute => { console.log ( gtfsRoute.platforms ); }
 			);
+			break;
 		}
-		return possibleGtfsRoutes;
-	}
-
-	/**
-	 * Coming soon
-	 * @param {Object} osmRoute Coming soon
-	 * @param {Array} gtfsRoutes Coming soon
-	 */
-
-	#comparePlatforms ( osmRoute, gtfsRoutes ) {
-		let possibleGtfsRoutes = this.#comparePlatformsLength ( osmRoute, gtfsRoutes );
-		if ( 0 !== possibleGtfsRoutes.length ) {
-		    possibleGtfsRoutes = this.#comparePlatformsHight ( osmRoute, possibleGtfsRoutes );
-		}
-		this.#endCompare ( possibleGtfsRoutes );
-	}
-
-	/**
-	 * Coming soon
-	 * @param {Array} gtfsRoutes Coming soon
-	 */
-
-	#endCompare ( gtfsRoutes ) {
-		gtfsRoutes.forEach (
-			gtfsRoute => { console.log ( gtfsRoute.name ); }
-		);
-		this.#testsPassed.forEach (
-			testPassed => { console.log ( testPassed ); }
-		);
-
 	}
 
 	/**
@@ -206,8 +162,7 @@ class OsmGtfsComparator {
 		this.#osmRouteMaster.routes.forEach (
 			osmRoute => {
 				console.log ( osmRoute.name );
-				this.#testsPassed = [];
-				this.#compareFromTo ( osmRoute );
+				this.#comparePlatformsHight ( osmRoute );
 			}
 		);
 	}

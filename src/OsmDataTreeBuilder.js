@@ -57,6 +57,7 @@ class OsmDataTreeBuilder {
 			routesMaster : []
 		};
 
+		let network = document.getElementById ( 'osmNetworkSelect' ).value;
 		theOsmData.routeMasters.forEach (
 			osmRouteMaster => {
 				let osmTreeRouteMaster = {
@@ -68,32 +69,35 @@ class OsmDataTreeBuilder {
 					osmRouteMasterMember => {
 						let osmRoute = theOsmData.routes.get ( osmRouteMasterMember.ref );
 						let osmTreeRoute = {
-							name : osmRoute.tags.name,
+							name : osmRoute.tags.name +
+								( osmRoute.tags.via ? ' via ' + osmRoute.tags.via.replaceAll ( ';', ', ' ) : '' ),
 							id : osmRoute.id,
 							platforms : '',
 							from : '',
 							to : '',
 							platformNames : new Map ( )
 						};
+						let haveFrom = false;
 						osmRoute.members.forEach (
-							( osmRouteMember, index ) => {
+							osmRouteMember => {
 								if ( 'platform' === osmRouteMember.role ) {
 									let osmPlatform =
                                         theOsmData.nodes.get ( osmRouteMember.ref )
                                         ||
                                         theOsmData.ways.get ( osmRouteMember.ref );
 									osmTreeRoute.platforms +=
-                                        ( osmPlatform.tags[ 'ref:TECL' ] || '????????' ) + ';';
-									if ( 0 === index ) {
+                                        ( osmPlatform.tags [ 'ref:' + network ] || '????????' ) + ';';
+									if ( ! haveFrom ) {
 										osmTreeRoute.from =
-											osmPlatform.tags[ 'ref:TECL' ]
+											osmPlatform.tags[ 'ref:' + network ]
 											|| '????????';
+										haveFrom = true;
 									}
 									osmTreeRoute.to =
-										osmPlatform.tags[ 'ref:TECL' ]
+										osmPlatform.tags[ 'ref:' + network ]
 										|| '????????';
 									osmTreeRoute.platformNames.set (
-										osmPlatform.tags[ 'ref:TECL' ] || '????????',
+										osmPlatform.tags[ 'ref:' + network ] || '????????',
 										osmPlatform.tags.name || ''
 									);
 								}

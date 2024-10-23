@@ -101,19 +101,20 @@ class OsmGtfsComparator {
 		);
 		switch ( possibleGtfsRoutes.length ) {
 		case 0 :
-			theReport.add ( 'p', 'No gtfs route found' );
+			theReport.add ( 'p', 'No gtfs route found 🔴' );
 			break;
 		case 1 :
-			theReport.add ( 'p', 'A gtfs route with similar from and to stop found' );
+			theReport.add ( 'p', 'A gtfs route with similar from and to platforms found 🟡' );
 			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
 			this.#searchMissingPlatforms ( osmRoute, possibleGtfsRoutes [ 0 ] );
 			possibleGtfsRoutes [ 0 ].osmRoute = true;
 			break;
 		default :
-			theReport.add ( 'p', 'Multiple gtfs routes with similar from and to stop found' );
+			theReport.add ( 'p', 'Multiple gtfs routes with similar from and to platforms found 🟡' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
 					theReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
+					this.#searchMissingPlatforms ( osmRoute, possibleGtfsRoute );
 					possibleGtfsRoute.osmRoute = true;
 				}
 			);
@@ -140,16 +141,17 @@ class OsmGtfsComparator {
 			this.#compareFromToLow ( osmRoute );
 			break;
 		case 1 :
-			theReport.add ( 'p', 'A gtfs route with from and to stop found' );
+			theReport.add ( 'p', 'A gtfs route with from and to platforms found 🔵' );
 			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
 			this.#searchMissingPlatforms ( osmRoute, possibleGtfsRoutes [ 0 ] );
 			possibleGtfsRoutes [ 0 ].osmRoute = true;
 			break;
 		default :
-			theReport.add ( 'p', 'Multiple gtfs routes with from and to stop found' );
+			theReport.add ( 'p', 'Multiple gtfs routes with from and to platforms found 🔵' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
 					theReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
+					this.#searchMissingPlatforms ( osmRoute, possibleGtfsRoute );
 					possibleGtfsRoute.osmRoute = true;
 				}
 			);
@@ -179,12 +181,12 @@ class OsmGtfsComparator {
 			this.#compareFromToHight ( osmRoute );
 			break;
 		case 1 :
-			theReport.add ( 'p', 'A gtfs route with all stop found' );
+			theReport.add ( 'p', 'A gtfs route with all platforms found 🟢' );
 			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
 			possibleGtfsRoutes [ 0 ].osmRoute = true;
 			break;
 		default :
-			theReport.add ( 'p', 'Multiple gtfs routes with all stop found' );
+			theReport.add ( 'p', 'Multiple gtfs routes with all platforms found 🟢' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
 					theReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
@@ -215,7 +217,7 @@ class OsmGtfsComparator {
 		this.#gtfsRouteMaster.routes.forEach (
 			gtfsRoute => {
 				if ( ! gtfsRoute.osmRoute ) {
-					theReport.add ( 'p', gtfsRoute.name, null, gtfsRoute.shapePk );
+					theReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
 				}
 			}
 		);

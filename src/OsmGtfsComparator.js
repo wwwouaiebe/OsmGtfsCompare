@@ -65,7 +65,7 @@ class OsmGtfsComparator {
 					}
 				}
 			);
-		theReport.add ( 'p', 'Missing platforms in the osm relation:' + missingOsmPlatforms );
+		theReport.add ( 'p', 'Platforms to add in the osm relation:' + missingOsmPlatforms );
 
 		let missingGtfsPlatforms = '';
 		osmRoute.platforms.slice ( 0, -1 ).split ( ';' )
@@ -78,7 +78,7 @@ class OsmGtfsComparator {
 					}
 				}
 			);
-		theReport.add ( 'p', 'Missing platforms in the gtfs data:' + missingGtfsPlatforms );
+		theReport.add ( 'p', 'Platforms to remove in the osm relation:' + missingGtfsPlatforms );
 	}
 
 	/**

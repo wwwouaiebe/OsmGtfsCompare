@@ -3,7 +3,7 @@
     "name": "OsmGtfsCompare",
     "description": "",
     "main": "bin/index.js",
-    "version": "1.0.0-alpha",
+    "version": "1.0.0",
     "keywords": [],
      "devDependencies": {
         "eslint": "latest",

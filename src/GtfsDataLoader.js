@@ -54,6 +54,10 @@ class GtfsDataLoader {
 	#buildGtfsTree ( jsonResponse ) {
 		this.#gtfsTree4Gpx = jsonResponse;
 
+		this.#gtfsTree = {
+			routesMaster : []
+		};
+
 		jsonResponse.routesMaster.forEach (
 			gtfsRouteMaster => {
 				let gtfsTreeRouteMaster = {

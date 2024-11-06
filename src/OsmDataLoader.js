@@ -104,7 +104,7 @@ class OsmDataLoader {
 		let uri = '';
 		uri =
 			'https://lz4.overpass-api.de/api/interpreter?data=[out:json][timeout:40];' +
-			'rel[network=' + config.osmNetwork + ']' +
+			'rel["network"~"' + config.osmNetwork + '"]' +
 			'[route=' + config.osmVehicle + ']' +
 			'[type=route]' +
 			( '' === config.osmRef ? '' : '[ref=' + config.osmRef + ']' ) +

@@ -63,6 +63,8 @@ class OsmDataTreeBuilder {
 				let osmTreeRouteMaster = {
 					ref : osmRouteMaster.tags.ref,
 					name : osmRouteMaster.tags.name,
+					id : osmRouteMaster.id,
+					description : osmRouteMaster.tags.description,
 					routes : []
 				};
  				osmRouteMaster.members.forEach (

@@ -62,7 +62,8 @@ class GtfsDataLoader {
 			gtfsRouteMaster => {
 				let gtfsTreeRouteMaster = {
 					ref : gtfsRouteMaster.routeMasterRef,
-					routes : []
+					routes : [],
+					osmRouteMaster : false
 				};
 				gtfsRouteMaster.routes.forEach (
 					gtfsRoute => {
@@ -115,10 +116,12 @@ class GtfsDataLoader {
 
 	/**
 	 * Coming soon
-	 * @param {string} fileName Coming soon
+	 * @param {String} network Coming soon
 	 */
 
-	async #fetchData ( fileName ) {
+	async loadData ( network ) {
+		let fileName = '../json/gtfs-' + network + '.json';
+
 		let success = false;
 		await fetch ( fileName )
 			.then (
@@ -141,42 +144,6 @@ class GtfsDataLoader {
 				}
 			);
 		return success;
-
-	}
-
-	/**
-	 * Coming soon
-	 * @param {String} network Coming soon
-	 */
-
-	async loadData ( network ) {
-		let fileName = '';
-		switch ( network ) {
-		case 'TECB' :
-			fileName = '../json/gtfs-B.json';
-			break;
-		case 'TECC' :
-			fileName = '../json/gtfs-C.json';
-			break;
-		case 'TECH' :
-			fileName = '../json/gtfs-H.json';
-			break;
-		case 'TECL' :
-			fileName = '../json/gtfs-L.json';
-			break;
-		case 'TECN' :
-			fileName = '../json/gtfs-N.json';
-			break;
-		case 'TECX' :
-			fileName = '../json/gtfs-N.json';
-			break;
-		case 'STIB' :
-			fileName = '../json/gtfs-STIB-MIVB.json';
-		default :
-			break;
-		}
-
-		await this.#fetchData ( fileName );
 	}
 
 	/**

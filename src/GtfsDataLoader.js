@@ -22,6 +22,8 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
+import theExcludeList from './ExcludeList.js';
+
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
  * Coming soon
@@ -80,14 +82,15 @@ class GtfsDataLoader {
 						let gtfsToName = '';
 						gtfsRoute.platforms.forEach (
 							( gtfsPlatform, index ) => {
-								gtfsTreeRoute.platforms += gtfsPlatform.id + ';';
+								let gtfsTranslatedPlatformId = theExcludeList.translateGtfsRefPlatform ( gtfsPlatform.id );
+								gtfsTreeRoute.platforms += gtfsTranslatedPlatformId + ';';
 								if ( 0 === index ) {
-									gtfsTreeRoute.from = gtfsPlatform.id;
+									gtfsTreeRoute.from = gtfsTranslatedPlatformId;
 									gtfsFromName = gtfsPlatform.name;
 								}
-								gtfsTreeRoute.to = gtfsPlatform.id;
+								gtfsTreeRoute.to = gtfsTranslatedPlatformId;
 								gtfsToName = gtfsPlatform.name;
-								gtfsTreeRoute.platformNames.set ( gtfsPlatform.id, gtfsPlatform.name );
+								gtfsTreeRoute.platformNames.set ( gtfsTranslatedPlatformId, gtfsPlatform.name );
 							}
 						);
 						gtfsTreeRoute.name =

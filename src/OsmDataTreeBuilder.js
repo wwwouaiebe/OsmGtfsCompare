@@ -23,6 +23,8 @@ Changes:
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theOsmData from './OsmData.js';
+import theReport from './Report.js';
+import theExcludeList from './ExcludeList.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -31,6 +33,8 @@ import theOsmData from './OsmData.js';
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class OsmDataTreeBuilder {
+
+	#network;
 
 	/**
 	 * Coming soon
@@ -48,16 +52,32 @@ class OsmDataTreeBuilder {
 
 	get osmTree ( ) { return this.#osmTree; };
 
+	#translateOsmRefPlatform ( osmPlatform ) {
+		let osmRef = osmPlatform.tags [ 'ref:' + this.#network ];
+		if (
+			osmRef && 1 < osmRef.split ( ';' ).length ) {
+			console.info ( osmPlatform.tags );
+			theReport.add (
+				'p',
+				'A platform with more than 1 ref:' + this.#network + 'is found: ' +
+				osmRef + ' ' + osmPlatform.tags.name
+			);
+		}
+
+		osmPlatform.tags [ 'ref:' + this.#network ] =
+			theExcludeList.translateOsmRefPlatform ( osmRef );
+	}
+
 	/**
 	 * Coming soon
 	 */
 
 	buildTree ( ) {
+		this.#network = document.getElementById ( 'osmNetworkSelect' ).value;
 		this.#osmTree = {
 			routesMaster : []
 		};
 
-		let network = document.getElementById ( 'osmNetworkSelect' ).value;
 		theOsmData.routeMasters.forEach (
 			osmRouteMaster => {
 				let osmTreeRouteMaster = {
@@ -87,19 +107,21 @@ class OsmDataTreeBuilder {
                                         theOsmData.nodes.get ( osmRouteMember.ref )
                                         ||
                                         theOsmData.ways.get ( osmRouteMember.ref );
+
+									this.#translateOsmRefPlatform ( osmPlatform );
 									osmTreeRoute.platforms +=
-                                        ( osmPlatform.tags [ 'ref:' + network ] || '????????' ) + ';';
+                                        ( osmPlatform.tags [ 'ref:' + this.#network ] || '????????' ) + ';';
 									if ( ! haveFrom ) {
 										osmTreeRoute.from =
-											osmPlatform.tags[ 'ref:' + network ]
+											osmPlatform.tags[ 'ref:' + this.#network ]
 											|| '????????';
 										haveFrom = true;
 									}
 									osmTreeRoute.to =
-										osmPlatform.tags[ 'ref:' + network ]
+										osmPlatform.tags[ 'ref:' + this.#network ]
 										|| '????????';
 									osmTreeRoute.platformNames.set (
-										osmPlatform.tags[ 'ref:' + network ] || '????????',
+										osmPlatform.tags[ 'ref:' + this.#network ] || '????????',
 										osmPlatform.tags.name || ''
 									);
 								}

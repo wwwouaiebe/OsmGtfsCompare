@@ -1,22 +1,36 @@
 class ExcludeList {
 
-	#excludeListOsm = new Map;
+	#excludedRelationsOsm = new Map;
+
+	#translatedOsmRefPlatforms = new Map;
+
+	#translatedGtfsRefPlatforms = new Map;
 
 	#excludeListGtfs = new Map;
 
-	#buildExcludeList ( jsonResponse ) {
-		this.#excludeListOsm.clear ( );
+	#buildLists ( jsonResponse ) {
+		this.#excludedRelationsOsm.clear ( );
 		if ( ! jsonResponse ) {
 			return;
 		}
-		jsonResponse.osm.forEach (
-			excludeItem => {
-				this.#excludeListOsm.set ( excludeItem.id, excludeItem );
+		jsonResponse.osm.excludedRelations.forEach (
+			excludedRelation => {
+				this.#excludedRelationsOsm.set ( excludedRelation.id, excludedRelation );
 			}
 		);
-		jsonResponse.gtfs.forEach (
+		jsonResponse.osm.translatedRefPlatforms.forEach (
+			translatedPlatform => {
+				this.#translatedOsmRefPlatforms.set ( translatedPlatform.from, translatedPlatform.to );
+			}
+		);
+		jsonResponse.gtfs.excludedRelations.forEach (
 			excludeItem => {
 				this.#excludeListGtfs.set ( excludeItem.ref, excludeItem );
+			}
+		);
+		jsonResponse.gtfs.translatedRefPlatforms.forEach (
+			translatedPlatform => {
+				this.#translatedGtfsRefPlatforms.set ( translatedPlatform.from, translatedPlatform.to );
 			}
 		);
 	}
@@ -35,7 +49,7 @@ class ExcludeList {
 			)
 			.then (
 				jsonResponse => {
-					this.#buildExcludeList ( jsonResponse );
+					this.#buildLists ( jsonResponse );
 					success = true;
 				}
 			)
@@ -48,8 +62,16 @@ class ExcludeList {
 
 	}
 
+	translateOsmRefPlatform ( osmRef ) {
+		return this.#translatedOsmRefPlatforms.get ( osmRef ) || osmRef;
+	}
+
+	translateGtfsRefPlatform ( gtfsRef ) {
+		return this.#translatedGtfsRefPlatforms.get ( gtfsRef ) || gtfsRef;
+	}
+
 	getOsmData ( osmId ) {
-		return this.#excludeListOsm.get ( osmId );
+		return this.#excludedRelationsOsm.get ( osmId );
 	}
 
 	getGtfsData ( gtfsRef ) {

@@ -239,6 +239,9 @@ class OsmGtfsComparator {
 			}
 		);
 		theReport.add ( 'h2', 'Missing osm relations' );
+		this.#gtfsRouteMaster.routes.sort (
+			( first, second ) => first.name.localeCompare ( second.name )
+		);
 		this.#gtfsRouteMaster.routes.forEach (
 			gtfsRoute => {
 				if ( ! gtfsRoute.osmRoute ) {

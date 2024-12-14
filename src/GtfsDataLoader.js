@@ -82,15 +82,17 @@ class GtfsDataLoader {
 						let gtfsToName = '';
 						gtfsRoute.platforms.forEach (
 							( gtfsPlatform, index ) => {
-								let gtfsTranslatedPlatformId = theExcludeList.translateGtfsRefPlatform ( gtfsPlatform.id );
-								gtfsTreeRoute.platforms += gtfsTranslatedPlatformId + ';';
-								if ( 0 === index ) {
-									gtfsTreeRoute.from = gtfsTranslatedPlatformId;
-									gtfsFromName = gtfsPlatform.name;
+								if ( ! theExcludeList.isGtfsDisusedPlatform ( gtfsPlatform.id ) ) {
+									let gtfsTranslatedPlatformId = theExcludeList.translateGtfsRefPlatform ( gtfsPlatform.id );
+									gtfsTreeRoute.platforms += gtfsTranslatedPlatformId + ';';
+									if ( 0 === index ) {
+										gtfsTreeRoute.from = gtfsTranslatedPlatformId;
+										gtfsFromName = gtfsPlatform.name;
+									}
+									gtfsTreeRoute.to = gtfsTranslatedPlatformId;
+									gtfsToName = gtfsPlatform.name;
+									gtfsTreeRoute.platformNames.set ( gtfsTranslatedPlatformId, gtfsPlatform.name );
 								}
-								gtfsTreeRoute.to = gtfsTranslatedPlatformId;
-								gtfsToName = gtfsPlatform.name;
-								gtfsTreeRoute.platformNames.set ( gtfsTranslatedPlatformId, gtfsPlatform.name );
 							}
 						);
 						gtfsTreeRoute.name =

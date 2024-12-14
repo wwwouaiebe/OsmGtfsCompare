@@ -6,6 +6,8 @@ class ExcludeList {
 
 	#translatedGtfsRefPlatforms = new Map;
 
+	#gtfsDisusedRefPlatforms = new Map;
+
 	#excludeListGtfs = new Map;
 
 	#buildLists ( jsonResponse ) {
@@ -29,14 +31,19 @@ class ExcludeList {
 			}
 		);
 		jsonResponse.gtfs.translatedRefPlatforms.forEach (
-			translatedPlatform => {
-				this.#translatedGtfsRefPlatforms.set ( translatedPlatform.from, translatedPlatform.to );
+			translatedRefPlatform => {
+				this.#translatedGtfsRefPlatforms.set ( translatedRefPlatform.from, translatedRefPlatform.to );
+			}
+		);
+		jsonResponse.gtfs.disusedRefPlatforms.forEach (
+			disusedRefPlatform => {
+				this.#gtfsDisusedRefPlatforms.set ( disusedRefPlatform.ref, disusedRefPlatform );
 			}
 		);
 	}
 
 	async loadData ( network ) {
-		let fileName = '../json/exclude-' + network + '.json';
+		let fileName = '../excludeLists/exclude-' + network + '.json';
 		let success = false;
 		await fetch ( fileName )
 			.then (
@@ -60,6 +67,10 @@ class ExcludeList {
 			);
 		return success;
 
+	}
+
+	isGtfsDisusedPlatform ( platformRef ) {
+		return this.#gtfsDisusedRefPlatforms.get ( platformRef );
 	}
 
 	translateOsmRefPlatform ( osmRef ) {

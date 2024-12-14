@@ -52,7 +52,9 @@ class OsmDataTreeBuilder {
 
 	get osmTree ( ) { return this.#osmTree; };
 
+	/*
 	#translateOsmRefPlatform ( osmPlatform ) {
+
 		let osmRef = osmPlatform.tags [ 'ref:' + this.#network ];
 		if (
 			osmRef && 1 < osmRef.split ( ';' ).length ) {
@@ -66,6 +68,48 @@ class OsmDataTreeBuilder {
 
 		osmPlatform.tags [ 'ref:' + this.#network ] =
 			theExcludeList.translateOsmRefPlatform ( osmRef );
+
+
+	}
+	*/
+
+	#getOsmPlatformRef ( osmPlatform ) {
+
+		let osmRef = osmPlatform.tags [ 'ref:' + this.#network ];
+		if (
+			osmRef && 1 < osmRef.split ( ';' ).length ) {
+			theReport.add (
+				'p',
+				'A platform with more than 1 ref:' + this.#network + 'is found: ' +
+				osmRef + ' ' + osmPlatform.tags.name
+			);
+		}
+
+		osmPlatform.tags [ 'ref:' + this.#network ] =
+			theExcludeList.translateOsmRefPlatform ( osmRef );
+
+		let platformRef = osmPlatform.tags [ 'ref:' + this.#network ];
+		if ( ! platformRef ) {
+			let refCounter = 0;
+			let networks = [ 'TECL', 'TECB', 'TECN', 'TECX', 'TECC', 'TECH' ];
+			let tmpPlatformRef = null;
+			networks.forEach (
+
+				network => {
+					if ( osmPlatform.tags [ 'ref:' + network ] ) {
+						refCounter ++;
+						tmpPlatformRef = osmPlatform.tags [ 'ref:' + network ];
+					}
+				}
+			);
+			if ( 1 === refCounter ) {
+				platformRef = tmpPlatformRef;
+			}
+			else {
+				platformRef = '????????';
+			}
+		}
+		return platformRef;
 	}
 
 	/**
@@ -102,26 +146,27 @@ class OsmDataTreeBuilder {
 						let haveFrom = false;
 						osmRoute.members.forEach (
 							osmRouteMember => {
-								if ( 'platform' === osmRouteMember.role ) {
+								if (
+									-1
+									!==
+									[ 'platform', 'platform_entry_only', 'platform_exit_only' ].indexOf (
+										osmRouteMember.role
+									)
+								) {
 									let osmPlatform =
                                         theOsmData.nodes.get ( osmRouteMember.ref )
                                         ||
                                         theOsmData.ways.get ( osmRouteMember.ref );
 
-									this.#translateOsmRefPlatform ( osmPlatform );
-									osmTreeRoute.platforms +=
-                                        ( osmPlatform.tags [ 'ref:' + this.#network ] || '????????' ) + ';';
+									let platformRef = this.#getOsmPlatformRef ( osmPlatform );
+									osmTreeRoute.platforms += platformRef + ';';
 									if ( ! haveFrom ) {
-										osmTreeRoute.from =
-											osmPlatform.tags[ 'ref:' + this.#network ]
-											|| '????????';
+										osmTreeRoute.from = platformRef;
 										haveFrom = true;
 									}
-									osmTreeRoute.to =
-										osmPlatform.tags[ 'ref:' + this.#network ]
-										|| '????????';
+									osmTreeRoute.to = platformRef;
 									osmTreeRoute.platformNames.set (
-										osmPlatform.tags[ 'ref:' + this.#network ] || '????????',
+										platformRef,
 										osmPlatform.tags.name || ''
 									);
 								}

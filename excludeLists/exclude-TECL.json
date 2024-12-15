@@ -4,352 +4,352 @@
             {
                 "ref" : "Bus 1",
                 "id" : 4070475,
-                "note" : "This relation will be removed on april 2025" 
+                "reason" : "This relation will be removed on april 2025" 
             },
             {
                 "ref" : "Bus 2",
                 "id" : 4070476,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 9." 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 9." 
             },
             {
                 "ref" : "Bus 3",
                 "id" : 4087616,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 10." 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 10." 
             },
             {
                 "ref" : "Bus 4",
                 "id" : 4039762,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 6." 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 6." 
             },
             {
                 "ref" : "Bus 5",
                 "id" : 4510935,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 35." 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 35." 
             },
             {
                 "ref" : "Bus 6",
                 "id" : 5272356,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 36." 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 36." 
             },
             {
                 "ref" : "Bus 7",
                 "id" : 5272358,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 36." 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 36." 
             },
             {
                 "ref" : "Bus 8",
                 "id" : 4248472,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 58" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 58" 
             },
             {
                 "ref" : "Bus 9",
                 "id" : 4087618,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 91. Platform Sclessin Standard is removed due to tram construction" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 91. Platform Sclessin Standard is removed due to tram construction" 
             },
             {
                 "ref" : "Bus 10",
                 "id" : 4087615,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 4" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 4" 
             },  
             {
                 "ref" : "Bus 12",
                 "id" : 4249173,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 12" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 12" 
             },
             {
                 "ref" : "Bus 13",
                 "id" : 4087611,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 24" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 24" 
             },
             {
                 "ref" : "Bus 15",
                 "id" : 14610669,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 47" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 47" 
             },
             {
                 "ref" : "Bus 16",
                 "id" : 5366061,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 79" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 79" 
             },
             {
                 "ref" : "Bus 17",
                 "id" : 16013977,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 32" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 32" 
             },
             {
                 "ref" : "Bus 18",
                 "id" : 4245593,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 11. Platform Liège Rue Rassenfosse is removed due to tram construction" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 11. Platform Liège Rue Rassenfosse is removed due to tram construction" 
             },
             {
                 "ref" : "Bus 19",
                 "id" : 17001194,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 54." 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 54." 
             },
             {
                 "ref" : "Bus 20",
                 "id" : 4248474,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 20" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 20" 
             },
             {
                 "ref" : "Bus 21",
                 "id" : 4248470,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 21" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 21" 
             },
             {
                 "ref" : "Bus 22",
                 "id" : 4248473,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 22" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 22" 
             },
             {
                 "ref" : "Bus 23",
                 "id" : 4248471,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 23" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 23" 
             },
             {
                 "ref" : "Bus 24",
                 "id" : 5293079,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 34. The bus cannot go to Llgdepo3 !" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 34. The bus cannot go to Llgdepo3 !" 
             },
             {
                 "ref" : "Bus 25",
                 "id" : 4247664,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 45" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 45" 
             },
             {
                 "ref" : "Bus 26",
                 "id" : 5268956,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 26 and 126" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 26 and 126" 
             },
             {
                 "ref" : "Bus 27",
                 "id" : 5268957,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 43 and 44" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 43 and 44" 
             },
             {
                 "ref" : "Bus 29",
                 "id" : 5256134,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 29" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 29" 
             },
             {
                 "ref" : "Bus 30",
                 "id" : 15938005,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 30" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 30" 
             },
             {
                 "ref" : "Bus 31",
                 "id" : 5273108,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 31" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 31" 
             },
             {
                 "ref" : "Bus 32",
                 "id" : 5258248,
-                "note" : "This relation will be removed on april 2025" 
+                "reason" : "This relation will be removed on april 2025" 
             },
             {
                 "ref" : "Bus 33",
                "id" : 5258249,
-               "note" : "This relation will be removed on april 2025 and replaced with new bus 17 and 27" 
+               "reason" : "This relation will be removed on april 2025 and replaced with new bus 17 and 27" 
             },
             {
                 "ref" : "Bus 35",
                 "id" : 4087617,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 21" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 21" 
             },
             {
                 "ref" : "Bus 39",
                 "id" : 17046721,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 39" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 39" 
             },
             {
                 "ref" : "Bus 41",
                 "id" : 6322570,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 41" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 41" 
             },
             {
                 "ref" : "Bus 45",
                 "id" : 14135854,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 88" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 88" 
             },
             {
                 "ref" : "Bus 46",
                 "id" : 14206904,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 50 and 87" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 50 and 87" 
             },
             {
                 "ref" : "Bus 47",
                 "id" : 14140120,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 89" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 89" 
             },
             {
                 "ref" : "Bus 48",
                 "id" : 5258251,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus B2" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus B2" 
             },
             {
                 "ref" : "Bus 49",
                 "id" : 16894416,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 49" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 49" 
              },
             {
                 "ref" : "Bus 50",
                 "id" : 5272964,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 77" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 77" 
             },
             {
                 "ref" : "Bus 53",
                 "id" : 5274708,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 53 and 153" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 53 and 153" 
             },
             {
                 "ref" : "Bus 58",
                 "id" : 5258247,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 8" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 8" 
             },
             {
                 "ref" : "Bus 61",
                 "id" : 15340922,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 56" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 56" 
             },
             {
                 "ref" : "Bus 64",
                 "id" : 5170698,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 64" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 64" 
             },
             {
                 "ref" : "Bus 65",
                 "id" : 3883923,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 65" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 65" 
             },
             {
                 "ref" : "Bus 66",
                 "id" : 17022852,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 37" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 37" 
             },
             {
                 "ref" : "Bus 67",
                 "id" : 5285300,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 67." 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 67." 
             },
             {
                 "ref" : "Bus 69",
                 "id" : 5258250,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 69" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 69" 
             },
             {
                 "ref" : "Bus 71",
                 "id" : 5298493,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 33" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 33" 
             },
             {
                 "ref" : "Bus 72",
                 "id" : 5274706,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 38" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 38" 
             },
             {
                 "ref" : "Bus 73",
                 "id" : 4255681,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 73" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 73" 
             },
             {
                 "ref" : "Bus 75",
                 "id" : 5213205,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 75" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 75" 
             },
             {
                 "ref" : "Bus 76",
                 "id" : 5272357,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 76" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 76" 
             },
             {
                 "ref" : "Bus 78",
                 "id" : 3905236,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 78" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 78" 
             },
             {
                 "ref" : "Bus 82",
                 "id" : 15347301,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 48" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 48" 
             },
             {
                 "ref" : "Bus 83",
                 "id" : 14168356,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 83" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 83" 
             },
             {
                 "ref" : "Bus 85",
                 "id" : 18175994,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 85" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 85" 
             },
             {
                 "ref" : "Bus 87",
                 "id" : 5213206,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 71" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 71" 
             },
             {
                 "ref" : "Bus 88",
                 "id" : 17004988,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 55" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 55" 
             },
             {
                 "ref" : "Bus 90",
                 "id" : 4038299,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 90" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 90" 
             },
             {
                 "ref" : "Bus 91",
                 "id" : 4087612,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 46" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 46" 
              },
             {
                 "ref" : "Bus 94",
                 "id" : 5170696,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 94" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 94" 
             },
             {
                 "ref" : "Bus 134",
                 "id" : 5272355,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 72" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 72" 
             },
             {
                 "ref" : "Bus 138",
                 "id" : 5361456,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 60" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 60" 
             },
             {
                 "ref" : "Bus 140",
                 "id" : 10180874,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 140" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 140" 
             },
             {
                 "ref" : "Bus 158",
                 "id" : 13219741,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 25" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 25" 
             },
             {
                 "ref" : "Bus 160",
                 "id" : 5373126,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 138" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 138" 
             },
             {
                 "ref" : "Bus 175",
                 "id" : 14185678,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 82" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 82" 
             },
             {
                 "ref" : "Bus 240",
                 "id" : 10217009,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 62" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 62" 
             },
             {
                 "ref" : "Bus 248",
                 "id" : 16017160,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 59" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 59" 
             },
             {
                 "ref" : "Bus 377",
                 "id" : 4039761,
-                "note" : "This relation will be removed on april 2025 and replaced with new bus 63" 
+                "reason" : "This relation will be removed on april 2025 and replaced with new bus 63" 
             },
             {
                 "ref" : "Bus 57",
@@ -504,23 +504,23 @@
         "excludedRelations" : [
             {
                 "ref" : "56",
-                "reason" : "Bus 56 This relation will be removed end january 2025"
+                "reason" : "Bus 56 This relation will be removed on april 2025"
             },
             {
                 "ref" : "60",
-                "reason" : "Bus 60 This relation will be removed end january 2025"
+                "reason" : "Bus 60 This relation will be removed on april 2025"
             },
             {
                 "ref" : "68",
-                "reason" : "Bus 68 This relation will be removed end january 2025"
+                "reason" : "Bus 68 This relation will be removed on april 2025"
             },
             {
                 "ref" : "70",
-                "reason" : "Bus 70 This relation will be removed end january 2025"
+                "reason" : "Bus 70 This relation will be removed on april 2025"
             },
             {
                 "ref" : "81",
-                "reason" : "Bus 81 This relation will be removed end january 2025"
+                "reason" : "Bus 81 This relation will be removed on april 2025"
             }
         ],
         "disusedRefPlatforms" :[

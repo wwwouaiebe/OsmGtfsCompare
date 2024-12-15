@@ -94,6 +94,6 @@ class ExcludeList {
 	}
 }
 
-const theExcludeList = new ExcludeList;
+const theExcludeList = new ExcludeList ( );
 
 export default theExcludeList;

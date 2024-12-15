@@ -99,7 +99,12 @@ class GoButtonClickEL {
 				gtfsRouteMaster => {
 					if ( ! this.#isGtfsExcluded ( gtfsRouteMaster.ref ) ) {
 						if ( ! gtfsRouteMaster.osmRouteMaster ) {
-							theReport.add ( 'p', 'gtfs roure ref : ' + gtfsRouteMaster.ref );
+							theReport.add ( 'p', 'gtfs route ref : ' + gtfsRouteMaster.ref );
+							gtfsRouteMaster.routes.forEach (
+								gtfsRoute => {
+									theReport.add ( 'p', gtfsRoute.name, null, gtfsRoute.shapePk );
+								}
+							);
 							theReport.addToDo ( gtfsRouteMaster.routes.lenght );
 						}
 					}

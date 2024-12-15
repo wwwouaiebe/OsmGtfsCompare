@@ -48,6 +48,15 @@ class GtfsDataLoader {
 
 	#gtfsTree4Gpx;
 
+	#convertDate ( sourceDate ) {
+		let tmpDate =
+			new Date ( sourceDate )
+				.toLocaleDateString ( )
+				.split ( '/' );
+
+		return tmpDate [ 2 ] + '-' + tmpDate [ 1 ] + '-' + tmpDate [ 0 ];
+	}
+
 	/**
 	 * Coming soon
 	 * @param {Object} jsonResponse Coming soon
@@ -74,9 +83,11 @@ class GtfsDataLoader {
 							platforms : '',
 							from : '',
 							to : '',
+							validFrom : this.#convertDate ( gtfsRoute.startDate ),
+							validTo : this.#convertDate ( gtfsRoute.endDate ),
 							platformNames : new Map ( ),
 							osmRoute : false,
-							shapePk : ''
+							shapePk : gtfsRoute.shapePk
 						};
 						let gtfsFromName = '';
 						let gtfsToName = '';
@@ -102,8 +113,9 @@ class GtfsDataLoader {
 							' ( ' + gtfsTreeRoute.from +
 							' ) to ' + gtfsToName +
 							' ( ' + gtfsTreeRoute.to +
-							' ) - ' + gtfsRoute.shapePk;
-						gtfsTreeRoute.shapePk = gtfsRoute.shapePk;
+							' ) - ' + gtfsRoute.shapePk +
+							' - valid from ' + gtfsTreeRoute.validFrom +
+							' - valid to ' + gtfsTreeRoute.validTo;
 						gtfsTreeRouteMaster.routes.push ( gtfsTreeRoute );
 					}
 				);

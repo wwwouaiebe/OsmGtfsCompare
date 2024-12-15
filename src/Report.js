@@ -40,6 +40,12 @@ class Report {
 
 	#report;
 
+	#stats = {
+		doneNotOk : 0,
+		doneOk : 0,
+		toDo : 0
+	};
+
 	/**
 	 * Coming soon
 	 */
@@ -54,6 +60,13 @@ class Report {
 		for ( let counter = 0; counter < gpxButtons.length; counter ++ ) {
 			gpxButtons[ counter ].addEventListener ( 'click', new GpxButtonClickEL ( ) );
 		}
+
+		let statsDiv = this.#report.firstChild;
+		statsDiv.innerHTML =
+			'<h1>Stats: </h1>' +
+			'<p>Osm route relations done and aligned on GTFS files: ' + this.#stats.doneOk + '</p>' +
+			'<p>Osm route relations done but not aligned on GTFS files: ' + this.#stats.doneNotOk + '</p>' +
+			'<p>Osm route relations todo: ' + this.#stats.toDo + '</p>';
 	}
 
 	/**
@@ -61,11 +74,27 @@ class Report {
 	 */
 
 	open ( ) {
+		this.#stats.doneNotOk = 0;
+		this.#stats.doneOk = 0;
+		this.#stats.toDo = 0;
 		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
 		this.#report = document.getElementById ( 'report' );
 		while ( this.#report.firstChild ) {
 			this.#report.removeChild ( this.#report.firstChild );
 		}
+		this.add ( 'div', '' );
+	}
+
+	addDoneOk ( ) {
+		this.#stats.doneOk ++;
+	}
+
+	addDoneNotOk ( ) {
+		this.#stats.doneNotOk ++;
+	}
+
+	addToDo ( quantity ) {
+		this.#stats.toDo += quantity ? quantity : 1;
 	}
 
 	/**
@@ -144,7 +173,8 @@ class Report {
 	 */
 
 	constructor ( ) {
-
+		Object.freeze ( this );
+		Object.seal ( this.#stats );
 	}
 }
 

@@ -22,6 +22,8 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
+import theExcludeList from './ExcludeList.js';
+
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
  * Coming soon
@@ -46,6 +48,15 @@ class GtfsDataLoader {
 
 	#gtfsTree4Gpx;
 
+	#convertDate ( sourceDate ) {
+		let tmpDate =
+			new Date ( sourceDate )
+				.toLocaleDateString ( )
+				.split ( '/' );
+
+		return tmpDate [ 2 ] + '-' + tmpDate [ 1 ] + '-' + tmpDate [ 0 ];
+	}
+
 	/**
 	 * Coming soon
 	 * @param {Object} jsonResponse Coming soon
@@ -62,7 +73,8 @@ class GtfsDataLoader {
 			gtfsRouteMaster => {
 				let gtfsTreeRouteMaster = {
 					ref : gtfsRouteMaster.routeMasterRef,
-					routes : []
+					routes : [],
+					osmRouteMaster : false
 				};
 				gtfsRouteMaster.routes.forEach (
 					gtfsRoute => {
@@ -71,22 +83,27 @@ class GtfsDataLoader {
 							platforms : '',
 							from : '',
 							to : '',
+							validFrom : this.#convertDate ( gtfsRoute.startDate ),
+							validTo : this.#convertDate ( gtfsRoute.endDate ),
 							platformNames : new Map ( ),
 							osmRoute : false,
-							shapePk : ''
+							shapePk : gtfsRoute.shapePk
 						};
 						let gtfsFromName = '';
 						let gtfsToName = '';
 						gtfsRoute.platforms.forEach (
 							( gtfsPlatform, index ) => {
-								gtfsTreeRoute.platforms += gtfsPlatform.id + ';';
-								if ( 0 === index ) {
-									gtfsTreeRoute.from = gtfsPlatform.id;
-									gtfsFromName = gtfsPlatform.name;
+								if ( ! theExcludeList.isGtfsDisusedPlatform ( gtfsPlatform.id ) ) {
+									let gtfsTranslatedPlatformId = theExcludeList.translateGtfsRefPlatform ( gtfsPlatform.id );
+									gtfsTreeRoute.platforms += gtfsTranslatedPlatformId + ';';
+									if ( 0 === index ) {
+										gtfsTreeRoute.from = gtfsTranslatedPlatformId;
+										gtfsFromName = gtfsPlatform.name;
+									}
+									gtfsTreeRoute.to = gtfsTranslatedPlatformId;
+									gtfsToName = gtfsPlatform.name;
+									gtfsTreeRoute.platformNames.set ( gtfsTranslatedPlatformId, gtfsPlatform.name );
 								}
-								gtfsTreeRoute.to = gtfsPlatform.id;
-								gtfsToName = gtfsPlatform.name;
-								gtfsTreeRoute.platformNames.set ( gtfsPlatform.id, gtfsPlatform.name );
 							}
 						);
 						gtfsTreeRoute.name =
@@ -96,8 +113,9 @@ class GtfsDataLoader {
 							' ( ' + gtfsTreeRoute.from +
 							' ) to ' + gtfsToName +
 							' ( ' + gtfsTreeRoute.to +
-							' ) - ' + gtfsRoute.shapePk;
-						gtfsTreeRoute.shapePk = gtfsRoute.shapePk;
+							' ) - ' + gtfsRoute.shapePk +
+							' - valid from ' + gtfsTreeRoute.validFrom +
+							' - valid to ' + gtfsTreeRoute.validTo;
 						gtfsTreeRouteMaster.routes.push ( gtfsTreeRoute );
 					}
 				);
@@ -115,10 +133,12 @@ class GtfsDataLoader {
 
 	/**
 	 * Coming soon
-	 * @param {string} fileName Coming soon
+	 * @param {String} network Coming soon
 	 */
 
-	async #fetchData ( fileName ) {
+	async loadData ( network ) {
+		let fileName = '../json/gtfs-' + network + '.json';
+
 		let success = false;
 		await fetch ( fileName )
 			.then (
@@ -141,42 +161,6 @@ class GtfsDataLoader {
 				}
 			);
 		return success;
-
-	}
-
-	/**
-	 * Coming soon
-	 * @param {String} network Coming soon
-	 */
-
-	async loadData ( network ) {
-		let fileName = '';
-		switch ( network ) {
-		case 'TECB' :
-			fileName = '../json/gtfs-B.json';
-			break;
-		case 'TECC' :
-			fileName = '../json/gtfs-C.json';
-			break;
-		case 'TECH' :
-			fileName = '../json/gtfs-H.json';
-			break;
-		case 'TECL' :
-			fileName = '../json/gtfs-L.json';
-			break;
-		case 'TECN' :
-			fileName = '../json/gtfs-N.json';
-			break;
-		case 'TECX' :
-			fileName = '../json/gtfs-N.json';
-			break;
-		case 'STIB' :
-			fileName = '../json/gtfs-STIB-MIVB.json';
-		default :
-			break;
-		}
-
-		await this.#fetchData ( fileName );
 	}
 
 	/**

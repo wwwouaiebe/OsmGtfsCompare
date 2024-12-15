@@ -22,6 +22,7 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
+import theExcludeList from './ExcludeList.js';
 import theReport from './Report.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
@@ -176,14 +177,14 @@ class OsmGtfsComparator {
 		);
 		switch ( possibleGtfsRoutes.length ) {
 		case 0 :
-
-			// theReport.add ( 'p', 'No Gtfs route with all stop found' );
+			theReport.addDoneNotOk ( );
 			this.#compareFromToHight ( osmRoute );
 			break;
 		case 1 :
 			theReport.add ( 'p', 'A gtfs route with all platforms found 🟢' );
 			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
 			possibleGtfsRoutes [ 0 ].osmRoute = true;
+			theReport.addDoneOk ( );
 			break;
 		default :
 			theReport.add ( 'p', 'Multiple gtfs routes with all platforms found 🟢' );
@@ -193,8 +194,21 @@ class OsmGtfsComparator {
 					possibleGtfsRoute.osmRoute = true;
 				}
 			);
+			theReport.addDoneOk ( );
 			break;
 		}
+	}
+
+	#isOsmExcluded ( osmId ) {
+		const excludeData = theExcludeList.getOsmData ( osmId );
+		if ( excludeData?.note ) {
+			theReport.add ( 'p', excludeData.note );
+		}
+		if ( excludeData?.reason ) {
+			theReport.add ( 'p', 'This relation is excluded ( reason : ' + excludeData.reason + ' )' );
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -206,18 +220,33 @@ class OsmGtfsComparator {
 	compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster ) {
 		this.#gtfsRouteMaster = gtfsRouteMaster;
 		this.#osmRouteMaster = osmRouteMaster;
-		theReport.add ( 'h1', this.#osmRouteMaster.name );
+		theReport.add (
+			'h1',
+			this.#osmRouteMaster.name + ': ' + ( this.#osmRouteMaster.description ?? '' ),
+			this.#osmRouteMaster.id
+		);
+
+		if ( this.#isOsmExcluded ( osmRouteMaster.id ) ) {
+			return;
+		}
+
 		this.#osmRouteMaster.routes.forEach (
 			osmRoute => {
 				theReport.add ( 'h2', osmRoute.name, osmRoute.id );
-				this.#comparePlatformsHight ( osmRoute );
+				if ( ! this.#isOsmExcluded ( osmRoute.id ) ) {
+					this.#comparePlatformsHight ( osmRoute );
+				}
 			}
 		);
 		theReport.add ( 'h2', 'Missing osm relations' );
+		this.#gtfsRouteMaster.routes.sort (
+			( first, second ) => first.name.localeCompare ( second.name )
+		);
 		this.#gtfsRouteMaster.routes.forEach (
 			gtfsRoute => {
 				if ( ! gtfsRoute.osmRoute ) {
 					theReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
+					theReport.addToDo ( );
 				}
 			}
 		);

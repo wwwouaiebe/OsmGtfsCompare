@@ -120,9 +120,12 @@ label {
     margin-right: 1em;
 }
 
-h1 {
-    font-size: 140%;
-    margin-top : 2em;
+main h1 {
+    font-size:  140%;
+	font-weight: bold;
+	text-decoration: underline;
+	margin-top : 2em;
+	margin-bottom: 1em;
 }
 main.errorsOnly h1
 {
@@ -144,13 +147,19 @@ main.errorsOnly h1.showOnError {
 	transform : scale(1,1);
 }
 
-h2 {
+main h2 {
     font-size:  120%;
 	font-weight: bold;
     margin-top : 1em;
     margin-left : 2em;
 	margin-bottom : 1em;
+	text-decoration: underline;
 }
+
+main p {
+	margin-left: 5em;
+}
+
 .gpxButton {
 	font-size: 80%;
 	padding: 0.2em;
@@ -162,11 +171,6 @@ h2 {
 
 .gpxButton.visited {
 	background-color: gray;
-}
-
-
-a.josmedit:visited {
-	color : gray;
 }
 
 .josmButton{

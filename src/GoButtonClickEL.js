@@ -27,6 +27,7 @@ import theGtfsDataLoader from './GtfsDataLoader.js';
 import theOsmDataTreeBuilder from './OsmDataTreeBuilder.js';
 import OsmGtfsComparator from './OsmGtfsComparator.js';
 import theReport from './Report.js';
+import theExcludeList from './ExcludeList.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -35,6 +36,18 @@ import theReport from './Report.js';
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class GoButtonClickEL {
+
+	#isGtfsExcluded ( gtfsRef ) {
+		const excludeData = theExcludeList.getGtfsData ( gtfsRef );
+		if ( excludeData?.note ) {
+			theReport.add ( ) ( 'p', excludeData.note );
+		}
+		if ( excludeData?.reason ) {
+			theReport.add ( 'p', 'This relation is excluded ( reason : ' + excludeData.reason + ' )' );
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * The contructor
@@ -54,6 +67,8 @@ class GoButtonClickEL {
 		let osmNetwork = document.getElementById ( 'osmNetworkSelect' ).value;
 		let osmVehicle = document.getElementById ( 'osmVehicleSelect' ).value;
 
+		await theExcludeList.loadData ( osmNetwork );
+
 		await new OsmDataLoader ( ).fetchData (
 			{
 				osmNetwork : osmNetwork,
@@ -70,6 +85,7 @@ class GoButtonClickEL {
 				let gtfsRouteMaster =
 					theGtfsDataLoader.gtfsTree.routesMaster.find ( element => osmRouteMaster.ref === element.ref );
 				if ( gtfsRouteMaster ) {
+					gtfsRouteMaster.osmRouteMaster = true;
 					new OsmGtfsComparator ( ).compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster );
 				}
 				else {
@@ -77,6 +93,24 @@ class GoButtonClickEL {
 				}
 			}
 		);
+		if ( ! osmRef ) {
+			theReport.add ( 'h1', 'Gtfs relations not found in the osm data' );
+			theGtfsDataLoader.gtfsTree.routesMaster.forEach (
+				gtfsRouteMaster => {
+					if ( ! this.#isGtfsExcluded ( gtfsRouteMaster.ref ) ) {
+						if ( ! gtfsRouteMaster.osmRouteMaster ) {
+							theReport.add ( 'p', 'gtfs route ref : ' + gtfsRouteMaster.ref );
+							gtfsRouteMaster.routes.forEach (
+								gtfsRoute => {
+									theReport.add ( 'p', gtfsRoute.name, null, gtfsRoute.shapePk );
+								}
+							);
+							theReport.addToDo ( gtfsRouteMaster.routes.lenght );
+						}
+					}
+				}
+			);
+		}
 		theReport.close ( );
 	}
 }

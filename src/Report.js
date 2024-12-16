@@ -24,6 +24,7 @@ Changes:
 
 import JosmButtonClickEL from './JosmButtonClickEL.js';
 import GpxButtonClickEL from './GpxButtonClickEL.js';
+import theGtfsDataLoader from './GtfsDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**

@@ -63,9 +63,24 @@ class GtfsDataLoader {
 	 */
 
 	#buildGtfsTree ( jsonResponse ) {
+
+		document.getElementById ( 'GTFSValidity' ).textContent =
+			'GTFS files valid from ' +
+			new Date ( jsonResponse.startDate )
+				.toLocaleDateString (
+					'en-BE',
+					{
+						weekday : 'long',
+						year : 'numeric',
+						month : 'long',
+						day : 'numeric'
+					}
+				);
+
 		this.#gtfsTree4Gpx = jsonResponse;
 
 		this.#gtfsTree = {
+			startDate : jsonResponse.startDate,
 			routesMaster : []
 		};
 

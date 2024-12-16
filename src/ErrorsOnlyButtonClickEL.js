@@ -55,8 +55,6 @@ class ErrorsOnlyButtonClickEL {
 
 	#showOnError ( ) {
 		if ( this.#errorFound ) {
-			console.log ( this.#currentH1.textContent );
-			console.log ( this.#currentP.length );
 			if ( this.#currentH1 ) {
 				this.#currentH1.classList.add ( 'showOnError' );
 			}

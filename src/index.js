@@ -50,7 +50,7 @@ else {
 	document.getElementById ( 'osmVehicleSelect' ).value = vehicle;
 }
 if ( -1 === [ 'TECB', 'TECC', 'TECH', 'TECL', 'TECN', 'TECX' ].indexOf ( network ) ) {
-	alert ( 'bad value for network parameter. Must be TECB, TECC, TECH, TECL, TECN, TECX or IBXL' );
+	alert ( 'bad value for network parameter. Must be TECB, TECC, TECH, TECL, TECN or TECX' );
 }
 else {
 	document.getElementById ( 'osmNetworkSelect' ).value = network;

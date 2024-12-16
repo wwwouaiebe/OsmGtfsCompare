@@ -52,30 +52,10 @@ class OsmDataTreeBuilder {
 
 	get osmTree ( ) { return this.#osmTree; };
 
-	/*
-	#translateOsmRefPlatform ( osmPlatform ) {
-
-		let osmRef = osmPlatform.tags [ 'ref:' + this.#network ];
-		if (
-			osmRef && 1 < osmRef.split ( ';' ).length ) {
-			console.info ( osmPlatform.tags );
-			theReport.add (
-				'p',
-				'A platform with more than 1 ref:' + this.#network + 'is found: ' +
-				osmRef + ' ' + osmPlatform.tags.name
-			);
-		}
-
-		osmPlatform.tags [ 'ref:' + this.#network ] =
-			theExcludeList.translateOsmRefPlatform ( osmRef );
-
-
-	}
-	*/
-
 	#getOsmPlatformRef ( osmPlatform ) {
 
 		let osmRef = osmPlatform.tags [ 'ref:' + this.#network ];
+
 		if (
 			osmRef && 1 < osmRef.split ( ';' ).length ) {
 			theReport.add (

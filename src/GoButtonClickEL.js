@@ -40,7 +40,7 @@ class GoButtonClickEL {
 	#isGtfsExcluded ( gtfsRef ) {
 		const excludeData = theExcludeList.getGtfsData ( gtfsRef );
 		if ( excludeData?.note ) {
-			theReport.add ( ) ( 'p', excludeData.note );
+			theReport.add ( 'p', excludeData.note );
 		}
 		if ( excludeData?.reason ) {
 			theReport.add ( 'p', 'This relation is excluded ( reason : ' + excludeData.reason + ' )' );
@@ -62,6 +62,7 @@ class GoButtonClickEL {
 	 */
 
 	async handleEvent ( ) {
+		document.getElementById ( 'errorsOnlyInput' ).value = 'Errors only';
 		theReport.open ( );
 		let osmRef = document.getElementById ( 'osmRef' ).value;
 		let osmNetwork = document.getElementById ( 'osmNetworkSelect' ).value;

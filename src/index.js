@@ -35,6 +35,7 @@ import GoButtonClickEL from './GoButtonClickEL.js';
 // is needed to enable theThemeChanger
 // eslint-disable-next-line no-unused-vars
 import theThemeChanger from './ThemeChanger.js';
+import ErrorsOnlyButtonClickEL from './ErrorsOnlyButtonClickEL.js';
 
 // reading url
 const docURL = new URL ( window.location );
@@ -56,6 +57,7 @@ else {
 }
 
 document.getElementById ( 'goInput' ).addEventListener ( 'click', new GoButtonClickEL ( ), false );
+document.getElementById ( 'errorsOnlyInput' ).addEventListener ( 'click', new ErrorsOnlyButtonClickEL ( ), false );
 document.getElementById ( 'version' ).innerText = 'Version: ' + theVersion;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

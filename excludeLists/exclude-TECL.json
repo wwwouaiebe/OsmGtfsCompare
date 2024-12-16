@@ -520,7 +520,7 @@
             },
             {
                 "ref" : "81",
-                "reason" : "Bus 81 This relation will be removed on april 2025"
+                "note" : "Bus 81 This relation will be removed on april 2025"
             }
         ],
         "disusedRefPlatforms" :[

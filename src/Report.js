@@ -61,12 +61,23 @@ class Report {
 			gpxButtons[ counter ].addEventListener ( 'click', new GpxButtonClickEL ( ) );
 		}
 
-		let statsDiv = this.#report.firstChild;
-		statsDiv.innerHTML =
-			'<h1>Stats: </h1>' +
-			'<p>Osm route relations done and aligned on GTFS files: ' + this.#stats.doneOk + '</p>' +
-			'<p>Osm route relations done but not aligned on GTFS files: ' + this.#stats.doneNotOk + '</p>' +
-			'<p>Osm route relations todo: ' + this.#stats.toDo + '</p>';
+		let firstChild = this.#report.firstChild;
+
+		let htmlElement = document.createElement ( 'h1' );
+		htmlElement.textContent = 'Stats :';
+		this.#report.insertBefore ( htmlElement, firstChild );
+
+		htmlElement = document.createElement ( 'p' );
+		htmlElement.textContent = 'Osm route relations done and aligned on GTFS files: ' + this.#stats.doneOk;
+		this.#report.insertBefore ( htmlElement, firstChild );
+
+		htmlElement = document.createElement ( 'p' );
+		htmlElement.textContent = 'Osm route relations done but not aligned on GTFS files: ' + this.#stats.doneNotOk;
+		this.#report.insertBefore ( htmlElement, firstChild );
+
+		htmlElement = document.createElement ( 'p' );
+		htmlElement.textContent = 'Osm route relations todo: ' + this.#stats.toDo;
+		this.#report.insertBefore ( htmlElement, firstChild );
 	}
 
 	/**
@@ -79,10 +90,10 @@ class Report {
 		this.#stats.toDo = 0;
 		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
 		this.#report = document.getElementById ( 'report' );
+		this.#report.classList.remove ( 'errorsOnly' );
 		while ( this.#report.firstChild ) {
 			this.#report.removeChild ( this.#report.firstChild );
 		}
-		this.add ( 'div', '' );
 	}
 
 	addDoneOk ( ) {

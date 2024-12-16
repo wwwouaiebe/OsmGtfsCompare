@@ -37,9 +37,19 @@ import theExcludeList from './ExcludeList.js';
 
 class AppLoader {
 
+	/**
+     * The costructor
+     */
+
 	constructor ( ) {
 		Object.freeze ( this );
 	}
+
+	/**
+     * Coming soon
+     * @param {String} gtfsRef Coming soon
+     * @returns {boolean} Coming soon
+     */
 
 	#isGtfsExcluded ( gtfsRef ) {
 		const excludeData = theExcludeList.getGtfsData ( gtfsRef );
@@ -52,6 +62,10 @@ class AppLoader {
 		}
 		return false;
 	}
+
+	/**
+     * Coming soon
+     */
 
 	#compareOsmGtfs ( ) {
 
@@ -70,6 +84,10 @@ class AppLoader {
 			}
 		);
 	}
+
+    /**
+     * Coming soon
+     */
 
 	#searchMissingOsmRouteMaster ( ) {
 		if ( ! osmRef ) {
@@ -93,7 +111,7 @@ class AppLoader {
 	}
 
 	/**
-	 * Event handler
+	 * Coming soon
 	 */
 
 	async start ( ) {
@@ -137,3 +155,5 @@ class AppLoader {
 }
 
 export default AppLoader;
+
+/* --- End of file --------------------------------------------------------------------------------------------------------- */

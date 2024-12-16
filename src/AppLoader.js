@@ -47,24 +47,6 @@ class AppLoader {
 
 	/**
      * Coming soon
-     * @param {String} gtfsRef Coming soon
-     * @returns {boolean} Coming soon
-     */
-
-	#isGtfsExcluded ( gtfsRef ) {
-		const excludeData = theExcludeList.getGtfsData ( gtfsRef );
-		if ( excludeData?.note ) {
-			theReport.add ( 'p', excludeData.note );
-		}
-		if ( excludeData?.reason ) {
-			theReport.add ( 'p', 'This relation is excluded ( reason : ' + excludeData.reason + ' )' );
-			return true;
-		}
-		return false;
-	}
-
-	/**
-     * Coming soon
      */
 
 	#compareOsmGtfs ( ) {
@@ -72,42 +54,53 @@ class AppLoader {
 		// loop on osm route master
 		theOsmDataTreeBuilder.osmTree.routesMaster.forEach (
 			osmRouteMaster => {
+
+				// Searching the a GTFS route master with the same ref
 				let gtfsRouteMaster =
 					theGtfsDataLoader.gtfsTree.routesMaster.find ( element => osmRouteMaster.ref === element.ref );
 				if ( gtfsRouteMaster ) {
+
+					// A GTFS route master exists. Adapting the GTFS route master
 					gtfsRouteMaster.osmRouteMaster = true;
+
+					// Start the comparison
 					new OsmGtfsComparator ( ).compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster );
 				}
 				else {
+
+					// no GTFS route master found
 					theReport.add ( 'h2', 'The route ' + osmRouteMaster.ref + ' is not in the gtfs files.' );
 				}
 			}
 		);
 	}
 
-    /**
+	/**
      * Coming soon
      */
 
 	#searchMissingOsmRouteMaster ( ) {
-		if ( ! osmRef ) {
-			theReport.add ( 'h1', 'Gtfs relations not found in the osm data' );
-			theGtfsDataLoader.gtfsTree.routesMaster.forEach (
-				gtfsRouteMaster => {
-					if ( ! this.#isGtfsExcluded ( gtfsRouteMaster.ref ) ) {
-						if ( ! gtfsRouteMaster.osmRouteMaster ) {
-							theReport.add ( 'p', 'gtfs route ref : ' + gtfsRouteMaster.ref );
-							gtfsRouteMaster.routes.forEach (
-								gtfsRoute => {
-									theReport.add ( 'p', gtfsRoute.name, null, gtfsRoute.shapePk );
-								}
-							);
-							theReport.addToDo ( gtfsRouteMaster.routes.lenght );
-						}
-					}
+
+		theReport.add ( 'h1', 'Gtfs relations not found in the osm data' );
+
+		// loop on the GTFS routes master
+		theGtfsDataLoader.gtfsTree.routesMaster.forEach (
+			gtfsRouteMaster => {
+				const excludedString = theExcludeList.getExcludeReason ( gtfsRouteMaster.ref );
+				if ( excludedString ) {
+					theReport.add ( 'p', excludedString );
 				}
-			);
-		}
+				else if ( ! gtfsRouteMaster.osmRouteMaster ) {
+					theReport.add ( 'p', 'gtfs route ref : ' + gtfsRouteMaster.ref );
+					gtfsRouteMaster.routes.forEach (
+						gtfsRoute => {
+							theReport.add ( 'p', gtfsRoute.name, null, gtfsRoute.shapePk );
+						}
+					);
+					theReport.addToDo ( gtfsRouteMaster.routes.lenght );
+				}
+			}
+		);
 	}
 
 	/**
@@ -146,8 +139,10 @@ class AppLoader {
 		// compare existing osm route master with gtfs route
 		this.#compareOsmGtfs ( );
 
-		// Search Missing osm route master
-		this.#searchMissingOsmRouteMaster ( );
+		// Search Missing osm route master only if no osm ref given by user
+		if ( ! osmRef ) {
+			this.#searchMissingOsmRouteMaster ( );
+		}
 
 		// close...
 		theReport.close ( );

@@ -85,9 +85,19 @@ class ExcludeList {
 		return this.#excludedRelationsOsm.get ( osmId );
 	}
 
-	getGtfsData ( gtfsRef ) {
-		return this.#excludeListGtfs.get ( gtfsRef );
-	};
+	/**
+     * Coming soon
+     * @param {String} gtfsRef Coming soon
+     * @returns {boolean} Coming soon
+     */
+
+	getExcludeReason ( gtfsRef ) {
+		const excludeData = this.#excludeListGtfs.get ( gtfsRef );
+		if ( excludeData?.reason ) {
+			return 'This relation is excluded ( reason : ' + excludeData.reason + ' )';
+		}
+		return null;
+	}
 
 	constructor ( ) {
 		Object.freeze ( this );

@@ -85,19 +85,19 @@ class AppLoader {
 
 		// loop on the GTFS routes master
 		theGtfsDataLoader.gtfsTree.routesMaster.forEach (
-			gtfsRouteMaster => {
-				const excludedString = theExcludeList.getExcludeReason ( gtfsRouteMaster.ref );
+			routeMaster => {
+				const excludedString = theExcludeList.getExcludeReason ( routeMaster.ref );
 				if ( excludedString ) {
 					theReport.add ( 'p', excludedString );
 				}
-				else if ( ! gtfsRouteMaster.osmRouteMaster ) {
-					theReport.add ( 'p', 'gtfs route ref : ' + gtfsRouteMaster.ref );
-					gtfsRouteMaster.routes.forEach (
-						gtfsRoute => {
-							theReport.add ( 'p', gtfsRoute.name, null, gtfsRoute.shapePk );
+				else if ( ! routeMaster.osmRouteMaster ) {
+					theReport.add ( 'p', 'gtfs route ref : ' + routeMaster.ref );
+					routeMaster.routes.forEach (
+						route => {
+							theReport.add ( 'p', route.name, null, route.shapePk );
 						}
 					);
-					theReport.addToDo ( gtfsRouteMaster.routes.lenght );
+					theReport.addToDo ( routeMaster.routes.lenght );
 				}
 			}
 		);

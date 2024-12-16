@@ -48,7 +48,7 @@ class GpxButtonClickEL {
 
 	handleEvent ( clickEvent ) {
 		clickEvent.target.classList.add ( 'visited' );
-		new GpxFactory ( ).buildGpx ( theGtfsDataLoader.getRouteInfo ( clickEvent.target.dataset.shapePk ) );
+		new GpxFactory ( ).buildGpx ( theGtfsDataLoader.getRouteFromShapePk ( clickEvent.target.dataset.shapePk ) );
 	}
 }
 

@@ -56,7 +56,7 @@ class OsmGtfsComparator {
 	#searchMissingPlatforms ( osmRoute, gtfsRoute ) {
 
 		let missingOsmPlatforms = '';
-		gtfsRoute.platforms.slice ( 0, -1 ).split ( ';' )
+		gtfsRoute.platformsString.slice ( 0, -1 ).split ( ';' )
 			.forEach (
 				gtfsPlatform => {
 					if ( ! osmRoute.platformNames.get ( gtfsPlatform ) ) {
@@ -170,7 +170,7 @@ class OsmGtfsComparator {
 		let possibleGtfsRoutes = [];
 		this.#gtfsRouteMaster.routes.forEach (
 			gtfsRoute => {
-				if ( gtfsRoute.platforms === osmRoute.platforms ) {
+				if ( gtfsRoute.platformsString === osmRoute.platforms ) {
 					possibleGtfsRoutes.push ( gtfsRoute );
 				}
 			}

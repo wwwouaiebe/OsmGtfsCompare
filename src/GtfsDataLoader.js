@@ -41,13 +41,6 @@ class GtfsDataLoader {
 		routesMaster : []
 	};
 
-	/**
-	 * Coming soon
-	 * @type {Object}
-	 */
-
-	#gtfsTree4Gpx;
-
 	#convertDate ( sourceDate ) {
 		let tmpDate =
 			new Date ( sourceDate )
@@ -77,64 +70,42 @@ class GtfsDataLoader {
 					}
 				);
 
-		this.#gtfsTree4Gpx = jsonResponse;
+		this.#gtfsTree = jsonResponse;
 
-		this.#gtfsTree = {
-			startDate : jsonResponse.startDate,
-			routesMaster : []
-		};
-
-		jsonResponse.routesMaster.forEach (
-			gtfsRouteMaster => {
-				let gtfsTreeRouteMaster = {
-					ref : gtfsRouteMaster.routeMasterRef,
-					routes : [],
-					osmRouteMaster : false
-				};
-				gtfsRouteMaster.routes.forEach (
-					gtfsRoute => {
-						let gtfsTreeRoute = {
-							name : '',
-							platforms : '',
-							from : '',
-							to : '',
-							validFrom : this.#convertDate ( gtfsRoute.startDate ),
-							validTo : this.#convertDate ( gtfsRoute.endDate ),
-							platformNames : new Map ( ),
-							osmRoute : false,
-							shapePk : gtfsRoute.shapePk
-						};
-						let gtfsFromName = '';
-						let gtfsToName = '';
-						gtfsRoute.platforms.forEach (
-							( gtfsPlatform, index ) => {
-								if ( ! theExcludeList.isGtfsDisusedPlatform ( gtfsPlatform.id ) ) {
-									let gtfsTranslatedPlatformId = theExcludeList.translateGtfsRefPlatform ( gtfsPlatform.id );
-									gtfsTreeRoute.platforms += gtfsTranslatedPlatformId + ';';
+		this.#gtfsTree.routesMaster.forEach (
+			routeMaster => {
+				routeMaster.routes.forEach (
+					route => {
+						let fromName = '';
+						let toName = '';
+						route.platformNames = new Map ( );
+						route.platforms.forEach (
+							( platform, index ) => {
+								if ( ! theExcludeList.isGtfsDisusedPlatform ( platform.id ) ) {
+									let translatedPlatformId = theExcludeList.translateGtfsRefPlatform ( platform.id );
+									route.platformsString += translatedPlatformId + ';';
 									if ( 0 === index ) {
-										gtfsTreeRoute.from = gtfsTranslatedPlatformId;
-										gtfsFromName = gtfsPlatform.name;
+										route.from = translatedPlatformId;
+										fromName = platform.name;
 									}
-									gtfsTreeRoute.to = gtfsTranslatedPlatformId;
-									gtfsToName = gtfsPlatform.name;
-									gtfsTreeRoute.platformNames.set ( gtfsTranslatedPlatformId, gtfsPlatform.name );
+									route.to = translatedPlatformId;
+									toName = platform.name;
+									route.platformNames.set ( translatedPlatformId, platform.name );
 								}
 							}
 						);
-						gtfsTreeRoute.name =
-						[ 'Tram', 'Subway', 'Train', 'Bus', 'Ferry,' ] [ gtfsRouteMaster.routeMasterType ] +
-							' ' + gtfsRouteMaster.routeMasterRef +
-							' - from ' + gtfsFromName +
-							' ( ' + gtfsTreeRoute.from +
-							' ) to ' + gtfsToName +
-							' ( ' + gtfsTreeRoute.to +
-							' ) - ' + gtfsRoute.shapePk +
-							' - valid from ' + gtfsTreeRoute.validFrom +
-							' - valid to ' + gtfsTreeRoute.validTo;
-						gtfsTreeRouteMaster.routes.push ( gtfsTreeRoute );
+						route.name =
+							[ 'Tram', 'Subway', 'Train', 'Bus', 'Ferry,' ] [ routeMaster.type ] +
+								' ' + routeMaster.ref +
+								' - from ' + fromName +
+								' ( ' + route.from +
+								' ) to ' + toName +
+								' ( ' + route.to +
+								' ) - ' + route.shapePk +
+								' - valid from ' + this.#convertDate ( route.startDate ) +
+								' - valid to ' + this.#convertDate ( route.endDate );
 					}
 				);
-				this.#gtfsTree.routesMaster.push ( gtfsTreeRouteMaster );
 			}
 		);
 	}
@@ -183,25 +154,21 @@ class GtfsDataLoader {
 	 * @param {String} shapePk Coming soon
 	 */
 
-	getRouteInfo ( shapePk ) {
+	getRouteFromShapePk ( shapePk ) {
 		let iShapePk = Number.parseInt ( shapePk );
-		let routeInfo = [];
-		this.#gtfsTree4Gpx.routesMaster.forEach (
+		let returnRoute = null;
+		this.#gtfsTree.routesMaster.forEach (
 			routeMaster => {
 				routeMaster.routes.forEach (
 					route => {
 						if ( route.shapePk === iShapePk ) {
-							routeInfo.push (
-								[ 'Tram', 'Subway', 'Train', 'Bus', 'Ferry,' ] [ routeMaster.routeMasterType ] +
-								' ' + routeMaster.routeMasterRef
-							);
-							routeInfo.push ( route );
+							returnRoute = route;
 						}
 					}
 				);
 			}
 		);
-		return routeInfo;
+		return returnRoute;
 	}
 
 	/**

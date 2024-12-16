@@ -227,11 +227,7 @@ class GpxFactory {
 	*/
 
 	#saveGpxToFile ( ) {
-		let fileName = this.#routeMasterName + ' - from ' +
-			this.#route.platforms [ 0 ].name + ' to ' +
-			this.#route.platforms [ this.#route.platforms.length - 1 ].name +
-			' - ' + String ( this.#route.shapePk ) + '.gpx';
-		this.#saveFile ( fileName, this.#gpxString, 'application/xml' );
+		this.#saveFile ( this.#route.name, this.#gpxString, 'application/xml' );
 	}
 
 	/**
@@ -239,9 +235,8 @@ class GpxFactory {
 	 * @param {Array} routeInfo Coming soon
 	 */
 
-	buildGpx ( routeInfo ) {
-		this.#routeMasterName = routeInfo [ 0 ];
-		this.#route = routeInfo [ 1 ];
+	buildGpx ( route ) {
+		this.#route = route;
 		this.#timeStamp = '<time>' + new Date ( ).toISOString ( ) + '</time>';
 		this.#addHeader ( );
 

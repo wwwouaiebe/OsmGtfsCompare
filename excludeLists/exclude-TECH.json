@@ -1,0 +1,16 @@
+{
+    "osm" : {
+        "excludedRelations" : [
+        ],
+        "translatedRefPlatforms" : [
+        ]
+    },
+    "gtfs" : {
+        "excludedRelations" : [
+        ],
+        "disusedRefPlatforms" :[
+        ],
+        "translatedRefPlatforms" : [
+       ]
+    }
+}

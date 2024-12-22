@@ -390,7 +390,8 @@
             {
                 "from" : "LTNcarr2;LTNcarr6",
                 "to" : "LTNcarr2",
-				"reason" : "2 ref:TECL encoded in the platform"
+				"reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Tinlot Carrefour"
             },
             {
                 "from" : "LJAsuri4",
@@ -405,27 +406,26 @@
             {
                 "from" : "LeUkehr2;LeUkehr4",
                 "to" : "LeUkehr4",
- 				"reason" : "2 ref:TECL encoded in the platform"
-            },
-            {
-                "from" : "LeUkehr3;LeUkehr1",
-                "to" : "LeUkehr3",
- 				"reason" : "2 ref:TECL encoded in the platform"
-            },
+ 				"reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Eupen Kehrweg"
+                },
             {
                 "from" : "LJAbell2;LJAbell4",
                 "to" : "LJAbell2",
- 				"reason" : "2 ref:TECL encoded in the platform"
-            },
+ 				"reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Jalhay Belle Croix"
+                },
             {
                 "from" : "LmIvale3;LmIvale2",
                 "to" : "LmIvale3",
- 				"reason" : "2 ref:TECL encoded in the platform"
-            },
+ 				"reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Mirfeld Valender Weg"
+                },
             {
                 "from" : "LmIvale4;LmIvale1",
                 "to" : "LmIvale4",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Mirfeld Valender Weg"
             },
             {
                 "from" : "LREsoug2;LREsoug4",
@@ -435,32 +435,26 @@
             {
                 "from" : "Lvearle1;Lvearle4",
                 "to" : "Lvearle1",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "Verviers" : "Place d'Arles"
             },
             {
                 "from" : "Lsmrcim2;Lsmcime2",
                 "to" : "Lsmrcim2",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Stembert Rue du Cimetière"
             },
             {
                 "from" : "LAMhopi2;LAMhopi3",
                 "to" : "LAMhopi3",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Amay rue de l'Hôpital"
             },
             {
                 "from" : "LHUhaum3;LHUgole1",
                 "to" : "LHUgole1",
-                "reason" : "2 ref:TECL encoded in the platform"
-            },
-            {
-                "from" : "LSOtheu1;LOLtheu1",
-                "to" : "LSOtheu1",
-                "reason" : "2 ref:TECL encoded in the platform"
-            },
-            {
-                "from" : "LSOtheu2;LOLtheu2",
-                "to" : "LSOtheu2",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Huy Les Golettes"
             },
             {
                 "from" : "Lghwall1;Lghwall*",
@@ -649,79 +643,76 @@
             {
                 "from" : "LTNcarr6",
                 "to" : "LTNcarr2",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Tinlot Carrefour"
             },
             {
                 "from" : "LeUkehr2",
                 "to" : "LeUkehr4",
-                "reason" : "2 ref:TECL encoded in the platform"
-            },
-            {
-                "from" : "LeUkehr1",
-                "to" : "LeUkehr3",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Eupen Kehrweg"
             },
             {
                 "from" : "LJAbell4",
                 "to" : "LJAbell2",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform. LJAbell4 don't exists in the real life",
+                "note" : "Jalhay Belle Croix"
             },
             {
                 "from" : "LAUvict4",
                 "to" : "LAUvict3",
-                "reason" : "LAUvict4 used in some gtfs relations"
+                "reason" : "LAUvict4 used in some gtfs relations",
+                "note" : "Aubel Place de la Victoire"
             },
             {
                 "from" : "LmIvale2",
                 "to" : "LmIvale3",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Mirfeld Valender Weg"
             },
             {
                 "from" : "LmIvale1",
                 "to" : "LmIvale4",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Mirfeld Valender Weg"
             },
             {
                 "from" : "LFMvoge*",
                 "to" : "LFMvoge2",
-                "reason" : "LFMvoge2 used in some gtfs relations"
+                "reason" : "LFMvoge2 used in some gtfs relations",
+                "note" : "Sint-Maertens-Voeren Vogelstang"
             },
             {
                 "from" : "LREsoug4",
                 "to" : "LREsoug2",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Remouchamps Pont de Sougné"
             },
             {
                 "from" : "Lvearle4",
                 "to" : "Lvearle1",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "Verviers" : "Place d'Arles"
             },
             {
                 "from" : "Lsmcime2",
                 "to" : "Lsmrcim2",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Stembert Rue du Cimetière"
             },
             {
                 "from" : "LAMhopi2",
                 "to" : "LAMhopi3",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Amay rue de l'Hôpital"
             },
             {
                 "from" : "LHUhaum3",
                 "to" : "LHUgole1",
-                "reason" : "2 ref:TECL encoded in the platform"
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Huy Les Golettes"
             },
-            {
-                "from" : "LOLtheu1",
-                "to" : "LSOtheu1",
-                "reason" : "2 ref:TECL encoded in the platform"
-            },
-            {
-                "from" : "LOLtheu2",
-                "to" : "LSOtheu2",
-                "reason" : "2 ref:TECL encoded in the platform"
-            },
-            {
+             {
                 "from" : "Lghwall*",
                 "to" : "Lghwall1",
                 "reason" : "2 ref:TECL encoded in the platform",

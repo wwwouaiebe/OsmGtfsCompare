@@ -1,6 +1,37 @@
 {
     "osm" : {
         "excludedRelations" : [
+            {
+                "id" : 5268478,
+                "note" : "This relation have duplicated bus_stop in the GTFS files Bouillon Athénée (X812aqa) ",
+                "name" : "Bagimont Centre FEDASIL → Bouillon Pont de Germauchamps"
+            },
+            {
+                "id" : 17259088,
+                "note" : "This relation have duplicated bus_stop in the GTFS files (Cheoux Église X941acb)",
+                "name" : "Bus 13/2: La Roche Athénée → Hampteau Église"
+            },
+            {
+                "id" : 17233781,
+                "note" : "The platform GRAND-SART Fontaine ( X784ama ) don't exists in the real life...",
+                "name" : "Bus 14: Grand Halleux Église → Manhay Athénée"
+            },
+            {
+                "id" : 17233784,
+                "note" : "The platform GRAND-SART Fontaine ( X784amb ) don't exists in the real life...",
+                "name" : "Bus 14: Manhay Athénée → Grand Halleux Église"
+            },
+            {
+                "id" : 17233771,
+                "note" : "This relation have duplicated bus_stop in the GTFS files (Werbomont Route de Hamoir X512abb)",
+                "name" : "Bus 14/1: Manhay Athénée → Chevron Monument"
+            },
+            {
+                "id" : 11051653,
+                "note" : "This relation have duplicated bus_stop in the GTFS files (Ottré Route de Joubiéval X782ana)",
+                "name" : "Bus 18/3: Vielsalm Institut du Sacré-Cœur → Houffalize Dépôt"
+            }
+
         ],
         "translatedRefPlatforms" : [
         ]
@@ -9,6 +40,16 @@
         "excludedRelations" : [
         ],
         "disusedRefPlatforms" :[
+            {
+                "ref" : "X784ama",
+                "name" : "Grand-Sart Fontaine",
+                "reason" : "The platform don't exists in the real life..."
+            },
+            {
+                "ref" : "X784amb",
+                "name" : "Grand-Sart Fontaine",
+                "reason" : "The platform don't exists in the real life..."
+            }
         ],
         "translatedRefPlatforms" : [
        ]

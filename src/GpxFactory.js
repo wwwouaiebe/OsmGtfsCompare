@@ -227,7 +227,7 @@ class GpxFactory {
 	*/
 
 	#saveGpxToFile ( ) {
-		this.#saveFile ( this.#route.name, this.#gpxString, 'application/xml' );
+		this.#saveFile ( this.#route.name + '.gpx', this.#gpxString, 'application/xml' );
 	}
 
 	/**

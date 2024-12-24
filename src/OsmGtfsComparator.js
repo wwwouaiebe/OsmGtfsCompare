@@ -244,9 +244,23 @@ class OsmGtfsComparator {
 		);
 		this.#gtfsRouteMaster.routes.forEach (
 			gtfsRoute => {
+				let isIncluded = false;
 				if ( ! gtfsRoute.osmRoute ) {
-					theReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
-					theReport.addToDo ( );
+					this.#osmRouteMaster.routes.forEach (
+						osmRoute => {
+							if ( osmRoute.platforms.match ( gtfsRoute.platformsString ) ) {
+								if ( ! isIncluded ) {
+									theReport.add ( 'p', gtfsRoute.name + ' 🟣', null, gtfsRoute.shapePk );
+									isIncluded = true;
+								}
+								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute.id, null );
+							}
+						}
+					);
+					if ( ! isIncluded ) {
+						theReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
+						theReport.addToDo ( );
+					}
 				}
 			}
 		);

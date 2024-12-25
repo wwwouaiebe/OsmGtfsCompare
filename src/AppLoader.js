@@ -54,10 +54,46 @@ class AppLoader {
 		// loop on osm route master
 		theOsmDataTreeBuilder.osmTree.routesMaster.forEach (
 			osmRouteMaster => {
+				let errorMessage = '';
+				let gtfsRouteMaster = null;
 
-				// Searching the a GTFS route master with the same ref
-				let gtfsRouteMaster =
-					theGtfsDataLoader.gtfsTree.routesMaster.find ( element => osmRouteMaster.ref === element.ref );
+				// Searching a GTFS route master with the same ref
+				let gtfsRoutesMaster =
+					theGtfsDataLoader.gtfsTree.routesMaster.filter ( element => osmRouteMaster.ref === element.ref );
+				switch ( gtfsRoutesMaster.length ) {
+				case 0 : // no gtfs route master found
+					errorMessage = 'The route ' + osmRouteMaster.ref + ' is not in the gtfs files.';
+					break;
+				case 1 : // one gtfs route master found
+					gtfsRouteMaster = gtfsRoutesMaster [ 0 ];
+					break;
+				default :
+
+					// more than one gtfs route master found
+					// Searching a GTFS route master with the same ref and same description
+					gtfsRoutesMaster = theGtfsDataLoader.gtfsTree.routesMaster.filter (
+						element => {
+							let returnValue =
+								osmRouteMaster.ref === element.ref
+								&&
+								0 === osmRouteMaster.description.toLowerCase ( ).localeCompare (
+									element.description.toLowerCase ( )
+								);
+							return returnValue;
+						}
+					);
+					if ( 1 === gtfsRoutesMaster.length ) {
+
+						// one gtfs route master found
+						gtfsRouteMaster = gtfsRoutesMaster [ 0 ];
+					}
+					else {
+						errorMessage = 'No GTFS route master found. ' +
+							'Be sure that the osm route master have the same description than the GTFS route master.';
+					}
+					break;
+				}
+
 				if ( gtfsRouteMaster ) {
 
 					// A GTFS route master exists. Adapting the GTFS route master
@@ -67,9 +103,8 @@ class AppLoader {
 					new OsmGtfsComparator ( ).compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster );
 				}
 				else {
-
 					// no GTFS route master found
-					theReport.add ( 'h2', 'The route ' + osmRouteMaster.ref + ' is not in the gtfs files.' );
+					theReport.add ( 'h2', errorMessage );
 				}
 			}
 		);

@@ -155,6 +155,9 @@ class OsmDataTreeBuilder {
 						osmTreeRouteMaster.routes.push ( osmTreeRoute );
 					}
 				);
+				osmTreeRouteMaster.routes.sort (
+					( first, second ) => first.name.localeCompare ( second.name )
+				);
 				this.#osmTree.routesMaster.push ( osmTreeRouteMaster );
 			}
 		);

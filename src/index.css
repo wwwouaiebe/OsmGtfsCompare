@@ -132,30 +132,6 @@ main h1 {
 	margin-bottom: 1em;
 }
 
-main.errorsOnly h1,
-main.errorsOnly h2,
-main.errorsOnly p
-{
-	width: 0;
-	height: 0;
-	margin: 0 ;
-	padding: 0 ;
-	border-width: 0 !important;
-	border-style: none !important;
-	visibility: hidden;
-	transform: scale(0);
-}
-
-main.errorsOnly h1.showOnError
-{
-	width: auto;
-	height: auto;
-    margin-top : 2em;
-	margin-bottom: 1em;
-	visibility:visible;
-	transform : scale(1,1);
-}
-
 main h2 {
     font-size:  120%;
 	font-weight: bold;
@@ -165,28 +141,24 @@ main h2 {
 	text-decoration: underline;
 }
 
-main.errorsOnly h2.showOnError
-{
-	width: auto;
-	height: auto;
-    margin-top : 1em;
-	margin-left : 2em;
-	margin-bottom : 1em;
-	visibility:visible;
-	transform : scale(1,1);
-}
-
 main p {
 	margin-left: 5em;
 }
 
-main.errorsOnly p.showOnError
+
+main.errorsOnly h1.noErrors,
+main.errorsOnly h2.noErrors,
+main.errorsOnly h3.noErrors,
+main.errorsOnly p.noErrors
 {
-	width: auto;
-	height: auto;
-    margin-left: 5em;
-	visibility:visible;
-	transform : scale(1,1);
+	width: 0;
+	height: 0;
+	margin: 0 ;
+	padding: 0 ;
+	border-width: 0 !important;
+	border-style: none !important;
+	visibility: hidden;
+	transform: scale(0);
 }
 
 .gpxButton {

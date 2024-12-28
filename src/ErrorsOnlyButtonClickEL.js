@@ -53,6 +53,7 @@ class ErrorsOnlyButtonClickEL {
 		Object.freeze ( this );
 	}
 
+	/*
 	#showOnError ( ) {
 		if ( this.#errorFound ) {
 			if ( this.#currentH1 ) {
@@ -68,6 +69,7 @@ class ErrorsOnlyButtonClickEL {
 			);
 		}
 	}
+	*/
 
 	/**
 	 * event handler
@@ -78,65 +80,6 @@ class ErrorsOnlyButtonClickEL {
 		event.target.value = 'All' === event.target.value ? 'Error only' : 'All';
 		let report = document.getElementById ( 'report' );
 		report.classList.toggle ( 'errorsOnly' );
-
-		this.#currentH1 = null;
-		this.#currentH2 = null;
-		this.#currentP = [];
-		this.#errorFound = false;
-
-		report.childNodes.forEach (
-			node => {
-				node.classList.remove ( 'showOnError' );
-				switch ( node.tagName ) {
-				case 'H1' :
-					this.#showOnError ( );
-					this.#currentH1 = null;
-					this.#currentH2 = null;
-					this.#currentP = [];
-					this.#errorFound = false;
-					if ( node.textContent.startsWith ( 'Bus ' ) ) {
-						this.#currentH1 = node;
-					}
-					if (
-						'Stats :' === node.textContent
-						||
-						'Gtfs relations not found in the osm data' === node.textContent
-					) {
-						this.#currentH1 = node;
-						this.#errorFound = true;
-					}
-					break;
-				case 'H2' :
-					this.#showOnError ( );
-					this.#currentH2 = null;
-					this.#currentP = [];
-					this.#errorFound = false;
-					if (
-						node.textContent.startsWith ( 'Bus ' )
-						||
-						'Missing osm relations' === node.textContent
-					) {
-						this.#currentH2 = node;
-					}
-					break;
-				case 'P' :
-					this.#currentP.push ( node );
-					if (
-						-1 !== node.textContent.indexOf ( '🔵' )
-						||
-						-1 !== node.textContent.indexOf ( '🟡' )
-						||
-						-1 !== node.textContent.indexOf ( '🔴' )
-					) {
-						this.#errorFound = true;
-					}
-					break;
-				default :
-					break;
-				}
-			}
-		);
-		this.#showOnError ( );
 	}
 }
 

@@ -40,6 +40,10 @@ class Report {
 
 	#report;
 
+	#currentH1 = null;
+	#currentH2 = null;
+	#currentH3 = null;
+	
 	#stats = {
 		doneNotOk : 0,
 		doneOk : 0,
@@ -118,13 +122,61 @@ class Report {
 
 	// eslint-disable-next-line max-params
 	add ( htmlTag, text, osmId, shapePk ) {
+
 		let htmlElement = document.createElement ( htmlTag );
+
+		switch ( htmlTag ) {
+		case 'h1' :
+			this.#currentH1 = htmlElement;
+			this.#currentH2 = null;
+			this.#currentH3 = null;
+			break;
+		case 'h2' :
+			this.#currentH2 = htmlElement;
+			this.#currentH3 = null;
+			break;
+		case 'h3' :
+			this.#currentH3 = htmlElement;
+			break;
+		default :
+			break;
+		}
+
 		htmlElement.innerHTML =
 			this.#getGpxDownload ( shapePk ) +
 			text +
 			this.#getOsmLink ( osmId ) +
 			this.#getJosmEdit ( osmId );
+
+		if (
+			-1 !== text.indexOf ( '🔵' )
+			||
+			-1 !== text.indexOf ( '🟡' )
+			||
+			-1 !== text.indexOf ( '🔴' )
+			||
+			-1 !== text.indexOf ( '🟣' )
+		) {
+			htmlElement.classList.add ( 'haveErrors' );
+			if ( this.#currentH3 ) {
+				this.#currentH3.classList.add ( 'haveErrors' );
+				this.#currentH3.classList.remove ( 'noErrors' );
+			}
+			if ( this.#currentH2 ) {
+				this.#currentH2.classList.add ( 'haveErrors' );
+				this.#currentH2.classList.remove ( 'noErrors' );
+			}
+			if ( this.#currentH1 ) {
+				this.#currentH1.classList.add ( 'haveErrors' );
+				this.#currentH1.classList.remove ( 'noErrors' );
+			}
+		}
+		else {
+			htmlElement.classList.add ( 'noErrors' );
+		}
+
 		this.#report.appendChild ( htmlElement );
+
 	}
 
 	/**

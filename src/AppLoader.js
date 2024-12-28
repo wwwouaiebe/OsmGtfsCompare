@@ -103,6 +103,7 @@ class AppLoader {
 					new OsmGtfsComparator ( ).compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster );
 				}
 				else {
+
 					// no GTFS route master found
 					theReport.add ( 'h2', errorMessage );
 				}

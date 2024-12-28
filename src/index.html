@@ -28,19 +28,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
             <span id="GTFSValidity"></span>
              <label>Network: 
                 <select id="osmNetworkSelect">
-                    <option value="TECB">TECB</option>
-                    <option value="TECC">TECC</option>
-                    <option value="TECH">TECH</option>
-                    <option value="TECL">TECL</option>
-                    <option value="TECN">TECN</option>
-                    <option value="TECX">TECX</option>
-                </select>
+                 </select>
             </label>
             <label>Vehicle: 
                 <select id="osmVehicleSelect">
                     <option value="bus">bus</option>
                     <option value="tram">tram</option>
                     <option value="subway">subway</option>
+                </select>
+            </label>
+            <label>Type: 
+                <select id="osmTypeSelect">
+                    <option value="used">used</option>
+                    <option value="proposed">proposed</option>
+                    <option value="disused">disused</option>
                 </select>
             </label>
             <label>
@@ -53,6 +54,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
             <input type="button" value="go" id="goInput" title="Start the control"/>
             <input type="button" value="Errors only" id="errorsOnlyInput" title="Show all or show only errors"/>
             <span> <a id="cyDarkLight" title="Apparence: sombre">☽</a> </span>
+            <span> <a id="help" title="help" target="_blank" href="https://github.com/wwwouaiebe/OsmGtfsCompare#readme">?</a> </span>
             <div id="waitAnimation"><div id="waitAnimationBullet"></div></div>
        </header>
         <main id="report">

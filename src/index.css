@@ -93,6 +93,10 @@ header {
 	text-align: center;
 	z-index: 500;
 }
+header span {
+	margin-left: 2em;
+	font-size: 140%;
+}
 footer {
 	border-top-style: solid ;
 	border-top-width: 0.1em;

@@ -64,7 +64,7 @@ class AutoStartup {
 		}
 
 		if ( ! await theOperator.loadData ( operator ) ) {
-			alert ( 'Unknown operator' );
+			alert ( 'Unknown operator parameter' );
 			return;
 		}
 
@@ -79,6 +79,11 @@ class AutoStartup {
 
 		if ( network ) {
 			osmNetworkSelectElement.value = network;
+		}
+
+		if ( '' === osmNetworkSelectElement.value ) {
+			alert ( 'Unknown network parameter' );
+			return;
 		}
 
 		// verification of parameters

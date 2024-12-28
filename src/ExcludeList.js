@@ -11,30 +11,39 @@ class ExcludeList {
 	#excludeListGtfs = new Map;
 
 	#buildLists ( jsonResponse ) {
-		this.#excludedRelationsOsm.clear ( );
 		if ( ! jsonResponse ) {
 			return;
 		}
+
+		this.#excludedRelationsOsm.clear ( );
 		jsonResponse.osm.excludedRelations.forEach (
 			excludedRelation => {
 				this.#excludedRelationsOsm.set ( excludedRelation.id, excludedRelation );
 			}
 		);
+
+		this.#translatedOsmRefPlatforms.clear ( );
 		jsonResponse.osm.translatedRefPlatforms.forEach (
 			translatedPlatform => {
 				this.#translatedOsmRefPlatforms.set ( translatedPlatform.from, translatedPlatform.to );
 			}
 		);
+
+		this.#excludeListGtfs.clear ( );
 		jsonResponse.gtfs.excludedRelations.forEach (
 			excludeItem => {
 				this.#excludeListGtfs.set ( excludeItem.ref, excludeItem );
 			}
 		);
+
+		this.#translatedGtfsRefPlatforms.clear ( );
 		jsonResponse.gtfs.translatedRefPlatforms.forEach (
 			translatedRefPlatform => {
 				this.#translatedGtfsRefPlatforms.set ( translatedRefPlatform.from, translatedRefPlatform.to );
 			}
 		);
+
+		this.#gtfsDisusedRefPlatforms.clear ( );
 		jsonResponse.gtfs.disusedRefPlatforms.forEach (
 			disusedRefPlatform => {
 				this.#gtfsDisusedRefPlatforms.set ( disusedRefPlatform.ref, disusedRefPlatform );

@@ -93,7 +93,7 @@ header {
 	text-align: center;
 	z-index: 500;
 }
-header span {
+header span.fontLarge {
 	margin-left: 2em;
 	font-size: 140%;
 }

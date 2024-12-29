@@ -133,7 +133,7 @@ class AppLoader {
 							theReport.add ( 'p', route.name, null, route.shapePk );
 						}
 					);
-					theReport.addToDo ( routeMaster.routes.lenght );
+					theReport.addToDo ( routeMaster.routes.length );
 				}
 			}
 		);

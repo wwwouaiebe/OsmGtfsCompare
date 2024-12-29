@@ -226,6 +226,22 @@ class OsmGtfsComparator {
 			this.#osmRouteMaster.id
 		);
 
+		if (
+			( this.#osmRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
+			!==
+			( this.#gtfsRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
+		) {
+			theReport.add (
+				'p',
+				'The osm description is not equal to the GTFS route long name 🔴',
+				null,
+				null
+			);
+		}
+
+		// console.log ( osmRouteMaster );
+		// console.log ( gtfsRouteMaster );
+
 		if ( this.#isOsmExcluded ( osmRouteMaster.id ) ) {
 			return;
 		}

@@ -487,6 +487,12 @@
                 "note" : "Vaux-sous-Chèvremont Place T. Foguenne"
             },
             {
+                "from" : "Lbomc--1;Lbomc--5",
+                "to" : "Lbomc--1",
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Boncelles Maison Communale"
+            },
+            {
                 "from" : "Lbrrobe3;Lbrrobe4",
                 "to" : "Lbrrobe4",
                 "reason" : "2 ref:TECL encoded in the platform",
@@ -747,6 +753,12 @@
                 "to" : "Lbrrobe4",
                 "reason" : "2 ref:TECL encoded in the platform",
                 "note" : "Bressoux Robermont Cimetière"
+            },
+            {
+                "from" : "Lbomc--5",
+                "to" : "Lbomc--1",
+                "reason" : "2 ref:TECL encoded in the platform",
+                "note" : "Boncelles Maison Communale"
             },
             {
                 "from" : "Llgcoro3",

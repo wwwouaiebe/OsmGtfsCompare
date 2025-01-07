@@ -54,13 +54,6 @@ class GpxFactory {
 	#gpxString;
 
 	/**
-	The time stamp added in the gpx
-	@type {String}
-	*/
-
-	#timeStamp;
-
-	/**
 	Simple constant for gpx presentation
 	@type {String}
 	*/
@@ -152,7 +145,6 @@ class GpxFactory {
 					currentPlatform.lat +
 					'" lon="' +
 					currentPlatform.lon + '">' +
-					GpxFactory.#TAB2 + this.#timeStamp +
 					GpxFactory.#TAB2 + '<name>' +
 					String ( index + 1 ) + ' - ' +
 					this.#replaceEntities ( currentPlatform.name ) +
@@ -185,7 +177,6 @@ class GpxFactory {
 				this.#gpxString +=
                     GpxFactory.#TAB3 +
                     '<trkpt lat="' + routeNode [ 0 ] + '" lon="' + routeNode [ 1 ] + '">' +
-                    GpxFactory.#TAB4 + this.#timeStamp +
                     GpxFactory.#TAB3 + '</trkpt>';
 			}
 		);
@@ -237,7 +228,6 @@ class GpxFactory {
 
 	buildGpx ( route ) {
 		this.#route = route;
-		this.#timeStamp = '<time>' + new Date ( ).toISOString ( ) + '</time>';
 		this.#addHeader ( );
 
 		this.#addWayPoints ( );

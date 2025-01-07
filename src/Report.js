@@ -43,7 +43,7 @@ class Report {
 	#currentH1 = null;
 	#currentH2 = null;
 	#currentH3 = null;
-	
+
 	#stats = {
 		doneNotOk : 0,
 		doneOk : 0,

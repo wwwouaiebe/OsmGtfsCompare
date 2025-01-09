@@ -161,9 +161,8 @@ class GpxFactory {
 
 	#addTrack ( ) {
 		this.#gpxString += GpxFactory.#TAB1 + '<trk>';
-
 		this.#gpxString += GpxFactory.#TAB2 + '<name>' +
-			this.#replaceEntities ( this.#routeMasterName + ' - ' + String ( this.#route.shapePk ) ) +
+			this.#replaceEntities ( this.#route.name ) +
 			'</name>';
 		this.#gpxString += GpxFactory.#TAB2 + '<trkseg>';
 

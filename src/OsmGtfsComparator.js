@@ -270,12 +270,16 @@ class OsmGtfsComparator {
 									isIncluded = true;
 								}
 								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute.id, null );
+								theReport.addToDo ( );
 							}
 						}
 					);
 					if ( ! isIncluded ) {
-						theReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
-						theReport.addToDo ( );
+						let isValidDate = new Date ( gtfsRoute.endDate ).valueOf ( ) > Date.now ( );
+						theReport.add ( 'p', gtfsRoute.name + ( isValidDate ? ' 🔴' : ' ⚫' ), null, gtfsRoute.shapePk );
+						if ( isValidDate ) {
+							theReport.addToDo ( );
+						}
 					}
 				}
 			}

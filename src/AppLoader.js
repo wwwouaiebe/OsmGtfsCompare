@@ -25,10 +25,11 @@ Changes:
 import OsmDataLoader from './OsmDataLoader.js';
 import GtfsTreeBuilder from './GtfsTreeBuilder.js';
 import OsmTreeBuilder from './OsmTreeBuilder.js';
-import OsmGtfsComparator from './OsmGtfsComparator.js';
+import RouteMasterComparator from './RouteMasterComparator.js';
 import theReport from './Report.js';
 import theExcludeList from './ExcludeList.js';
 import { theOsmTree, theGtfsTree } from './DataTree.js';
+import GtfsDataLoader from './GtfsDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -101,7 +102,7 @@ class AppLoader {
 					gtfsRouteMaster.osmRouteMaster = true;
 
 					// Start the comparison
-					new OsmGtfsComparator ( ).compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster );
+					new RouteMasterComparator ( ).compare ( osmRouteMaster, gtfsRouteMaster );
 				}
 				else {
 
@@ -172,7 +173,8 @@ class AppLoader {
 		new OsmTreeBuilder ( ).buildTree ( osmDataLoader );
 
 		// loading gtfs data
-		await new GtfsTreeBuilder ( ).loadData ( osmNetwork );
+		await new GtfsDataLoader ( ).fetchData ( osmNetwork );
+		new GtfsTreeBuilder ( ).buildTree ( );
 
 		// compare existing osm route master with gtfs route
 		this.#compareOsmGtfs ( );

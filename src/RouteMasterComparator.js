@@ -31,7 +31,7 @@ import theReport from './Report.js';
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class OsmGtfsComparator {
+class RouteMasterComparator {
 
 	/**
 	 * Coming soon
@@ -217,7 +217,7 @@ class OsmGtfsComparator {
 	 * @param {Object} gtfsRouteMaster Coming soon
 	 */
 
-	compareRoutesMaster ( osmRouteMaster, gtfsRouteMaster ) {
+	compare ( osmRouteMaster, gtfsRouteMaster ) {
 		this.#gtfsRouteMaster = gtfsRouteMaster;
 		this.#osmRouteMaster = osmRouteMaster;
 		theReport.add (
@@ -295,6 +295,6 @@ class OsmGtfsComparator {
 	}
 }
 
-export default OsmGtfsComparator;
+export default RouteMasterComparator;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

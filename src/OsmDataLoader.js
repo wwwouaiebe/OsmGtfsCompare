@@ -22,8 +22,6 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theOsmData from './OsmData.js';
-
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
  * This class call the overpass-api to obtains the data and load the data in the OsmData object
@@ -33,13 +31,64 @@ import theOsmData from './OsmData.js';
 class OsmDataLoader {
 
 	/**
+	 * A js map for the osm route_masters relations
+	 * @type {Map}
+	 */
+
+	routeMasters = new Map ( );
+
+	/**
+	 * A js map for the osm route relations
+	 * @type {Map}
+	 */
+
+	routes = new Map ( );
+
+	/**
+	 * A js map for the osm ways
+	 * @type {Map}
+	 */
+
+	ways = new Map ( );
+
+	/**
+	 * A js map for the platforms
+	 * @type {Map}
+	 */
+
+	platforms = new Map ( );
+
+	/**
+	 * A js map for the osm nodes
+	 * @type {Map}
+	 */
+
+	nodes = new Map ( );
+
+	/**
+	 * Cleaner for the maps
+	 */
+
+	clear ( ) {
+		this.nodes.clear ( );
+		this.platforms.clear ( );
+		this.routeMasters.clear ( );
+		this.routes.clear ( );
+		this.ways.clear ( );
+	}
+
+	/**
+	 * The constructor
+	 */
+
+	/**
 	* load the data in the OsmData object
 	* @param {Array} elements An array with the elements part of the overpass-api response
 	 */
 
 	#loadOsmData ( elements ) {
 
-		theOsmData.clear ( );
+		this.clear ( );
 
 		elements.forEach (
 			element => {
@@ -49,23 +98,23 @@ class OsmDataLoader {
 					case 'route_master' :
 					case 'proposed:route_master' :
 					case 'disused:route_master' :
-						theOsmData.routeMasters.set ( element.id, element );
+						this.routeMasters.set ( element.id, element );
 						break;
 					case 'route' :
 					case 'proposed:route' :
 					case 'disused:route' :
 						element.routeMasters = [];
-						theOsmData.routes.set ( element.id, element );
+						this.routes.set ( element.id, element );
 						break;
 					default :
 						break;
 					}
 					break;
 				case 'way' :
-					theOsmData.ways.set ( element.id, element );
+					this.ways.set ( element.id, element );
 					break;
 				case 'node' :
-					theOsmData.nodes.set ( element.id, element );
+					this.nodes.set ( element.id, element );
 					break;
 				default :
 					break;
@@ -79,11 +128,11 @@ class OsmDataLoader {
 	 */
 
 	#addRouteMastersToRoutes ( ) {
-		theOsmData.routeMasters.forEach (
+		this.routeMasters.forEach (
 			routeMaster => {
 				routeMaster.members.forEach (
 					member => {
-						let route = theOsmData.routes.get ( member.ref );
+						let route = this.routes.get ( member.ref );
 						if ( route ) {
 							route.routeMasters.push ( routeMaster.id );
 						}

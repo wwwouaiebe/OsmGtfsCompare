@@ -23,7 +23,7 @@ Changes:
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import GpxFactory from './GpxFactory.js';
-import theGtfsDataLoader from './GtfsDataLoader.js';
+import { theGtfsTree } from './DataTree.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -32,6 +32,28 @@ import theGtfsDataLoader from './GtfsDataLoader.js';
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class GpxButtonClickEL {
+
+	/**
+	 * Coming soon
+	 * @param {String} shapePk Coming soon
+	 */
+
+	#getRouteFromShapePk ( shapePk ) {
+		let iShapePk = Number.parseInt ( shapePk );
+		let returnRoute = null;
+		theGtfsTree.routesMaster.forEach (
+			routeMaster => {
+				routeMaster.routes.forEach (
+					route => {
+						if ( route.shapePk === iShapePk ) {
+							returnRoute = route;
+						}
+					}
+				);
+			}
+		);
+		return returnRoute;
+	}
 
 	/**
 	 * The constructor
@@ -48,7 +70,7 @@ class GpxButtonClickEL {
 
 	handleEvent ( clickEvent ) {
 		clickEvent.target.classList.add ( 'visited' );
-		new GpxFactory ( ).buildGpx ( theGtfsDataLoader.getRouteFromShapePk ( clickEvent.target.dataset.shapePk ) );
+		new GpxFactory ( ).buildGpx ( this.#getRouteFromShapePk ( clickEvent.target.dataset.shapePk ) );
 	}
 }
 

@@ -23,6 +23,7 @@ Changes:
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theExcludeList from './ExcludeList.js';
+import { theGtfsTree } from './DataTree.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -30,16 +31,7 @@ import theExcludeList from './ExcludeList.js';
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class GtfsDataLoader {
-
-	/**
-	 * Coming soon
-	 * @type {Object}
-	 */
-
-	#gtfsTree = {
-		routesMaster : []
-	};
+class GtfsTreeBuilder {
 
 	#convertDate ( sourceDate ) {
 		let tmpDate =
@@ -50,16 +42,10 @@ class GtfsDataLoader {
 		return tmpDate [ 2 ] + '-' + tmpDate [ 1 ] + '-' + tmpDate [ 0 ];
 	}
 
-	/**
-	 * Coming soon
-	 * @param {Object} jsonResponse Coming soon
-	 */
-
-	#buildGtfsTree ( jsonResponse ) {
-
+	#addStartDate ( startDate ) {
 		document.getElementById ( 'GTFSValidity' ).textContent =
 			'GTFS files valid from ' +
-			new Date ( jsonResponse.startDate )
+			new Date ( startDate )
 				.toLocaleDateString (
 					'en-BE',
 					{
@@ -69,10 +55,16 @@ class GtfsDataLoader {
 						day : 'numeric'
 					}
 				);
+	}
 
-		this.#gtfsTree = jsonResponse;
+	/**
+	 * Coming soon
+	 * @param {Object} jsonResponse Coming soon
+	 */
 
-		this.#gtfsTree.routesMaster.forEach (
+	#buildTree ( ) {
+
+		theGtfsTree.routesMaster.forEach (
 			routeMaster => {
 				routeMaster.routes.forEach (
 					route => {
@@ -112,13 +104,6 @@ class GtfsDataLoader {
 
 	/**
 	 * Coming soon
-	 * @type {Object}
-	 */
-
-	get gtfsTree ( ) { return this.#gtfsTree; }
-
-	/**
-	 * Coming soon
 	 * @param {String} network Coming soon
 	 */
 
@@ -137,7 +122,9 @@ class GtfsDataLoader {
 			)
 			.then (
 				jsonResponse => {
-					this.#buildGtfsTree ( jsonResponse );
+					this.#addStartDate ( jsonResponse.startDate );
+					theGtfsTree.routesMaster = jsonResponse.routesMaster;
+					this.#buildTree ( jsonResponse );
 					success = true;
 				}
 			)
@@ -147,28 +134,6 @@ class GtfsDataLoader {
 				}
 			);
 		return success;
-	}
-
-	/**
-	 * Coming soon
-	 * @param {String} shapePk Coming soon
-	 */
-
-	getRouteFromShapePk ( shapePk ) {
-		let iShapePk = Number.parseInt ( shapePk );
-		let returnRoute = null;
-		this.#gtfsTree.routesMaster.forEach (
-			routeMaster => {
-				routeMaster.routes.forEach (
-					route => {
-						if ( route.shapePk === iShapePk ) {
-							returnRoute = route;
-						}
-					}
-				);
-			}
-		);
-		return returnRoute;
 	}
 
 	/**
@@ -186,8 +151,6 @@ class GtfsDataLoader {
  * @type {Object}
  */
 
-const theGtfsDataLoader = new GtfsDataLoader ( );
-
-export default theGtfsDataLoader;
+export default GtfsTreeBuilder;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

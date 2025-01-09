@@ -23,11 +23,12 @@ Changes:
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import OsmDataLoader from './OsmDataLoader.js';
-import theGtfsDataLoader from './GtfsDataLoader.js';
-import theOsmDataTreeBuilder from './OsmDataTreeBuilder.js';
+import GtfsTreeBuilder from './GtfsTreeBuilder.js';
+import OsmTreeBuilder from './OsmTreeBuilder.js';
 import OsmGtfsComparator from './OsmGtfsComparator.js';
 import theReport from './Report.js';
 import theExcludeList from './ExcludeList.js';
+import { theOsmTree, theGtfsTree } from './DataTree.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -52,14 +53,14 @@ class AppLoader {
 	#compareOsmGtfs ( ) {
 
 		// loop on osm route master
-		theOsmDataTreeBuilder.osmTree.routesMaster.forEach (
+		theOsmTree.routesMaster.forEach (
 			osmRouteMaster => {
 				let errorMessage = '';
 				let gtfsRouteMaster = null;
 
 				// Searching a GTFS route master with the same ref
 				let gtfsRoutesMaster =
-					theGtfsDataLoader.gtfsTree.routesMaster.filter ( element => osmRouteMaster.ref === element.ref );
+					theGtfsTree.routesMaster.filter ( element => osmRouteMaster.ref === element.ref );
 				switch ( gtfsRoutesMaster.length ) {
 				case 0 : // no gtfs route master found
 					errorMessage = 'The route ' + osmRouteMaster.ref + ' is not in the gtfs files.';
@@ -71,7 +72,7 @@ class AppLoader {
 
 					// more than one gtfs route master found
 					// Searching a GTFS route master with the same ref and same description
-					gtfsRoutesMaster = theGtfsDataLoader.gtfsTree.routesMaster.filter (
+					gtfsRoutesMaster = theGtfsTree.routesMaster.filter (
 						element => {
 							let returnValue =
 								osmRouteMaster.ref === element.ref
@@ -120,7 +121,7 @@ class AppLoader {
 		theReport.add ( 'h1', 'Gtfs relations not found in the osm data' );
 
 		// loop on the GTFS routes master
-		theGtfsDataLoader.gtfsTree.routesMaster.forEach (
+		theGtfsTree.routesMaster.forEach (
 			routeMaster => {
 				const excludedString = theExcludeList.getExcludeReason ( routeMaster.ref );
 				if ( excludedString ) {
@@ -160,17 +161,18 @@ class AppLoader {
 		await theExcludeList.loadData ( osmNetwork );
 
 		// loading osm data
-		await new OsmDataLoader ( ).fetchData (
+		let osmDataLoader = new OsmDataLoader ( );
+		await osmDataLoader.fetchData (
 			{
 				osmNetwork : osmNetwork,
 				osmVehicle : osmVehicle,
 				osmRef : osmRef
 			}
 		);
-		theOsmDataTreeBuilder.buildTree ( );
+		new OsmTreeBuilder ( ).buildTree ( osmDataLoader );
 
 		// loading gtfs data
-		await theGtfsDataLoader.loadData ( osmNetwork );
+		await new GtfsTreeBuilder ( ).loadData ( osmNetwork );
 
 		// compare existing osm route master with gtfs route
 		this.#compareOsmGtfs ( );

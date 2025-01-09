@@ -22,9 +22,9 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theOsmData from './OsmData.js';
 import theReport from './Report.js';
 import theExcludeList from './ExcludeList.js';
+import { theOsmTree } from './DataTree.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -32,25 +32,9 @@ import theExcludeList from './ExcludeList.js';
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class OsmDataTreeBuilder {
+class OsmTreeBuilder {
 
 	#network;
-
-	/**
-	 * Coming soon
-	 * @type {Object}
-	 */
-
-	#osmTree = {
-		routesMaster : []
-	};
-
-	/**
-	 * Coming soon
-	 * @type {Object}
-	 */
-
-	get osmTree ( ) { return this.#osmTree; };
 
 	#getOsmPlatformRef ( osmPlatform ) {
 
@@ -96,13 +80,12 @@ class OsmDataTreeBuilder {
 	 * Coming soon
 	 */
 
-	buildTree ( ) {
+	buildTree ( osmDataLoader ) {
 		this.#network = document.getElementById ( 'osmNetworkSelect' ).value;
-		this.#osmTree = {
-			routesMaster : []
-		};
 
-		theOsmData.routeMasters.forEach (
+		theOsmTree.clear ( );
+
+		osmDataLoader.routeMasters.forEach (
 			osmRouteMaster => {
 				let osmTreeRouteMaster = {
 					ref : osmRouteMaster.tags.ref,
@@ -113,7 +96,7 @@ class OsmDataTreeBuilder {
 				};
  				osmRouteMaster.members.forEach (
 					osmRouteMasterMember => {
-						let osmRoute = theOsmData.routes.get ( osmRouteMasterMember.ref );
+						let osmRoute = osmDataLoader.routes.get ( osmRouteMasterMember.ref );
 						let osmTreeRoute = {
 							name : osmRoute.tags.name +
 								( osmRoute.tags.via ? ' via ' + osmRoute.tags.via.replaceAll ( ';', ', ' ) : '' ),
@@ -134,9 +117,9 @@ class OsmDataTreeBuilder {
 									)
 								) {
 									let osmPlatform =
-                                        theOsmData.nodes.get ( osmRouteMember.ref )
+										osmDataLoader.nodes.get ( osmRouteMember.ref )
                                         ||
-                                        theOsmData.ways.get ( osmRouteMember.ref );
+                                        osmDataLoader.ways.get ( osmRouteMember.ref );
 
 									let platformRef = this.#getOsmPlatformRef ( osmPlatform );
 									osmTreeRoute.platforms += platformRef + ';';
@@ -158,10 +141,10 @@ class OsmDataTreeBuilder {
 				osmTreeRouteMaster.routes.sort (
 					( first, second ) => first.name.localeCompare ( second.name )
 				);
-				this.#osmTree.routesMaster.push ( osmTreeRouteMaster );
+				theOsmTree.routesMaster.push ( osmTreeRouteMaster );
 			}
 		);
-		this.#osmTree.routesMaster.sort (
+		theOsmTree.routesMaster.sort (
 			( first, second ) => {
 
 				// split the name into the numeric part and the alphanumeric part:
@@ -192,13 +175,6 @@ class OsmDataTreeBuilder {
 	}
 }
 
-/**
- * Coming soon
- * @type {Object}
- */
-
-const theOsmDataTreeBuilder = new OsmDataTreeBuilder ( );
-
-export default theOsmDataTreeBuilder;
+export default OsmTreeBuilder;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

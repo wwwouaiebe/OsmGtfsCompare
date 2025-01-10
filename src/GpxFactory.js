@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -38,13 +39,6 @@ class GpxFactory {
 	 */
 
 	#route;
-
-	/**
-	 * Coming soon
-	 * @type {String}
-	 */
-
-	#routeMasterName;
 
 	/**
 	 * Coming soon...
@@ -222,13 +216,12 @@ class GpxFactory {
 
 	/**
 	 * Coming soon
-	 * @param {Array} routeInfo Coming soon
+	 * @param {Array} route Coming soon
 	 */
 
 	buildGpx ( route ) {
 		this.#route = route;
 		this.#addHeader ( );
-
 		this.#addWayPoints ( );
 		this.#addTrack ( );
 		this.#addFooter ( );

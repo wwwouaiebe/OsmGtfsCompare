@@ -75,10 +75,14 @@ class AppLoader {
 				osmRef : osmRef
 			}
 		);
+
+		// building the osmtree
 		new OsmTreeBuilder ( ).buildTree ( osmDataLoader );
 
 		// loading gtfs data
 		await new GtfsDataLoader ( ).fetchData ( osmNetwork );
+
+		// building the gtfs tree
 		new GtfsTreeBuilder ( ).buildTree ( );
 
 		// compare existing osm route master with gtfs route

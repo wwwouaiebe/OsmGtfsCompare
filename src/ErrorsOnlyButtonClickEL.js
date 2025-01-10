@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -37,11 +38,31 @@ class ErrorsOnlyButtonClickEL {
 
 	#buttonValue = 'Errors only';
 
+	/**
+	 * Coming soon
+	 * @type {HTMLElement}
+	 */
+
 	#currentH1 = null;
+
+	/**
+	 * Coming soon
+	 * @type {HTMLElement}
+	 */
 
 	#currentH2 = null;
 
+	/**
+	 * Coming soon
+	 * @type {HTMLElement}
+	 */
+
 	#currentP = [];
+
+	/**
+	 * Coming soon
+	 * @type {HTMLElement}
+	 */
 
 	#errorFound = false;
 
@@ -52,24 +73,6 @@ class ErrorsOnlyButtonClickEL {
 	constructor ( ) {
 		Object.freeze ( this );
 	}
-
-	/*
-	#showOnError ( ) {
-		if ( this.#errorFound ) {
-			if ( this.#currentH1 ) {
-				this.#currentH1.classList.add ( 'showOnError' );
-			}
-
-			if ( this.#currentH2 ) {
-				this.#currentH2.classList.add ( 'showOnError' );
-			}
-
-			this.#currentP.forEach (
-				node => { node.classList.add ( 'showOnError' ); }
-			);
-		}
-	}
-	*/
 
 	/**
 	 * event handler

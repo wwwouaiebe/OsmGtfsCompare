@@ -40,9 +40,31 @@ class Report {
 
 	#report;
 
+	/**
+	 * Coming soon
+	 * @type {Object}
+	 */
+
 	#currentH1 = null;
+
+	/**
+	 * Coming soon
+	 * @type {Object}
+	 */
+
 	#currentH2 = null;
+
+	/**
+	 * Coming soon
+	 * @type {Object}
+	 */
+
 	#currentH3 = null;
+
+	/**
+	 * Coming soon
+	 * @type {Object}
+	 */
 
 	#stats = {
 		doneNotOk : 0,
@@ -100,13 +122,26 @@ class Report {
 		}
 	}
 
+	/**
+	 * Coming soon
+	 */
+
 	addDoneOk ( ) {
 		this.#stats.doneOk ++;
 	}
 
+	/**
+	 * Coming soon
+	 */
+
 	addDoneNotOk ( ) {
 		this.#stats.doneNotOk ++;
 	}
+
+	/**
+	 * Coming soon
+	 * @param {Number} quantity
+	 */
 
 	addToDo ( quantity ) {
 		this.#stats.toDo += quantity ? quantity : 1;

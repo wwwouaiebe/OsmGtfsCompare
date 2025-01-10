@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -32,6 +33,12 @@ import { theGtfsTree } from './DataTree.js';
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class GtfsTreeBuilder {
+
+	/**
+	 * Coming soon
+	 * @param {String} sourceDate Coming soon
+	 * @returns {String} Coming soon
+	 */
 
 	#convertDate ( sourceDate ) {
 		let tmpDate =
@@ -80,6 +87,8 @@ class GtfsTreeBuilder {
 								' ) - ' + route.shapePk +
 								' - valid from ' + this.#convertDate ( route.startDate ) +
 								' - valid to ' + this.#convertDate ( route.endDate );
+						route.osmRoute = false;
+						Object.seal ( route );
 					}
 				);
 			}

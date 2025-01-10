@@ -199,6 +199,12 @@ class RouteMasterComparator {
 		}
 	}
 
+	/**
+	 * Coming soon
+	 * @param {String} osmId Coming soon
+	 * @returns {boolean} Coming soon
+	 */
+
 	#isOsmExcluded ( osmId ) {
 		const excludeData = theExcludeList.getOsmData ( osmId );
 		if ( excludeData?.note ) {

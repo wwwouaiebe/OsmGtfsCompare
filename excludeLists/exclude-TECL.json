@@ -388,12 +388,6 @@
         ],
         "translatedRefPlatforms" : [
             {
-                "from" : "LTNcarr2;LTNcarr6",
-                "to" : "LTNcarr2",
-				"reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Tinlot Carrefour"
-            },
-            {
                 "from" : "LJAsuri4",
                 "to" : "LJAsuri1",
                 "reason" : "LJAsuri4 used in some osm relations (osm ok gtfs not ok)"
@@ -402,101 +396,6 @@
                 "from" : "LJAsuri3",
                 "to" : "LJAsuri2",
                 "reason" : "LJAsuri3 used in some osm relations (osm ok gtfs not ok)"
-            },
-            {
-                "from" : "LeUkehr2;LeUkehr4",
-                "to" : "LeUkehr4",
- 				"reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Eupen Kehrweg"
-                },
-            {
-                "from" : "LJAbell2;LJAbell4",
-                "to" : "LJAbell2",
- 				"reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Jalhay Belle Croix"
-                },
-            {
-                "from" : "LmIvale3;LmIvale2",
-                "to" : "LmIvale3",
- 				"reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Mirfeld Valender Weg"
-                },
-            {
-                "from" : "LmIvale4;LmIvale1",
-                "to" : "LmIvale4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Mirfeld Valender Weg"
-            },
-            {
-                "from" : "LREsoug2;LREsoug4",
-                "to" : "LREsoug2",
-                "reason" : "2 ref:TECL encoded in the platform"
-            },
-            {
-                "from" : "Lvearle1;Lvearle4",
-                "to" : "Lvearle1",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "Verviers" : "Place d'Arles"
-            },
-            {
-                "from" : "Lsmrcim2;Lsmcime2",
-                "to" : "Lsmrcim2",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Stembert Rue du Cimetière"
-            },
-            {
-                "from" : "LAMhopi2;LAMhopi3",
-                "to" : "LAMhopi3",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Amay rue de l'Hôpital"
-            },
-            {
-                "from" : "LHUhaum3;LHUgole1",
-                "to" : "LHUgole1",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Huy Les Golettes"
-            },
-            {
-                "from" : "Lghwall1;Lghwall*",
-                "to" : "Lghwall1",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Grâce-Hollogne Rue de Wallonie"
-            },
-            {
-                "from" : "Llochar3;Llochar5",
-                "to" : "Llochar3",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Loncin Rue A. Charlet"
-            },
-            {
-                "from" : "LBSchar1;LBSchar3",
-                "to" : "LBSchar3",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Bassenge La Charmille"
-            },
-            {
-                "from" : "LBSchar2;LBSchar4",
-                "to" : "LBSchar4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Bassenge La Charmille"
-            },
-            {
-                "from" : "Lvcfogu4;Lvcfogu6",
-                "to" : "Lvcfogu4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Vaux-sous-Chèvremont Place T. Foguenne"
-            },
-            {
-                "from" : "Lbomc--1;Lbomc--5",
-                "to" : "Lbomc--1",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Boncelles Maison Communale"
-            },
-            {
-                "from" : "Lbrrobe3;Lbrrobe4",
-                "to" : "Lbrrobe4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Bressoux Robermont Cimetière"
             }
         ]
     },
@@ -647,18 +546,6 @@
         ],
         "translatedRefPlatforms" : [
             {
-                "from" : "LTNcarr6",
-                "to" : "LTNcarr2",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Tinlot Carrefour"
-            },
-            {
-                "from" : "LeUkehr2",
-                "to" : "LeUkehr4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Eupen Kehrweg"
-            },
-            {
                 "from" : "LJAbell4",
                 "to" : "LJAbell2",
                 "reason" : "2 ref:TECL encoded in the platform. LJAbell4 don't exists in the real life",
@@ -671,94 +558,10 @@
                 "note" : "Aubel Place de la Victoire"
             },
             {
-                "from" : "LmIvale2",
-                "to" : "LmIvale3",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Mirfeld Valender Weg"
-            },
-            {
-                "from" : "LmIvale1",
-                "to" : "LmIvale4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Mirfeld Valender Weg"
-            },
-            {
                 "from" : "LFMvoge*",
                 "to" : "LFMvoge2",
                 "reason" : "LFMvoge2 used in some gtfs relations",
                 "note" : "Sint-Maertens-Voeren Vogelstang"
-            },
-            {
-                "from" : "LREsoug4",
-                "to" : "LREsoug2",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Remouchamps Pont de Sougné"
-            },
-            {
-                "from" : "Lvearle4",
-                "to" : "Lvearle1",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "Verviers" : "Place d'Arles"
-            },
-            {
-                "from" : "Lsmcime2",
-                "to" : "Lsmrcim2",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Stembert Rue du Cimetière"
-            },
-            {
-                "from" : "LAMhopi2",
-                "to" : "LAMhopi3",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Amay rue de l'Hôpital"
-            },
-            {
-                "from" : "LHUhaum3",
-                "to" : "LHUgole1",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Huy Les Golettes"
-            },
-             {
-                "from" : "Lghwall*",
-                "to" : "Lghwall1",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Grâce-Hollogne Rue de Wallonie"
-            },
-            {
-                "from" : "Llochar5",
-                "to" : "Llochar3",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Loncin Rue A. Charlet"
-            },
-            {
-                "from" : "LBSchar1",
-                "to" : "LBSchar3",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Bassenge La Charmille"
-            },
-            {
-                "from" : "LBSchar2",
-                "to" : "LBSchar4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Bassenge La Charmille"
-            },
-            {
-                "from" : "Lvcfogu6",
-                "to" : "Lvcfogu4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Vaux-sous-Chèvremont Place T. Foguenne"
-            },
-            {
-                "from" : "Lbrrobe3",
-                "to" : "Lbrrobe4",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Bressoux Robermont Cimetière"
-            },
-            {
-                "from" : "Lbomc--5",
-                "to" : "Lbomc--1",
-                "reason" : "2 ref:TECL encoded in the platform",
-                "note" : "Boncelles Maison Communale"
             },
             {
                 "from" : "Llgcoro3",

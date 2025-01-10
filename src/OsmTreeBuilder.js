@@ -33,6 +33,10 @@ import OsmTreeRouteMaster from './OsmTreeRouteMaster.js';
 
 class OsmTreeBuilder {
 
+	/**
+	 * Coming soon
+	 */
+
 	#sortRoutesMaster ( ) {
 		theOsmTree.routesMaster.sort (
 			( first, second ) => {
@@ -58,6 +62,7 @@ class OsmTreeBuilder {
 
 	/**
 	 * Coming soon
+	 * @param {OsmDataLoader} osmDataLoader Coming soon
 	 */
 
 	buildTree ( osmDataLoader ) {

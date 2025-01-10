@@ -19,8 +19,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
+
+import theExcludeList from './ExcludeList.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -52,13 +55,6 @@ class OsmDataLoader {
 	ways = new Map ( );
 
 	/**
-	 * A js map for the platforms
-	 * @type {Map}
-	 */
-
-	platforms = new Map ( );
-
-	/**
 	 * A js map for the osm nodes
 	 * @type {Map}
 	 */
@@ -71,7 +67,6 @@ class OsmDataLoader {
 
 	clear ( ) {
 		this.nodes.clear ( );
-		this.platforms.clear ( );
 		this.routeMasters.clear ( );
 		this.routes.clear ( );
 		this.ways.clear ( );
@@ -120,6 +115,19 @@ class OsmDataLoader {
 					break;
 				}
 			}
+		);
+	}
+
+	/**
+	 * Coming soon
+	 */
+
+	#excludePlatforms ( ) {
+		this.nodes.forEach (
+			node => { theExcludeList.excludePlatform ( node ); }
+		);
+		this.ways.forEach (
+			way => { theExcludeList.excludePlatform ( way ); }
 		);
 	}
 
@@ -174,6 +182,7 @@ class OsmDataLoader {
 				jsonResponse => {
 
 					this.#loadOsmData ( jsonResponse.elements );
+					this.#excludePlatforms ( );
 					this.#addRouteMastersToRoutes ( );
 
 					success = true;

@@ -46,21 +46,21 @@ class Report {
 	 * @type {Object}
 	 */
 
-	#currentH1 = null;
+	#currentH1Div = null;
 
 	/**
 	 * Coming soon
 	 * @type {Object}
 	 */
 
-	#currentH2 = null;
+	#currentH2Div = null;
 
 	/**
 	 * Coming soon
 	 * @type {Object}
 	 */
 
-	#currentH3 = null;
+	#currentH3Div = null;
 
 	/**
 	 * Coming soon
@@ -163,16 +163,33 @@ class Report {
 
 		switch ( htmlTag ) {
 		case 'h1' :
-			this.#currentH1 = htmlElement;
-			this.#currentH2 = null;
-			this.#currentH3 = null;
+			this.#currentH1Div = document.createElement ( 'div' );
+			this.#report.appendChild ( this.#currentH1Div );
+			this.#currentH1Div.appendChild ( htmlElement );
+			this.#currentH2Div = null;
+			this.#currentH3Div = null;
 			break;
 		case 'h2' :
-			this.#currentH2 = htmlElement;
-			this.#currentH3 = null;
+			this.#currentH2Div = document.createElement ( 'div' );
+			this.#currentH1Div.appendChild ( this.#currentH2Div );
+			this.#currentH2Div.appendChild ( htmlElement );
+			this.#currentH3Div = null;
 			break;
 		case 'h3' :
-			this.#currentH3 = htmlElement;
+			this.#currentH3Div = document.createElement ( 'div' );
+			this.#currentH2Div.appendChild ( this.#currentH3Div );
+			this.#currentH3Div.appendChild ( htmlElement );
+			break;
+		case 'p' :
+			if ( this.#currentH3Div ) {
+				this.#currentH3Div.appendChild ( htmlElement );
+			}
+			else if ( this.#currentH2Div ) {
+				this.#currentH2Div.appendChild ( htmlElement );
+			}
+			else if ( this.#currentH1Div ) {
+				this.#currentH1Div.appendChild ( htmlElement );
+			}
 			break;
 		default :
 			break;
@@ -193,25 +210,22 @@ class Report {
 			||
 			-1 !== text.indexOf ( '🟣' )
 		) {
-			htmlElement.classList.add ( 'haveErrors' );
-			if ( this.#currentH3 ) {
-				this.#currentH3.classList.add ( 'haveErrors' );
-				this.#currentH3.classList.remove ( 'noErrors' );
+			if ( this.#currentH3Div ) {
+				this.#currentH3Div.classList.add ( 'haveErrors' );
 			}
-			if ( this.#currentH2 ) {
-				this.#currentH2.classList.add ( 'haveErrors' );
-				this.#currentH2.classList.remove ( 'noErrors' );
+			if ( this.#currentH2Div ) {
+				this.#currentH2Div.classList.add ( 'haveErrors' );
 			}
-			if ( this.#currentH1 ) {
-				this.#currentH1.classList.add ( 'haveErrors' );
-				this.#currentH1.classList.remove ( 'noErrors' );
+			if ( this.#currentH1Div ) {
+				this.#currentH1Div.classList.add ( 'haveErrors' );
 			}
 		}
+
+		/*
 		else {
 			htmlElement.classList.add ( 'noErrors' );
 		}
-
-		this.#report.appendChild ( htmlElement );
+		*/
 
 	}
 

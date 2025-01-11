@@ -32,41 +32,6 @@ Doc reviewed 20250110
 class ErrorsOnlyButtonClickEL {
 
 	/**
-	 * The initial value for the error button
-	 * @type {String}
-	 */
-
-	#buttonValue = 'Errors only';
-
-	/**
-	 * Coming soon
-	 * @type {HTMLElement}
-	 */
-
-	#currentH1 = null;
-
-	/**
-	 * Coming soon
-	 * @type {HTMLElement}
-	 */
-
-	#currentH2 = null;
-
-	/**
-	 * Coming soon
-	 * @type {HTMLElement}
-	 */
-
-	#currentP = [];
-
-	/**
-	 * Coming soon
-	 * @type {HTMLElement}
-	 */
-
-	#errorFound = false;
-
-	/**
 	 * The contructor
 	 */
 

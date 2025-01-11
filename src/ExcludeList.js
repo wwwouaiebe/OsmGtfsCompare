@@ -199,7 +199,7 @@ class ExcludeList {
 	getExcludeReason ( gtfsRef ) {
 		const excludeData = this.#excludeListGtfs.get ( gtfsRef );
 		if ( excludeData?.reason ) {
-			return 'This relation is excluded ( reason : ' + excludeData.reason + ' )';
+			return 'This relation is excluded from the comparison ( reason : ' + excludeData.reason + ' )';
 		}
 		return null;
 	}

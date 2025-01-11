@@ -125,12 +125,15 @@ class OsmDataLoader {
 
 	#excludePlatforms ( ) {
 		let network = document.getElementById ( 'osmNetworkSelect' ).value;
-
-		theReport.add ( 'h1', 'Platforms with more than 1 ref:' + network );
+		let addHeading = true;
 		this.nodes.forEach (
 			node => {
 				let errorMessage = theExcludeList.excludePlatform ( node );
 				if ( '' !== errorMessage ) {
+					if ( addHeading ) {
+						theReport.add ( 'h1', 'Platforms with more than 1 ref:' + network );
+						addHeading = false;
+					}
 					theReport.add ( 'p', errorMessage, node );
 				}
 			}
@@ -139,6 +142,10 @@ class OsmDataLoader {
 			way => {
 				let errorMessage = theExcludeList.excludePlatform ( way );
 				if ( '' !== errorMessage ) {
+					if ( addHeading ) {
+						theReport.add ( 'h1', 'Platforms with more than 1 ref:' + network );
+						addHeading = false;
+					}
 					theReport.add ( 'p', errorMessage, way );
 				}
 			}

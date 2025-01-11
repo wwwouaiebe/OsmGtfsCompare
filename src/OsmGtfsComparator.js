@@ -55,15 +55,20 @@ class OsmGtfsComparator {
 		// loop on the GTFS routes master
 		theGtfsTree.routesMaster.forEach (
 			routeMaster => {
+				let vehicle = document.getElementById ( 'osmVehicleSelect' ).value;
+				if ( vehicle !== [ 'tram', 'subway', 'train', 'bus', 'ferry,' ] [ routeMaster.type ] ) {
+					return;
+				}
 				const excludedString = theExcludeList.getExcludeReason ( routeMaster.ref );
 				if ( excludedString ) {
+					theReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
 					theReport.add ( 'p', excludedString );
 				}
 				else if ( ! routeMaster.osmRouteMaster ) {
-					theReport.add ( 'p', 'gtfs route ref : ' + routeMaster.ref );
+					theReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
 					routeMaster.routes.forEach (
 						route => {
-							theReport.add ( 'p', route.name, null, route.shapePk );
+							theReport.add ( 'p', route.name + ' 🔴', null, route.shapePk );
 						}
 					);
 					theReport.addToDo ( routeMaster.routes.length );

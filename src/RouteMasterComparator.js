@@ -212,7 +212,7 @@ class RouteMasterComparator {
 			theReport.add ( 'p', excludeData.note );
 		}
 		if ( excludeData?.reason ) {
-			theReport.add ( 'p', 'This relation is excluded ( reason : ' + excludeData.reason + ' )' );
+			theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
 			return true;
 		}
 		return false;
@@ -261,8 +261,7 @@ class RouteMasterComparator {
 				}
 			}
 		);
-		
-		theReport.add ( 'h2', 'Missing osm relations' );
+		let addHeading = true;
 		this.#gtfsRouteMaster.routes.sort (
 			( first, second ) => first.name.localeCompare ( second.name )
 		);
@@ -270,6 +269,10 @@ class RouteMasterComparator {
 			gtfsRoute => {
 				let isIncluded = false;
 				if ( ! gtfsRoute.osmRoute ) {
+					if ( addHeading ) {
+						theReport.add ( 'h2', 'Missing osm relations' );
+						addHeading = false;
+					}
 					this.#osmRouteMaster.routes.forEach (
 						osmRoute => {
 							if ( osmRoute.platforms.match ( gtfsRoute.platformsString ) ) {

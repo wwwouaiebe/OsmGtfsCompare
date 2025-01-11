@@ -357,10 +357,6 @@
                 "note" : "Gtfs files are not correct. The bus relations are starting from / going to Bierset Fret"
             },
             {
-                "id" : 14724435,
-                "note" : "6 GTFS relations are valid to november 30, 2024, 6 GTFS relations are valid from december 1, 2024. OSM aligned on new relations "
-            },
-            {
                 "id" : 18186978,
                 "note" : "This relation is duplicated in the GTFS files",
                 "name" : "Bus 93: Warzée Dépôt TEC → Tavier Tultay "
@@ -377,12 +373,12 @@
             },
             {
                 "id" : 18242620,
-                "note" : "Missing platforms LLrc1652 and LLrc1992  are on the GTFS files, on the schedule and on WalOnMap but not on the fiels",
+                "note" : "Missing platforms LLrc1652, LLrc1992 and LLrcour2 are on the GTFS files, on the schedule and on WalOnMap but not on the field",
                 "name" : "Bus 388: Spa Pompea → Theux Rue du Maka"
             },
             {
                 "id" : 18242732,
-                "note" : "Missing platforms LLrc1652 and LLrc1992  are on the GTFS files, on the schedule and on WalOnMap but not on the fiels",
+                "note" : "Missing platforms LLrc1652 and LLrc1992 and LLrcour2 are on the GTFS files, on the schedule and on WalOnMap but not on the field",
                 "name" : "Bus 388: Spa Pompea → Theux Saint-Roch"
             }
         ],

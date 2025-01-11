@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -229,7 +230,7 @@ class RouteMasterComparator {
 		theReport.add (
 			'h1',
 			this.#osmRouteMaster.name + ': ' + ( this.#osmRouteMaster.description ?? '' ),
-			this.#osmRouteMaster.id
+			this.#osmRouteMaster
 		);
 
 		if (
@@ -254,12 +255,13 @@ class RouteMasterComparator {
 
 		this.#osmRouteMaster.routes.forEach (
 			osmRoute => {
-				theReport.add ( 'h2', osmRoute.name, osmRoute.id );
+				theReport.add ( 'h2', osmRoute.name, osmRoute );
 				if ( ! this.#isOsmExcluded ( osmRoute.id ) ) {
 					this.#comparePlatformsHight ( osmRoute );
 				}
 			}
 		);
+		
 		theReport.add ( 'h2', 'Missing osm relations' );
 		this.#gtfsRouteMaster.routes.sort (
 			( first, second ) => first.name.localeCompare ( second.name )
@@ -275,7 +277,7 @@ class RouteMasterComparator {
 									theReport.add ( 'p', gtfsRoute.name + ' 🟣', null, gtfsRoute.shapePk );
 									isIncluded = true;
 								}
-								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute.id, null );
+								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute, null );
 								theReport.addToDo ( );
 							}
 						}

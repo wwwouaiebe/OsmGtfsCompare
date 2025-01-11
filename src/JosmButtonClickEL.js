@@ -48,6 +48,7 @@ class JosmButtonClickEL {
 
 		// searching the osm id involved in the data of the button
 		let osmObjId = event.target.dataset.osmObjId;
+		let osmObjType = event.target.dataset.osmObjType;
 
 		// changing the button color
 		event.target.classList.add ( 'josmButtonVisited' );
@@ -60,10 +61,24 @@ class JosmButtonClickEL {
 				'false';
 
 		// calling josm
-		await fetch (
-			'http://localhost:8111/load_object?new_layer=' + newJosmLayer +
-			'&relation_members=true&objects=r' + osmObjId
-		)
+
+		let uri = 'http://localhost:8111/load_object?new_layer=' + newJosmLayer;
+
+		switch ( osmObjType ) {
+		case 'relation' :
+			uri += '&relation_members=true&objects=r' + osmObjId;
+			break;
+		case 'node' :
+			uri += '&objects=n' + osmObjId;
+			break;
+		case 'way' :
+			uri += '&objects=w' + osmObjId;
+			break;
+		default :
+			break;
+		}
+
+		await fetch ( uri )
 			.then (
 				response => {
 					console.info ( String ( response.status ) + ' ' + response.statusText );

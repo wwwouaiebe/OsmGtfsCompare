@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -151,12 +152,12 @@ class Report {
 	 * Coming soon
 	 * @param {String} htmlTag Coming soon
 	 * @param {String} text Coming soon
-	 * @param {Number} osmId Coming soon
+	 * @param {Object} osmObject Coming soon
 	 * @param {Number} shapePk Coming soon
 	 */
 
 	// eslint-disable-next-line max-params
-	add ( htmlTag, text, osmId, shapePk ) {
+	add ( htmlTag, text, osmObject, shapePk ) {
 
 		let htmlElement = document.createElement ( htmlTag );
 
@@ -180,8 +181,8 @@ class Report {
 		htmlElement.innerHTML =
 			this.#getGpxDownload ( shapePk ) +
 			text +
-			this.#getOsmLink ( osmId ) +
-			this.#getJosmEdit ( osmId );
+			this.#getOsmLink ( osmObject ) +
+			this.#getJosmEdit ( osmObject );
 
 		if (
 			-1 !== text.indexOf ( '🔵' )
@@ -233,37 +234,33 @@ class Report {
 
 	/**
 	 * Coming soon
-	 * @param {Number} osmId Coming soon
+	 * @param {Object} osmObject Coming soon
 	 */
 
-	#getJosmEdit ( osmId ) {
-		let josmEdit =
-            osmId
-            	?
-            	'<button title="Edit the relation with JOSM\nJOSM must be already opened!" ' +
-                'class="josmButton" data-osm-obj-id="' +
-                osmId + '" >JOSM </button>'
-            	:
-            	'';
+	#getJosmEdit ( osmObject ) {
+		if ( ! osmObject?.id || ! osmObject?.type ) {
+			return '';
+		}
 
-		return josmEdit;
+		return '<button title="Edit the relation with JOSM\nJOSM must be already opened!" ' +
+        	'class="josmButton" data-osm-obj-id="' +
+            osmObject.id + '" data-osm-obj-type="' + osmObject.type + '" >JOSM </button>';
 	}
 
 	/**
 	 * Coming soon
-	 * @param {Number} osmId Coming soon
+	 * @param {Object} osmObject Coming soon
 	 */
 
-	#getOsmLink ( osmId ) {
-		let osmLink =
-            osmId
-            	?
-            	'<a target="_blank" href="https://www.openstreetmap.org/' +
-                'relation/' + osmId + '"> relation : ' + osmId + '</a>'
-            	:
-            	'';
-
-		return osmLink;
+	#getOsmLink ( osmObject ) {
+		if ( ! osmObject?.id || ! osmObject?.type ) {
+			return '';
+		}
+		let osmId = osmObject.id;
+		let osmType = osmObject.type;
+		return '<a target="_blank" href="https://www.openstreetmap.org/' +
+				osmType +
+                '/' + osmId + '"> ' + osmType + ' : ' + osmId + '</a>';
 	}
 
 	/**

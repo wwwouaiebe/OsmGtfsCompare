@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -87,6 +88,13 @@ class OsmTreeRouteMaster {
 	 */
 
 	get id ( ) { return this.#id; }
+
+	/**
+	 * Coming soon
+	 * @type {String}
+	 */
+
+	get type ( ) { return 'relation'; }
 
 	/**
 	 * Coming soon

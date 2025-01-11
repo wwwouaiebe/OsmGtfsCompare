@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -100,6 +101,8 @@ class OsmGtfsComparator {
 					let returnValue =
                         osmRouteMaster.ref === element.ref
                         &&
+						osmRouteMaster.description
+						&&
                         0 === osmRouteMaster.description.toLowerCase ( ).localeCompare (
                         	element.description.toLowerCase ( )
                         );
@@ -112,8 +115,9 @@ class OsmGtfsComparator {
 				gtfsRouteMaster = gtfsRoutesMaster [ 0 ];
 			}
 			else {
-				errorMessage = 'No GTFS route master found. ' +
-                    'Be sure that the osm route master have the same description than the GTFS route master.';
+				errorMessage = osmRouteMaster.name + ( osmRouteMaster.description ?? '' ) +
+					' No GTFS route master found. ' +
+                    'Be sure that the osm route master have the same ref and description than the GTFS route master.';
 			}
 			break;
 		}

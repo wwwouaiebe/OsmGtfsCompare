@@ -24,6 +24,7 @@ Doc reviewed 20250110
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theExcludeList from './ExcludeList.js';
+import theReport from './Report.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -123,11 +124,24 @@ class OsmDataLoader {
 	 */
 
 	#excludePlatforms ( ) {
+		let network = document.getElementById ( 'osmNetworkSelect' ).value;
+
+		theReport.add ( 'h1', 'Platforms with more than 1 ref:' + network );
 		this.nodes.forEach (
-			node => { theExcludeList.excludePlatform ( node ); }
+			node => {
+				let errorMessage = theExcludeList.excludePlatform ( node );
+				if ( '' !== errorMessage ) {
+					theReport.add ( 'p', errorMessage, node );
+				}
+			}
 		);
 		this.ways.forEach (
-			way => { theExcludeList.excludePlatform ( way ); }
+			way => {
+				let errorMessage = theExcludeList.excludePlatform ( way );
+				if ( '' !== errorMessage ) {
+					theReport.add ( 'p', errorMessage, way );
+				}
+			}
 		);
 	}
 

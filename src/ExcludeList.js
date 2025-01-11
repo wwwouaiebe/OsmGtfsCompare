@@ -23,8 +23,6 @@ Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
-
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
  * Coming soon
@@ -212,6 +210,7 @@ class ExcludeList {
 	 */
 
 	excludePlatform ( osmPlatform ) {
+		let returnMessage = '';
 		if (
 			'bus_stop' === osmPlatform?.tags?.highway
 			||
@@ -220,17 +219,15 @@ class ExcludeList {
 			let osmRef = osmPlatform.tags [ 'ref:' + this.#network ];
 
 			if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
-				theReport.add (
-					'p',
+				returnMessage =
 					'A platform with more than 1 ref:' + this.#network + 'is found: ' +
-					osmRef + ' ' + osmPlatform.tags.name
-				);
-
+					osmRef + ' ' + osmPlatform.tags.name;
 				this.#translatedOsmRefPlatforms.set ( osmRef, osmRef.split ( ';' ) [ 0 ] );
 				this.#translatedGtfsRefPlatforms.set ( osmRef.split ( ';' ) [ 1 ], osmRef.split ( ';' ) [ 0 ] );
-
 			}
 		}
+
+		return returnMessage;
 	}
 
 	/**

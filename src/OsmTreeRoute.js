@@ -19,10 +19,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theExcludeList from './ExcludeList.js';
+import theOperator from './Operator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -100,6 +102,13 @@ class osmTreeRoute {
 	 * @type {String}
 	 */
 
+	get type ( ) { return 'relation'; }
+
+	/**
+	 * Coming soon
+	 * @type {String}
+	 */
+
 	get platforms ( ) { return this.#platforms; }
 
 	/**
@@ -138,7 +147,7 @@ class osmTreeRoute {
 		let platformRef = osmPlatform.tags [ 'ref:' + this.#network ];
 		if ( ! platformRef ) {
 			let refCounter = 0;
-			let networks = [ 'TECL', 'TECB', 'TECN', 'TECX', 'TECC', 'TECH' ];
+			let networks = theOperator.networksAsStringArray;
 			let tmpPlatformRef = null;
 			networks.forEach (
 
@@ -170,6 +179,8 @@ class osmTreeRoute {
 		this.#network = document.getElementById ( 'osmNetworkSelect' ).value;
 
 		this.#name = osmRoute.tags.name;
+
+		this.#id = osmRoute.id;
 
 		let haveFrom = false;
 		osmRoute.members.forEach (

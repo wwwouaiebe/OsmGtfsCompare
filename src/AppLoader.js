@@ -84,7 +84,7 @@ class AppLoader {
 		osmGtfsComparator.compare ( );
 
 		// Search Missing osm route master only if no osm ref given by user
-		if ( ! osmRef ) {
+		if ( ! theDocConfig.ref ) {
 			osmGtfsComparator.searchMissingOsmRouteMaster ( );
 		}
 

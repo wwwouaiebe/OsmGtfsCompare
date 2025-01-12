@@ -25,6 +25,7 @@ Doc reviewed 20250110
 
 import theDocConfig from './DocConfig.js';
 import theExcludeList from './ExcludeList.js';
+import theOperator from './Operator.js';
 import theReport from './Report.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
@@ -69,6 +70,20 @@ class OsmDataLoader {
 	 */
 
 	#platformsWithMoreThanOneRef = [];
+
+	/**
+	 * Coming soon
+	 * @type {Array}
+	 */
+
+	#platformsWithoutNetwork = [];
+
+	/**
+	 * Coming soon
+	 * @type {Array}
+	 */
+
+	#platformsWithoutOperator = [];
 
 	/**
 	 * Cleaner for the maps
@@ -138,6 +153,20 @@ class OsmDataLoader {
 				theExcludeList.excludePlatform ( osmRef );
 				this.#platformsWithMoreThanOneRef.push ( osmObject );
 			}
+			if (
+				! osmObject.tags.network
+				||
+				! osmObject.tags.network.includes ( theDocConfig.network )
+			) {
+				this.#platformsWithoutNetwork.push ( osmObject );
+			}
+			if (
+				! osmObject.tags.operator
+				||
+				! osmObject.tags.operator.includes ( theOperator.osmOperator )
+			) {
+				this.#platformsWithoutOperator.push ( osmObject );
+			}
 		}
 	}
 
@@ -160,7 +189,22 @@ class OsmDataLoader {
 					theReport.add ( 'p', osmObject.tags.name + osmObject.tags[ 'ref:' + theDocConfig.network ], osmObject );
 				}
 			);
-
+		}
+		if ( 0 !== this.#platformsWithoutNetwork.length ) {
+			theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
+			this.#platformsWithoutNetwork.forEach (
+				osmObject => {
+					theReport.add ( 'p', osmObject.tags.name + '- network : ' + ( osmObject.tags.network ?? '' ), osmObject );
+				}
+			);
+		}
+		if ( 0 !== this.#platformsWithoutOperator.length ) {
+			theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
+			this.#platformsWithoutOperator.forEach (
+				osmObject => {
+					theReport.add ( 'p', osmObject.tags.name + '- operator : ' + ( osmObject.tags.operator ?? '' ), osmObject );
+				}
+			);
 		}
 	}
 

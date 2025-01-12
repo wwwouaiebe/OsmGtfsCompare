@@ -30,6 +30,7 @@ import theReport from './Report.js';
 import theExcludeList from './ExcludeList.js';
 import GtfsDataLoader from './GtfsDataLoader.js';
 import OsmGtfsComparator from './OsmGtfsComparator.js';
+import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -57,31 +58,23 @@ class AppLoader {
 		document.getElementById ( 'errorsOnlyInput' ).value = 'Errors only';
 
 		// reading the form
-		let osmRef = document.getElementById ( 'osmRef' ).value;
-		let osmNetwork = document.getElementById ( 'osmNetworkSelect' ).value;
-		let osmVehicle = document.getElementById ( 'osmVehicleSelect' ).value;
+		theDocConfig.loadData ( );
 
 		// opening report
 		theReport.open ( );
 
 		// loading exclude list
-		await theExcludeList.loadData ( osmNetwork );
+		await theExcludeList.loadData ( );
 
 		// loading osm data
 		let osmDataLoader = new OsmDataLoader ( );
-		await osmDataLoader.fetchData (
-			{
-				osmNetwork : osmNetwork,
-				osmVehicle : osmVehicle,
-				osmRef : osmRef
-			}
-		);
+		await osmDataLoader.fetchData (	);
 
 		// building the osmtree
 		new OsmTreeBuilder ( ).buildTree ( osmDataLoader );
 
 		// loading gtfs data
-		await new GtfsDataLoader ( ).fetchData ( osmNetwork );
+		await new GtfsDataLoader ( ).fetchData ( );
 
 		// building the gtfs tree
 		new GtfsTreeBuilder ( ).buildTree ( );

@@ -24,6 +24,7 @@ Doc reviewed 20250110
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import { theGtfsTree } from './DataTree.js';
+import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -55,11 +56,10 @@ class GtfsDataLoader {
 
 	/**
 	 * Coming soon
-	 * @param {String} network Coming soon
 	 */
 
-	async fetchData ( network ) {
-		let fileName = '../json/gtfs-' + network + '.json';
+	async fetchData ( ) {
+		let fileName = '../json/gtfs-' + theDocConfig.network + '.json';
 
 		let success = false;
 		await fetch ( fileName )

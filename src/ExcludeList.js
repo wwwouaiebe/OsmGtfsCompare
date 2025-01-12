@@ -23,6 +23,8 @@ Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
+import theDocConfig from './DocConfig.js';
+
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
  * Coming soon
@@ -30,13 +32,6 @@ Doc reviewed 20250110
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class ExcludeList {
-
-	/**
-	 * Coming soom
-	 * @type {String}
-	 */
-
-	#network;
 
 	/**
 	 * Coming soom
@@ -80,8 +75,6 @@ class ExcludeList {
 
 	#buildLists ( jsonResponse ) {
 
-		this.#network = document.getElementById ( 'osmNetworkSelect' ).value;
-
 		if ( ! jsonResponse ) {
 			return;
 		}
@@ -124,11 +117,10 @@ class ExcludeList {
 
 	/**
 	 * Coming soom
-	 * @param {String} network Coming soon
 	 */
 
-	async loadData ( network ) {
-		let fileName = '../excludeLists/exclude-' + network + '.json';
+	async loadData ( ) {
+		let fileName = '../excludeLists/exclude-' + theDocConfig.network + '.json';
 		let success = false;
 		await fetch ( fileName )
 			.then (
@@ -206,28 +198,12 @@ class ExcludeList {
 
 	/**
 	 * Coming soom
-	 * @param {Object} osmPlatform Coming soon
+	 * @param {String} osmRef Coming soon
 	 */
 
-	excludePlatform ( osmPlatform ) {
-		let returnMessage = '';
-		if (
-			'bus_stop' === osmPlatform?.tags?.highway
-			||
-			'tram_stop' === osmPlatform?.tags?.railway
-		) {
-			let osmRef = osmPlatform.tags [ 'ref:' + this.#network ];
-
-			if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
-				returnMessage =
-					'A platform with more than 1 ref:' + this.#network + 'is found: ' +
-					osmRef + ' ' + osmPlatform.tags.name;
-				this.#translatedOsmRefPlatforms.set ( osmRef, osmRef.split ( ';' ) [ 0 ] );
-				this.#translatedGtfsRefPlatforms.set ( osmRef.split ( ';' ) [ 1 ], osmRef.split ( ';' ) [ 0 ] );
-			}
-		}
-
-		return returnMessage;
+	excludePlatform ( osmRef ) {
+		this.#translatedOsmRefPlatforms.set ( osmRef, osmRef.split ( ';' ) [ 0 ] );
+		this.#translatedGtfsRefPlatforms.set ( osmRef.split ( ';' ) [ 1 ], osmRef.split ( ';' ) [ 0 ] );
 	}
 
 	/**

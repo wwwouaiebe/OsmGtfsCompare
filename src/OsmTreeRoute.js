@@ -23,6 +23,7 @@ Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
+import theDocConfig from './DocConfig.js';
 import theExcludeList from './ExcludeList.js';
 import theOperator from './Operator.js';
 
@@ -33,13 +34,6 @@ import theOperator from './Operator.js';
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class osmTreeRoute {
-
-	/**
-	 * Coming soon
-	 * @type {String}
-	 */
-
-	#network = '';
 
 	/**
 	 * Coming soon
@@ -139,12 +133,12 @@ class osmTreeRoute {
 
 	#getOsmPlatformRef ( osmPlatform ) {
 
-		let osmRef = osmPlatform.tags [ 'ref:' + this.#network ];
+		let osmRef = osmPlatform.tags [ 'ref:' + theDocConfig.network ];
 
-		osmPlatform.tags [ 'ref:' + this.#network ] =
+		osmPlatform.tags [ 'ref:' + theDocConfig.network ] =
             theExcludeList.translateOsmRefPlatform ( osmRef );
 
-		let platformRef = osmPlatform.tags [ 'ref:' + this.#network ];
+		let platformRef = osmPlatform.tags [ 'ref:' + theDocConfig.network ];
 		if ( ! platformRef ) {
 			let refCounter = 0;
 			let networks = theOperator.networksAsStringArray;
@@ -175,8 +169,6 @@ class osmTreeRoute {
 	 */
 
 	constructor ( osmRoute, osmDataLoader ) {
-
-		this.#network = document.getElementById ( 'osmNetworkSelect' ).value;
 
 		this.#name = osmRoute.tags.name;
 

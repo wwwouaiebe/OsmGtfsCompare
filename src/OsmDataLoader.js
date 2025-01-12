@@ -23,6 +23,7 @@ Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
+import theDocConfig from './DocConfig.js';
 import theExcludeList from './ExcludeList.js';
 import theReport from './Report.js';
 
@@ -63,6 +64,13 @@ class OsmDataLoader {
 	nodes = new Map ( );
 
 	/**
+	 * Coming soon
+	 * @type {Array}
+	 */
+
+	#platformsWithMoreThanOneRef = [];
+
+	/**
 	 * Cleaner for the maps
 	 */
 
@@ -74,16 +82,11 @@ class OsmDataLoader {
 	}
 
 	/**
-	 * The constructor
-	 */
-
-	/**
 	* load the data in the OsmData object
 	* @param {Array} elements An array with the elements part of the overpass-api response
 	 */
 
 	#loadOsmData ( elements ) {
-
 		this.clear ( );
 
 		elements.forEach (
@@ -121,35 +124,44 @@ class OsmDataLoader {
 
 	/**
 	 * Coming soon
+	 * @param {Object} osmObject Coming soon
+	 */
+
+	#controlPlatform ( osmObject ) {
+		if (
+			'bus_stop' === osmObject?.tags?.highway
+			||
+			'tram_stop' === osmObject?.tags?.railway
+		) {
+			let osmRef = osmObject.tags [ 'ref:' + theDocConfig.network ];
+			if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
+				theExcludeList.excludePlatform ( osmRef );
+				this.#platformsWithMoreThanOneRef.push ( osmObject );
+			}
+		}
+	}
+
+	/**
+	 * Coming soon
 	 */
 
 	#excludePlatforms ( ) {
-		let network = document.getElementById ( 'osmNetworkSelect' ).value;
-		let addHeading = true;
+		this.#platformsWithMoreThanOneRef = [];
 		this.nodes.forEach (
 			node => {
-				let errorMessage = theExcludeList.excludePlatform ( node );
-				if ( '' !== errorMessage ) {
-					if ( addHeading ) {
-						theReport.add ( 'h1', 'Platforms with more than 1 ref:' + network );
-						addHeading = false;
-					}
-					theReport.add ( 'p', errorMessage, node );
-				}
+				this.#controlPlatform ( node );
 			}
 		);
-		this.ways.forEach (
-			way => {
-				let errorMessage = theExcludeList.excludePlatform ( way );
-				if ( '' !== errorMessage ) {
-					if ( addHeading ) {
-						theReport.add ( 'h1', 'Platforms with more than 1 ref:' + network );
-						addHeading = false;
-					}
-					theReport.add ( 'p', errorMessage, way );
+
+		if ( 0 !== this.#platformsWithMoreThanOneRef.length ) {
+			theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
+			this.#platformsWithMoreThanOneRef.forEach (
+				osmObject => {
+					theReport.add ( 'p', osmObject.tags.name + osmObject.tags[ 'ref:' + theDocConfig.network ], osmObject );
 				}
-			}
-		);
+			);
+
+		}
 	}
 
 	/**
@@ -173,19 +185,18 @@ class OsmDataLoader {
 
 	/**
 	 * fetch data from the overpass-api
-	 * @param {Object} config
 	 */
 
-	async fetchData ( config ) {
+	async fetchData ( ) {
 
 		// uri creation
 		let uri = '';
 		uri =
 			'https://lz4.overpass-api.de/api/interpreter?data=[out:json][timeout:40];' +
-			'rel["network"~"' + config.osmNetwork + '"]' +
-			'["route"=' + config.osmVehicle + ']' +
+			'rel["network"~"' + theDocConfig.network + '"]' +
+			'["route"=' + theDocConfig.vehicle + ']' +
 			'[type="route"]' +
-			( '' === config.osmRef ? '' : '["ref"="' + config.osmRef + '"]' ) +
+			( '' === theDocConfig.ref ? '' : '["ref"="' + theDocConfig.ref + '"]' ) +
 			'->.rou;(.rou <<; - .rou;); >> ->.rm;.rm out;';
 
 		// fetch overpass-api

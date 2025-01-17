@@ -41,7 +41,7 @@ class OsmDataLoader {
 	 * @type {Map}
 	 */
 
-	routeMasters = new Map ( );
+	routeMasters = [];
 
 	/**
 	 * A js map for the osm route relations
@@ -86,14 +86,30 @@ class OsmDataLoader {
 	#platformsWithoutOperator = [];
 
 	/**
-	 * Cleaner for the maps
+	 * Coming soon
 	 */
 
-	clear ( ) {
-		this.nodes.clear ( );
-		this.routeMasters.clear ( );
-		this.routes.clear ( );
-		this.ways.clear ( );
+	#sortRoutesMaster ( ) {
+		this.routeMasters.sort (
+			( first, second ) => {
+
+				// split the name into the numeric part and the alphanumeric part:
+				// numeric part
+				let firstPrefix = String ( Number.parseInt ( first.tags.ref ) );
+				let secondPrefix = String ( Number.parseInt ( second.tags.ref ) );
+
+				// alpha numeric part
+				let firstPostfix = ( first.tags.ref ?? '' ).replace ( firstPrefix, '' );
+				let secondPostfix = ( second.tags.ref ?? '' ).replace ( secondPrefix, '' );
+
+				// complete the numeric part with spaces on the left and compare
+				let result =
+						( firstPrefix.padStart ( 5, ' ' ) + firstPostfix )
+							.localeCompare ( secondPrefix.padStart ( 5, ' ' ) + secondPostfix );
+
+				return result;
+			}
+		);
 	}
 
 	/**
@@ -102,8 +118,6 @@ class OsmDataLoader {
 	 */
 
 	#loadOsmData ( elements ) {
-		this.clear ( );
-
 		elements.forEach (
 			element => {
 				switch ( element.type ) {
@@ -112,7 +126,7 @@ class OsmDataLoader {
 					case 'route_master' :
 					case 'proposed:route_master' :
 					case 'disused:route_master' :
-						this.routeMasters.set ( element.id, element );
+						this.routeMasters.push ( element );
 						break;
 					case 'route' :
 					case 'proposed:route' :
@@ -135,6 +149,7 @@ class OsmDataLoader {
 				}
 			}
 		);
+		this.#sortRoutesMaster ( );
 	}
 
 	/**

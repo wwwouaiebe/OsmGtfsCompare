@@ -31,6 +31,7 @@ import theExcludeList from './ExcludeList.js';
 import GtfsDataLoader from './GtfsDataLoader.js';
 import OsmGtfsComparator from './OsmGtfsComparator.js';
 import theDocConfig from './DocConfig.js';
+import OsmRouteMasterValidator from './OsmRouteMasterValidator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -69,6 +70,8 @@ class AppLoader {
 		// loading osm data
 		let osmDataLoader = new OsmDataLoader ( );
 		await osmDataLoader.fetchData (	);
+
+		new OsmRouteMasterValidator ( osmDataLoader ).validate ( );
 
 		// building the osmtree
 		new OsmTreeBuilder ( ).buildTree ( osmDataLoader );

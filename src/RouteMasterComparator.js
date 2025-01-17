@@ -220,47 +220,28 @@ class RouteMasterComparator {
 
 	/**
 	 * Coming soon
-	 * @param {Object} osmRouteMaster Coming soon
-	 * @param {Object} gtfsRouteMaster Coming soon
 	 */
 
-	compare ( osmRouteMaster, gtfsRouteMaster ) {
-		this.#gtfsRouteMaster = gtfsRouteMaster;
-		this.#osmRouteMaster = osmRouteMaster;
-		theReport.add (
-			'h1',
-			this.#osmRouteMaster.name + ': ' + ( this.#osmRouteMaster.description ?? '' ),
-			this.#osmRouteMaster
-		);
-
-		if (
-			( this.#osmRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
-			!==
-			( this.#gtfsRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
-		) {
-			theReport.add (
-				'p',
-				'The osm description is not equal to the GTFS route long name 🔴',
-				null,
-				null
-			);
-		}
-
-		// console.log ( osmRouteMaster );
-		// console.log ( gtfsRouteMaster );
-
-		if ( this.#isOsmExcluded ( osmRouteMaster.id ) ) {
-			return;
-		}
-
+	#compareRoutes ( ) {
 		this.#osmRouteMaster.routes.forEach (
 			osmRoute => {
-				theReport.add ( 'h2', osmRoute.name, osmRoute );
+				theReport.add (
+					'h2',
+					osmRoute.name + ( osmRoute.via ? ' via ' + osmRoute.via.replaceAll ( ';', ', ' ) : '' ),
+					osmRoute
+				);
 				if ( ! this.#isOsmExcluded ( osmRoute.id ) ) {
 					this.#comparePlatformsHight ( osmRoute );
 				}
 			}
 		);
+	}
+
+	/**
+	 * Coming soon
+	 */
+
+	#reportMissingOsmRoutes ( ) {
 		let addHeading = true;
 		this.#gtfsRouteMaster.routes.sort (
 			( first, second ) => first.name.localeCompare ( second.name )
@@ -295,6 +276,56 @@ class RouteMasterComparator {
 				}
 			}
 		);
+	}
+
+	/**
+	 * Coming soon
+	 */
+
+	#compareRouteMasterDescription ( ) {
+		if (
+			( this.#osmRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
+			!==
+			( this.#gtfsRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
+		) {
+			theReport.add (
+				'p',
+				'The osm description is not equal to the GTFS route long name 🔴',
+				null,
+				null
+			);
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Coming soon
+	 * @param {Object} osmRouteMaster Coming soon
+	 * @param {Object} gtfsRouteMaster Coming soon
+	 */
+
+	compare ( osmRouteMaster, gtfsRouteMaster ) {
+		this.#gtfsRouteMaster = gtfsRouteMaster;
+		this.#osmRouteMaster = osmRouteMaster;
+		theReport.add (
+			'h1',
+			this.#osmRouteMaster.name + ': ' + ( this.#osmRouteMaster.description ?? '' ),
+			this.#osmRouteMaster
+		);
+
+		if ( this.#isOsmExcluded ( osmRouteMaster.id ) ) {
+			return;
+		}
+
+		if ( ! this.#compareRouteMasterDescription ( ) ) {
+			return;
+		}
+
+		this.#compareRoutes ( );
+
+		this.#reportMissingOsmRoutes ( );
 	}
 
 	/**

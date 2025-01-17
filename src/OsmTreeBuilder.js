@@ -36,40 +36,12 @@ class OsmTreeBuilder {
 
 	/**
 	 * Coming soon
-	 */
-
-	#sortRoutesMaster ( ) {
-		theOsmTree.routesMaster.sort (
-			( first, second ) => {
-
-				// split the name into the numeric part and the alphanumeric part:
-				// numeric part
-				let firstPrefix = String ( Number.parseInt ( first.ref ) );
-				let secondPrefix = String ( Number.parseInt ( second.ref ) );
-
-				// alpha numeric part
-				let firstPostfix = ( first.ref ?? '' ).replace ( firstPrefix, '' );
-				let secondPostfix = ( second.ref ?? '' ).replace ( secondPrefix, '' );
-
-				// complete the numeric part with spaces on the left and compare
-				let result =
-					( firstPrefix.padStart ( 5, ' ' ) + firstPostfix )
-						.localeCompare ( secondPrefix.padStart ( 5, ' ' ) + secondPostfix );
-
-				return result;
-			}
-		);
-	}
-
-	/**
-	 * Coming soon
 	 * @param {OsmDataLoader} osmDataLoader Coming soon
 	 */
 
 	buildTree ( osmDataLoader ) {
 
 		theOsmTree.clear ( );
-
 		osmDataLoader.routeMasters.forEach (
 			osmRouteMaster => {
 				let osmTreeRouteMaster = new OsmTreeRouteMaster ( osmRouteMaster, osmDataLoader );
@@ -79,8 +51,6 @@ class OsmTreeBuilder {
 				theOsmTree.routesMaster.push ( osmTreeRouteMaster );
 			}
 		);
-
-		this.#sortRoutesMaster ( );
 	}
 
 	/**

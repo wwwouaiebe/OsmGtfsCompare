@@ -82,6 +82,13 @@ class osmTreeRoute {
 	 * @type {String}
 	 */
 
+	#via = '';
+
+	/**
+	 * Coming soon
+	 * @type {String}
+	 */
+
 	get name ( ) { return this.#name; }
 
 	/**
@@ -125,6 +132,13 @@ class osmTreeRoute {
 	 */
 
 	get platformNames ( ) { return this.#platformNames; }
+
+	/**
+	 * Coming soon
+	 * @type {String}
+	 */
+
+	get via ( ) { return this.#via; }
 
 	/**
 	 * Coming soon
@@ -173,6 +187,8 @@ class osmTreeRoute {
 		this.#name = osmRoute.tags.name;
 
 		this.#id = osmRoute.id;
+
+		this.#via = osmRoute.tags?.via ?? '';
 
 		let haveFrom = false;
 		osmRoute.members.forEach (

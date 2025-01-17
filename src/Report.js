@@ -156,23 +156,45 @@ class Report {
 	 * @param {Number} shapePk Coming soon
 	 */
 
-	// eslint-disable-next-line max-params
+	// eslint-disable-next-line max-params, complexity
 	add ( htmlTag, text, osmObject, shapePk ) {
 
 		let htmlElement = document.createElement ( htmlTag );
 
 		switch ( htmlTag ) {
 		case 'h1' :
-			this.#currentH1Div = document.createElement ( 'div' );
-			this.#report.appendChild ( this.#currentH1Div );
-			this.#currentH1Div.appendChild ( htmlElement );
+			if ( osmObject ) {
+				this.#currentH1Div = document.getElementById ( 'routeMaster' + osmObject.id );
+			}
+			else {
+				this.#currentH1Div = null;
+			}
+			if ( ! this.#currentH1Div ) {
+				this.#currentH1Div = document.createElement ( 'div' );
+				if ( osmObject ) {
+					this.#currentH1Div.id = 'routeMaster' + osmObject.id;
+				}
+				this.#report.appendChild ( this.#currentH1Div );
+				this.#currentH1Div.appendChild ( htmlElement );
+			}
 			this.#currentH2Div = null;
 			this.#currentH3Div = null;
 			break;
 		case 'h2' :
-			this.#currentH2Div = document.createElement ( 'div' );
-			this.#currentH1Div.appendChild ( this.#currentH2Div );
-			this.#currentH2Div.appendChild ( htmlElement );
+			if ( osmObject ) {
+				this.#currentH2Div = document.getElementById ( 'route' + osmObject.id );
+			}
+			else {
+				this.#currentH2Div = null;
+			}
+			if ( ! this.#currentH2Div ) {
+				this.#currentH2Div = document.createElement ( 'div' );
+				if ( osmObject ) {
+					this.#currentH2Div.id = 'route' + osmObject.id;
+				}
+				this.#currentH1Div.appendChild ( this.#currentH2Div );
+				this.#currentH2Div.appendChild ( htmlElement );
+			}
 			this.#currentH3Div = null;
 			break;
 		case 'h3' :
@@ -198,7 +220,7 @@ class Report {
 		htmlElement.innerHTML =
 			this.#getGpxDownload ( shapePk ) +
 			text +
-			this.#getOsmLink ( osmObject ) +
+			this.getOsmLink ( osmObject ) +
 			this.#getJosmEdit ( osmObject );
 
 		if (
@@ -266,7 +288,7 @@ class Report {
 	 * @param {Object} osmObject Coming soon
 	 */
 
-	#getOsmLink ( osmObject ) {
+	getOsmLink ( osmObject ) {
 		if ( ! osmObject?.id || ! osmObject?.type ) {
 			return '';
 		}

@@ -23,7 +23,7 @@ Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theDocConfig from './DocConfig.js';
+import theOperator from './Operator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -120,30 +120,7 @@ class ExcludeList {
 	 */
 
 	async loadData ( ) {
-		let fileName = '../excludeLists/exclude-' + theDocConfig.network + '.json';
-		let success = false;
-		await fetch ( fileName )
-			.then (
-				response => {
-					if ( response.ok ) {
-						return response.json ( );
-					}
-					console.error ( String ( response.status ) + ' ' + response.statusText );
-				}
-			)
-			.then (
-				jsonResponse => {
-					this.#buildLists ( jsonResponse );
-					success = true;
-				}
-			)
-			.catch (
-				err => {
-					console.error ( err );
-				}
-			);
-		return success;
-
+		this.#buildLists ( theOperator.getExcludeList ( ) );
 	}
 
 	/**

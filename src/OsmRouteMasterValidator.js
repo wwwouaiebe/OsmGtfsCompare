@@ -28,6 +28,7 @@ import TagsValidator from './TagsValidator.js';
 import theDocConfig from './DocConfig.js';
 import FixmeValidator from './FixmeValidator.js';
 import OsmRouteValidator from './OsmRouteValidator.js';
+import theExcludeList from './ExcludeList.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -73,7 +74,7 @@ class OsmRouteMasterValidator {
 						theReport.add (
 							'p',
 							'A relation member of the route master is not a ' +
-                            theConfig.osmVehicle + ' relation'
+                            theDocConfig.vehicle + ' relation'
 					 );
 					}
 				}
@@ -180,6 +181,18 @@ class OsmRouteMasterValidator {
 		);
 	}
 
+	#isOsmExcluded ( osmId ) {
+		const excludeData = theExcludeList.getOsmData ( osmId );
+		if ( excludeData?.note ) {
+			theReport.add ( 'p', excludeData.note );
+		}
+		if ( excludeData?.reason ) {
+			theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * validate completely a route_master
 	 */
@@ -193,6 +206,10 @@ class OsmRouteMasterValidator {
             ( this.#routeMaster.tags.description ?? '' ) + ' ',
 			this.#routeMaster
 		);
+
+		if ( this.#isOsmExcluded ( this.#routeMaster.id ) ) {
+			return;
+		}
 
 		// validation of the route_master
 		new TagsValidator ( this.#routeMaster, this.#tags ).validate ( );

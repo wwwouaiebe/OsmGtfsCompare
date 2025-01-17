@@ -22,8 +22,8 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theConfig from './Config.js';
 import theReport from './Report.js';
+import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -119,8 +119,8 @@ class NameFromtoRefValidator {
 	 */
 
 	#validateName ( ) {
-		let vehicle = theConfig.osmVehicle.substring ( 0, 1 ).toUpperCase ( ) +
-			theConfig.osmVehicle.substring ( 1 ) + ' ';
+		let vehicle = theDocConfig.vehicle.substring ( 0, 1 ).toUpperCase ( ) +
+		theDocConfig.vehicle.substring ( 1 ) + ' ';
 		if ( this.#haveTagsNameFromToRef ( ) ) {
 			let goodName = vehicle + this.#route?.tags?.ref + ': ' + this.#route?.tags?.from + ' → ' + this.#route?.tags?.to;
 			if ( this.#route?.tags?.name !== goodName ) {

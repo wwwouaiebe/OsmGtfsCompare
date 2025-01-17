@@ -22,8 +22,8 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theConfig from './Config.js';
 import theReport from './Report.js';
+import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -112,9 +112,9 @@ class RolesValidator {
 			let platform = this.#osmDataLoader.ways.get ( member.ref );
 			this.#platforms.push ( platform );
 			if (
-				( 'platform' !== platform?.tags?.highway && 'bus' === theConfig.osmVehicle )
+				( 'platform' !== platform?.tags?.highway && 'bus' === theDocConfig.vehicle )
 				||
-				( 'platform' !== platform?.tags?.railway && 'tram' === theConfig.osmVehicle )
+				( 'platform' !== platform?.tags?.railway && 'tram' === theDocConfig.vehicle )
 			) {
 				theReport.add (
 					'p',
@@ -191,7 +191,7 @@ class RolesValidator {
 			&&
 			'yes' !== way?.tags?.psv
 			&&
-			'yes' !== way?.tags [ theConfig.osmVehicle ]
+			'yes' !== way?.tags [ theDocConfig.vehicle ]
 	   ) {
 		   theReport.add (
 				'p',
@@ -246,7 +246,7 @@ class RolesValidator {
 	#validateWayRole ( member ) {
 		let way = this.#osmDataLoader.ways.get ( member.ref );
 		if ( 'way' === member.type ) {
-			switch ( theConfig.osmVehicle ) {
+			switch ( theDocConfig.vehicle ) {
 			case 'bus' :
 				this.#validateWayForBus ( way );
 				break;

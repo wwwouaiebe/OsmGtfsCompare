@@ -22,8 +22,8 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theConfig from './Config.js';
 import TagValue from './TagValue.js';
+import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -179,7 +179,7 @@ class TagsBuilder {
 
 	getRouteTags ( ) {
 		let customTags =
-			this.#customTags.find ( element => element.network === theConfig.osmNetwork && element.type === theConfig.osmType );
+			this.#customTags.find ( element => element.network === theDocConfig.network && element.type === theDocConfig.type );
 
 		return customTags?.routeTags || this.#defaultTags.routeTags;
 	}
@@ -191,7 +191,7 @@ class TagsBuilder {
 
 	getRouteMasterTags ( ) {
 		let customTags =
-			this.#customTags.find ( element => element.network === theConfig.osmNetwork && element.type === theConfig.osmType );
+			this.#customTags.find ( element => element.network === theDocConfig.network && element.type === theDocConfig.type );
 
 		return customTags?.routeMasterTags || this.#defaultTags.routeMasterTags;
 	}

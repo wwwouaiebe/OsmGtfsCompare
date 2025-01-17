@@ -23,6 +23,8 @@ Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
+import theDocConfig from './DocConfig.js';
+
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
  * Coming soon
@@ -79,6 +81,11 @@ class Operator {
 	 */
 
 	get networksAsStringArray ( ) {	return this.#networksAsStringArray; };
+
+	getExcludeList ( ) {
+		let network = this.#jsonOperator.networks.find ( element => element.osmNetwork === theDocConfig.network );
+		return network.excludeList;
+	}
 
 	/**
 	 * Coming soon

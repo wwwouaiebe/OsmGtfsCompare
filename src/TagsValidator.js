@@ -22,8 +22,8 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theConfig from './Config.js';
 import theReport from './Report.js';
+import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -88,7 +88,7 @@ class TagsValidator {
      */
 
 	#searchUnusefulTags ( ) {
-		if ( 'TECL' !== theConfig.osmNetwork || 'proposed:route' !== theConfig.osmType ) {
+		if ( 'TECL' !== theDocConfig.network || 'proposed:route' !== theDocConfig.type ) {
 			return;
 		}
 		for ( const key of Object.keys ( this.#relation.tags ) ) {

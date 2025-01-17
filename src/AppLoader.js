@@ -71,6 +71,7 @@ class AppLoader {
 		let osmDataLoader = new OsmDataLoader ( );
 		await osmDataLoader.fetchData (	);
 
+		// validating the osm routes and route master
 		new OsmRouteMasterValidator ( osmDataLoader ).validate ( );
 
 		// building the osmtree

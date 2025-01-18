@@ -25,6 +25,7 @@ Doc reviewed 20250110
 
 import { theOsmTree } from './DataTree.js';
 import OsmTreeRouteMaster from './OsmTreeRouteMaster.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -36,15 +37,14 @@ class OsmTreeBuilder {
 
 	/**
 	 * Coming soon
-	 * @param {OsmDataLoader} osmDataLoader Coming soon
 	 */
 
-	buildTree ( osmDataLoader ) {
+	buildTree ( ) {
 
 		theOsmTree.clear ( );
-		osmDataLoader.routeMasters.forEach (
+		theOsmDataLoader.routeMasters.forEach (
 			osmRouteMaster => {
-				let osmTreeRouteMaster = new OsmTreeRouteMaster ( osmRouteMaster, osmDataLoader );
+				let osmTreeRouteMaster = new OsmTreeRouteMaster ( osmRouteMaster );
 				osmTreeRouteMaster.routes.sort (
 					( first, second ) => first.name.localeCompare ( second.name )
 				);

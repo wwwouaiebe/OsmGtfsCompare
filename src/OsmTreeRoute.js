@@ -26,6 +26,7 @@ Doc reviewed 20250110
 import theDocConfig from './DocConfig.js';
 import theExcludeList from './ExcludeList.js';
 import theOperator from './Operator.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -179,10 +180,9 @@ class osmTreeRoute {
 	/**
 	 * The constructor
 	 * @param {Object} osmRoute Coming Soon
-	 * @param {Object} osmDataLoader Coming soon
 	 */
 
-	constructor ( osmRoute, osmDataLoader ) {
+	constructor ( osmRoute ) {
 
 		this.#name = osmRoute.tags.name;
 
@@ -201,9 +201,9 @@ class osmTreeRoute {
                     )
 				) {
 					let osmPlatform =
-                        osmDataLoader.nodes.get ( osmRouteMember.ref )
+						theOsmDataLoader.nodes.get ( osmRouteMember.ref )
                         ||
-                        osmDataLoader.ways.get ( osmRouteMember.ref );
+                        theOsmDataLoader.ways.get ( osmRouteMember.ref );
 
 					let platformRef = this.#getOsmPlatformRef ( osmPlatform );
 					this.#platforms += platformRef + ';';

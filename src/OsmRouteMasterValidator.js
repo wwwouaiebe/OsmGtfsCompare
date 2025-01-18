@@ -29,6 +29,7 @@ import theDocConfig from './DocConfig.js';
 import FixmeValidator from './FixmeValidator.js';
 import OsmRouteValidator from './OsmRouteValidator.js';
 import theExcludeList from './ExcludeList.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -37,13 +38,6 @@ import theExcludeList from './ExcludeList.js';
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class OsmRouteMasterValidator {
-
-	/**
-     * Coming soon
-     * @type {Object}
-     */
-
-	#osmDataLoader = {};
 
 	/**
      * the used tags
@@ -69,7 +63,7 @@ class OsmRouteMasterValidator {
 		this.#routeMaster.members.forEach (
 			member => {
 				if ( 'relation' === member.type ) {
-					let route = this.#osmDataLoader.routes.get ( member.ref );
+					let route = theOsmDataLoader.routes.get ( member.ref );
 					if ( ! route ) {
 						theReport.add (
 							'p',
@@ -111,7 +105,7 @@ class OsmRouteMasterValidator {
 		this.#routeMaster.members.forEach (
 			member => {
 				if ( 'relation' === member.type ) {
-					let route = this.#osmDataLoader.routes.get ( member.ref );
+					let route = theOsmDataLoader.routes.get ( member.ref );
 					if ( route ) {
 						if ( this.#routeMaster.tags.ref !== route.tags.ref ) {
 							theReport.add (
@@ -149,9 +143,9 @@ class OsmRouteMasterValidator {
 		this.#routeMaster.members.forEach (
 			member => {
 				if ( 'relation' === member.type ) {
-					let route = this.#osmDataLoader.routes.get ( member.ref );
+					let route = theOsmDataLoader.routes.get ( member.ref );
 					if ( route ) {
-						new OsmRouteValidator ( ).validateRoute ( route, this.#osmDataLoader );
+						new OsmRouteValidator ( ).validateRoute ( route );
 					}
 				}
 			}
@@ -164,13 +158,13 @@ class OsmRouteMasterValidator {
 
 	#validateOnlyOneRouteMaster ( ) {
 		theReport.add ( 'h1', 'Routes with more than one route_master' );
-		this.#osmDataLoader.routes.forEach (
+		theOsmDataLoader.routes.forEach (
 			route => {
 				if ( 1 !== route.routeMasters.length ) {
 					let text = 'Route with more than one route_master (route_masters:';
 					route.routeMasters.forEach (
 						routeMaster => {
-							text += theReport.getOsmLink ( this.#osmDataLoader.routeMasters.get ( routeMaster ) ) + ' ';
+							text += theReport.getOsmLink ( theOsmDataLoader.routeMasters.get ( routeMaster ) ) + ' ';
 						}
 					);
 					text += ') routes:' + theReport.getOsmLink ( route );
@@ -180,6 +174,12 @@ class OsmRouteMasterValidator {
 
 		);
 	}
+
+	/**
+	 * Coming soon
+	 * @param {String} osmId Coming soon
+	 * @returns {boolean} Coming soon
+	 */
 
 	#isOsmExcluded ( osmId ) {
 		const excludeData = theExcludeList.getOsmData ( osmId );
@@ -230,7 +230,7 @@ class OsmRouteMasterValidator {
 		// await new MissingRouteMasterValidator ( ).fetchData ( );
 		this.#validateOnlyOneRouteMaster ( );
 
-		this.#osmDataLoader.routeMasters.forEach (
+		theOsmDataLoader.routeMasters.forEach (
 			routeMaster => {
 				this.#routeMaster = routeMaster;
 				this.#validateRouteMaster ( );
@@ -240,11 +240,9 @@ class OsmRouteMasterValidator {
 
 	/**
 	 * The constructor
-     * @param {OsmDataLoader} osmDataLoader Coming soon
-	 */
+ 	 */
 
-	constructor ( osmDataLoader ) {
-		this.#osmDataLoader = osmDataLoader;
+	constructor ( ) {
 		this.#tags = new TagsBuilder ( ).getRouteMasterTags ( );
 		Object.freeze ( this );
 	}

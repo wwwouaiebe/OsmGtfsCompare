@@ -104,10 +104,9 @@ class OsmRouteValidator {
 	/**
 	 * Validate a route
      * @param { Object } route The route to validate
-	 * @param {OsmDataLoader} osmDataLoader Coming soon
 	 */
 
-	validateRoute ( route, osmDataLoader ) {
+	validateRoute ( route ) {
 
 		this.#route = route;
 		this.#platforms = [];
@@ -124,7 +123,7 @@ class OsmRouteValidator {
 		this.#validateOperator ( );
 		new FixmeValidator ( ).validate ( this.#route );
 		new TagsValidator ( this.#route, this.#tags ).validate ( );
-		new RolesValidator ( this.#route, this.#platforms, this.#ways, osmDataLoader ).validate ( );
+		new RolesValidator ( this.#route, this.#platforms, this.#ways ).validate ( );
 		new ContinuousRouteValidator ( this.#route, this.#ways ).validate ( );
 		new NameFromtoRefValidator ( this.#route, this.#platforms ).validate ( );
 	}

@@ -89,6 +89,20 @@ class OsmDataLoader {
 	 * Coming soon
 	 */
 
+	#clear ( ) {
+		this.routeMasters.splice ( 0 );
+		this.nodes.clear ( );
+		this.ways.clear ( );
+		this.routes.clear ( );
+		this.#platformsWithMoreThanOneRef.splice ( 0 );
+		this.#platformsWithoutNetwork.splice ( 0 );
+		this.#platformsWithoutOperator.splice ( 0 );
+	}
+
+	/**
+	 * Coming soon
+	 */
+
 	#sortRoutesMaster ( ) {
 		this.routeMasters.sort (
 			( first, second ) => {
@@ -248,6 +262,8 @@ class OsmDataLoader {
 
 	async fetchData ( ) {
 
+		this.#clear ( );
+
 		// uri creation
 		let uri = '';
 		uri =
@@ -296,6 +312,12 @@ class OsmDataLoader {
 	}
 }
 
-export default OsmDataLoader;
+/**
+ * The one and only one object OsmDataLoader
+ */
+
+const theOsmDataLoader = new OsmDataLoader ( );
+
+export default theOsmDataLoader;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

@@ -23,7 +23,7 @@ Doc reviewed 20250110
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import OsmDataLoader from './OsmDataLoader.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 import GtfsTreeBuilder from './GtfsTreeBuilder.js';
 import OsmTreeBuilder from './OsmTreeBuilder.js';
 import theReport from './Report.js';
@@ -68,14 +68,13 @@ class AppLoader {
 		await theExcludeList.loadData ( );
 
 		// loading osm data
-		let osmDataLoader = new OsmDataLoader ( );
-		await osmDataLoader.fetchData (	);
+		await theOsmDataLoader.fetchData (	);
 
 		// validating the osm routes and route master
-		new OsmRouteMasterValidator ( osmDataLoader ).validate ( );
+		new OsmRouteMasterValidator ( ).validate ( );
 
 		// building the osmtree
-		new OsmTreeBuilder ( ).buildTree ( osmDataLoader );
+		new OsmTreeBuilder ( ).buildTree ( );
 
 		// loading gtfs data
 		await new GtfsDataLoader ( ).fetchData ( );

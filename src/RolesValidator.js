@@ -24,6 +24,7 @@ Changes:
 
 import theReport from './Report.js';
 import theDocConfig from './DocConfig.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -32,13 +33,6 @@ import theDocConfig from './DocConfig.js';
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class RolesValidator {
-
-	/**
-	 * ComingSoon
-	 * @type {OsmDataLoader}
-	 */
-
-	#osmDataLoader = {};
 
  	/**
 	 * The route currently controlled
@@ -98,7 +92,7 @@ class RolesValidator {
 
 	#validatePlatformRole ( member ) {
 		if ( 'node' === member.type ) {
-			let busStop = this.#osmDataLoader.nodes.get ( member.ref );
+			let busStop = theOsmDataLoader.nodes.get ( member.ref );
 			this.#platforms.push ( busStop );
 			if ( 'bus_stop' !== busStop?.tags?.highway ) {
 				theReport.add (
@@ -109,7 +103,7 @@ class RolesValidator {
 			}
 		}
 		if ( 'way' === member.type ) {
-			let platform = this.#osmDataLoader.ways.get ( member.ref );
+			let platform = theOsmDataLoader.ways.get ( member.ref );
 			this.#platforms.push ( platform );
 			if (
 				( 'platform' !== platform?.tags?.highway && 'bus' === theDocConfig.vehicle )
@@ -133,7 +127,7 @@ class RolesValidator {
 
 	#validateStopRole ( member ) {
 		if ( 'node' === member.type ) {
-			let stopPosition = this.#osmDataLoader.nodes.get ( member.ref );
+			let stopPosition = theOsmDataLoader.nodes.get ( member.ref );
 			if ( 'stop_position' !== stopPosition?.tags?.public_transport ) {
 				theReport.add (
 					'p',
@@ -244,7 +238,7 @@ class RolesValidator {
 	 */
 
 	#validateWayRole ( member ) {
-		let way = this.#osmDataLoader.ways.get ( member.ref );
+		let way = theOsmDataLoader.ways.get ( member.ref );
 		if ( 'way' === member.type ) {
 			switch ( theDocConfig.vehicle ) {
 			case 'bus' :
@@ -315,14 +309,12 @@ class RolesValidator {
 	 * @param {Object} route The controlled route
      * @param {Array} platforms the platforms member of the route
 	 * @param {Array} ways The ways member of the route
-	 * @param {OsmDataLoader} osmDataLoader Coming soon
 	 */
 
-	constructor ( route, platforms, ways, osmDataLoader ) {
+	constructor ( route, platforms, ways ) {
 		this.#route = route;
 		this.#platforms = platforms;
 		this.#ways = ways;
-		this.#osmDataLoader = osmDataLoader;
 
 		Object.freeze ( this );
 	}

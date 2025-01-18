@@ -82,6 +82,11 @@ class Operator {
 
 	get networksAsStringArray ( ) {	return this.#networksAsStringArray; };
 
+	/**
+	 *
+	 * @returns {Object} Coming soon
+	 */
+
 	getExcludeList ( ) {
 		let network = this.#jsonOperator.networks.find ( element => element.osmNetwork === theDocConfig.network );
 		return network.excludeList;

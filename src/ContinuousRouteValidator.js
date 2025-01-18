@@ -32,7 +32,14 @@ import theReport from './Report.js';
 
 class ContinuousRouteValidator {
 
- 	/**
+	/**
+     * A counter for the errors
+     * @type {Number}
+     */
+
+	#errorCounter = 0;
+
+	/**
 	 * The route currently controlled
 	 * @type {Object}
 	 */
@@ -96,6 +103,7 @@ class ContinuousRouteValidator {
 	 */
 
 	validate ( ) {
+		this.#errorCounter = 0;
 		let previousWay = null;
 		this.#ways.forEach (
 			way => {
@@ -107,18 +115,18 @@ class ContinuousRouteValidator {
 					) {
 						theReport.add (
 							'p',
-							'Hole found for route ' + theReport.getOsmLink ( this.#route ) +
+							'Error R001: hole found for route ' + theReport.getOsmLink ( this.#route ) +
                             ' between way id ' + theReport.getOsmLink ( previousWay ) +
-                            ' and way id ' + theReport.getOsmLink ( way ),
-							null,
-							'R001'
+                            ' and way id ' + theReport.getOsmLink ( way )
 						);
+						this.#errorCounter ++;
 						previousWay = null;
 					}
 				}
 				previousWay = way;
 			}
 		);
+		return this.#errorCounter;
 	}
 
 	/**

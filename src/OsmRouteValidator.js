@@ -29,6 +29,8 @@ import ContinuousRouteValidator from './ContinuousRouteValidator.js';
 import NameFromtoRefValidator from './NameFromToRefValidator.js';
 import TagsBuilder from './TagsBuilder.js';
 import FixmeValidator from './FixmeValidator.js';
+import OperatorValidator from './OperatorValidator.js';
+import NetworkValidator from './NetworkValidator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -37,6 +39,13 @@ import FixmeValidator from './FixmeValidator.js';
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class OsmRouteValidator {
+
+	/**
+     * A counter for the errors
+     * @type {Number}
+     */
+
+	#errorCounter = 0;
 
  	/**
 	 * The route currently controlled
@@ -68,40 +77,6 @@ class OsmRouteValidator {
 	#tags;
 
 	/**
-	* Validate the operator tag
-	 */
-
-	#validateOperator ( ) {
-		if ( this.#route?.tags?.operator ) {
-			let operators = this.#route?.tags?.operator.split ( ';' );
-			const validOperators = [ 'TEC', 'De lijn', 'STIB/MIVB' ];
-			let validOperatorFound = false;
-			operators.forEach (
-				operator => {
-					if ( -1 !== validOperators.indexOf ( operator ) ) {
-						validOperatorFound = true;
-					}
-				}
-			);
-			if ( ! validOperatorFound ) {
-				theReport.add (
-					'p',
-					'The operator is not valid for route'
-				);
-
-			}
-		}
-		else {
-
-			// no operator tag
-			theReport.add (
-				'p',
-				'An operator tag is not found for route'
-			);
-		}
-	}
-
-	/**
 	 * Validate a route
      * @param { Object } route The route to validate
 	 */
@@ -111,21 +86,30 @@ class OsmRouteValidator {
 		this.#route = route;
 		this.#platforms = [];
 		this.#ways = [];
+		this.#errorCounter = 0;
 
 		theReport.add (
 			'h2',
-			'\nNow validating route ' +
+			'Route: ' +
 			( this.#route.tags.name ?? '' ) + ' ' +
 			( this.#route.tags.via ? 'via ' + this.#route.tags.via.replace ( ';', ', ' ) + ' ' : '' ),
 			this.#route
 		);
 
-		this.#validateOperator ( );
-		new FixmeValidator ( ).validate ( this.#route );
+		theReport.add ( 'h3', 'Validation of tags, roles and members for route' );
+
 		new TagsValidator ( this.#route, this.#tags ).validate ( );
-		new RolesValidator ( this.#route, this.#platforms, this.#ways ).validate ( );
-		new ContinuousRouteValidator ( this.#route, this.#ways ).validate ( );
-		new NameFromtoRefValidator ( this.#route, this.#platforms ).validate ( );
+		this.#errorCounter += new OperatorValidator ( this.#route ).validate ( );
+		this.#errorCounter += new NetworkValidator ( this.#route ).validate ( );
+		this.#errorCounter += new FixmeValidator ( this.#route ).validate ( );
+		this.#errorCounter += new RolesValidator ( this.#route, this.#platforms, this.#ways ).validate ( );
+		this.#errorCounter += new ContinuousRouteValidator ( this.#route, this.#ways ).validate ( );
+		this.#errorCounter += new NameFromtoRefValidator ( this.#route, this.#platforms ).validate ( );
+
+		if ( 0 === this.#errorCounter ) {
+			theReport.add ( 'p', 'No validation errors found' );
+		}
+		theReport.addValidationErrors ( this.#errorCounter );
 	}
 
  	/**

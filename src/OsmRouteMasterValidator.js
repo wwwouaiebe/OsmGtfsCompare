@@ -67,7 +67,7 @@ class OsmRouteMasterValidator {
 					if ( ! route ) {
 						theReport.add (
 							'p',
-							'A relation member of the route master is not a ' +
+							'Error M003: a relation member of the route master is not a ' +
                             theDocConfig.vehicle + ' relation'
 					 );
 					}
@@ -75,7 +75,7 @@ class OsmRouteMasterValidator {
 				else {
 					theReport.add (
 						'p',
-						'A member of the route master is not a relation (' +
+						'Error M004: a member of the route master is not a relation (' +
                         member.type + ' ' + member.ref + ' )'
 					);
 				}
@@ -91,7 +91,7 @@ class OsmRouteMasterValidator {
 		if ( ! this.#routeMaster?.tags?.ref ) {
 			theReport.add (
 				'p',
-				'Route_master without ref tag '
+				'Error M005: route_master without ref tag '
 			);
 		}
 	}
@@ -110,7 +110,7 @@ class OsmRouteMasterValidator {
 						if ( this.#routeMaster.tags.ref !== route.tags.ref ) {
 							theReport.add (
 								'p',
-								'ref tag of the route master (' + this.#routeMaster.tags.ref +
+								'Error M006: ref tag of the route master (' + this.#routeMaster.tags.ref +
 								') is not the same than the ref tag of the route (' + route.tags.ref + ')'
 							);
 						}
@@ -130,7 +130,7 @@ class OsmRouteMasterValidator {
 		if ( this.#routeMaster.tags.name !== vehicle + this.#routeMaster.tags.ref ) {
 			theReport.add (
 				'p',
-				'Invalid name for route_master (must be ' + vehicle + this.#routeMaster.tags.ref + ')'
+				'Error M007: invalid name for route_master (must be ' + vehicle + this.#routeMaster.tags.ref + ')'
 			);
 		}
 	}
@@ -161,10 +161,14 @@ class OsmRouteMasterValidator {
 		theOsmDataLoader.routes.forEach (
 			route => {
 				if ( 1 !== route.routeMasters.length ) {
-					let text = 'Route with more than one route_master (route_masters:';
+					let text = 'Error R018: route with more than one route_master (route_masters:';
 					route.routeMasters.forEach (
 						routeMaster => {
-							text += theReport.getOsmLink ( theOsmDataLoader.routeMasters.get ( routeMaster ) ) + ' ';
+							text +=
+								theReport.getOsmLink (
+									theOsmDataLoader.routeMasters.find ( element => element.id === routeMaster )
+								)
+								+ ' ';
 						}
 					);
 					text += ') routes:' + theReport.getOsmLink ( route );
@@ -199,12 +203,19 @@ class OsmRouteMasterValidator {
 
 	#validateRouteMaster ( ) {
 
-		// heading in the report
+		// heading for the route masterin the report
 		theReport.add (
 			'h1',
+			'Route_master: ' +
 			( this.#routeMaster.tags.name ?? '' ) + ' ' +
             ( this.#routeMaster.tags.description ?? '' ) + ' ',
 			this.#routeMaster
+		);
+
+		// heading for validation
+		theReport.add (
+			'h3',
+			'Validation of tags, roles and members for route master'
 		);
 
 		if ( this.#isOsmExcluded ( this.#routeMaster.id ) ) {

@@ -22,22 +22,15 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * fixme tag validator
+ * Validator for the tag network
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class FixmeValidator {
-
-	/**
-     * A counter for the errors
-     * @type {Number}
-     */
-
-	#errorCounter = 0;
+class NetworkValidator {
 
 	/**
      * A reference to the osm object to validate
@@ -47,32 +40,51 @@ class FixmeValidator {
 	#osmObject = {};
 
 	/**
-	 *  Validate the fixme tags
+     * A counter for the errors
+     * @type {Number}
+     */
+
+	#errorCounter = 0;
+
+	/**
+	* Validate the network tag
 	 */
 
 	validate ( ) {
 		this.#errorCounter = 0;
-		if ( this.#osmObject?.tags?.fixme ) {
-			theReport.add (
-				'p',
-				'Warning R019:  fixme exists for this object (' + this.#osmObject.tags.fixme + ')'
+		if ( this.#osmObject?.tags?.network ) {
+
+			let networks = this.#osmObject?.tags?.network.split ( ';' );
+			let validNetworkFound = false;
+			networks.forEach (
+				network => {
+					if ( network === theDocConfig.network ) {
+						validNetworkFound = true;
+					}
+				}
 			);
-			this.#errorCounter ++;
+			if ( ! validNetworkFound ) {
+				theReport.add (
+					'p',
+					'Error R021: the network is not valid ( expected '
+					+ theDocConfig.network + ' but found ' + this.#osmObject?.tags?.network + ' )'
+				);
+				this.#errorCounter ++;
+			}
 		}
 		return this.#errorCounter;
 	}
 
 	/**
-	 * The constructor
- 	 * @param {Object} osmObject
-  	 */
+     * The constructor
+     * @param {Object} osmObject an OSM object with an operator tag
+     */
 
 	constructor ( osmObject ) {
 		this.#osmObject = osmObject;
-		Object.freeze ( this );
 	}
 }
 
-export default FixmeValidator;
+export default NetworkValidator;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

@@ -34,6 +34,13 @@ import theOsmDataLoader from './OsmDataLoader.js';
 
 class RolesValidator {
 
+	/**
+     * A counter for the errors
+     * @type {Number}
+     */
+
+	#errorCounter = 0;
+
  	/**
 	 * The route currently controlled
 	 * @type {Object}
@@ -71,11 +78,10 @@ class RolesValidator {
 				else if ( emptyRole && '' !== member.role ) {
 					theReport.add (
 						'p',
-						'An unordered object with a role (' + theReport.getOsmLink ( member ) +
-                                ') is found in the ways of route ',
-						null,
-						'R008'
+						'Error R008: an unordered object with a role (' + theReport.getOsmLink ( member ) +
+                        ') is found in the ways of route '
 					);
+					this.#errorCounter ++;
 				}
 			}
 		);
@@ -97,9 +103,10 @@ class RolesValidator {
 			if ( 'bus_stop' !== busStop?.tags?.highway ) {
 				theReport.add (
 					'p',
-					'An invalid node (' + theReport.getOsmLink ( member ) +
+					'Error R009: an invalid node (' + theReport.getOsmLink ( member ) +
 						') is used as platform for the route'
 				);
+				this.#errorCounter ++;
 			}
 		}
 		if ( 'way' === member.type ) {
@@ -112,9 +119,10 @@ class RolesValidator {
 			) {
 				theReport.add (
 					'p',
-					'An invalid way (' + theReport.getOsmLink ( member ) +
+					'Error R010: an invalid way (' + theReport.getOsmLink ( member ) +
 						') is used as platform for the route'
 				);
+				this.#errorCounter ++;
 			}
 		}
 	}
@@ -131,17 +139,19 @@ class RolesValidator {
 			if ( 'stop_position' !== stopPosition?.tags?.public_transport ) {
 				theReport.add (
 					'p',
-					'An invalid node (' + theReport.getOsmLink ( member ) +
+					'Error R011: an invalid node (' + theReport.getOsmLink ( member ) +
 						') is used as stop_position for the route'
 				);
+				this.#errorCounter ++;
 			}
 		}
 		else {
 			theReport.add (
 				'p',
-				'An invalid object (' + theReport.getOsmLink ( member ) +
+				'Error R012: an invalid object (' + theReport.getOsmLink ( member ) +
 					') is used as stop_position for the route'
 			);
+			this.#errorCounter ++;
 		}
 	}
 
@@ -176,9 +186,10 @@ class RolesValidator {
 		if ( 'construction' === way?.tags?.highway ) {
 			theReport.add (
 				'p',
-				'A road under construction (' + theReport.getOsmLink ( way ) +
+				'Warning R017: a road under construction (' + theReport.getOsmLink ( way ) +
 				') is used as way for the route'
 			);
+			this.#errorCounter ++;
 		}
 		if (
 			-1 === validBusHighways.indexOf ( way?.tags?.highway )
@@ -189,9 +200,10 @@ class RolesValidator {
 	   ) {
 		   theReport.add (
 				'p',
-				'An invalid highway (' + theReport.getOsmLink ( way ) +
+				'Error R013: an invalid highway (' + theReport.getOsmLink ( way ) +
 				') is used as way for the route'
 		   );
+		   this.#errorCounter ++;
 	   }
 	   else {
 		   this.#ways.push ( way );
@@ -209,9 +221,10 @@ class RolesValidator {
 		if ( 'tram' !== way?.tags?.railway ) {
 			theReport.add (
 				'p',
-				'An invalid railway (' + theReport.getOsmLink ( way ) +
+				'Error R014: an invalid railway (' + theReport.getOsmLink ( way ) +
 				') is used as way for the route'
 			);
+			this.#errorCounter ++;
 		}
 
 	}
@@ -226,9 +239,10 @@ class RolesValidator {
 		if ( 'subway' !== way?.tags?.railway ) {
 			theReport.add (
 				'p',
-				'An invalid railway (' + theReport.getOsmLink ( way ) +
+				'Error R014: an invalid railway (' + theReport.getOsmLink ( way ) +
 				') is used as way for the route'
 			);
+			this.#errorCounter ++;
 		}
 	}
 
@@ -257,9 +271,10 @@ class RolesValidator {
 		else {
 			theReport.add (
 				'p',
-				'An invalid object (' + theReport.getOsmLink ( member ) +
+				'Error R015: an invalid object (' + theReport.getOsmLink ( member ) +
 					') is used as way for the route'
 			);
+			this.#errorCounter ++;
 		}
 	}
 
@@ -286,9 +301,10 @@ class RolesValidator {
 				default :
 					theReport.add (
 						'p',
-						'An unknow role (' + member.role +
+						'Error R016: an unknow role (' + member.role +
                             ') is found in the route for the osm object ' + theReport.getOsmLink ( member )
 					);
+					this.#errorCounter ++;
 					break;
 				}
 			}
@@ -300,8 +316,10 @@ class RolesValidator {
      */
 
 	validate ( ) {
+		this.#errorCounter = 0;
 		this.#validateRolesObjects ( );
 		this.#validateRolesOrder ( );
+		return this.#errorCounter;
 	}
 
 	/**

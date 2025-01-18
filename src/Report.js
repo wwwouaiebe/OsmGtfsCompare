@@ -70,7 +70,8 @@ class Report {
 	#stats = {
 		doneNotOk : 0,
 		doneOk : 0,
-		toDo : 0
+		toDo : 0,
+		validationErrors : 0
 	};
 
 	/**
@@ -105,6 +106,10 @@ class Report {
 		htmlElement = document.createElement ( 'p' );
 		htmlElement.textContent = 'Osm route relations todo: ' + this.#stats.toDo;
 		this.#report.insertBefore ( htmlElement, firstChild );
+
+		htmlElement = document.createElement ( 'p' );
+		htmlElement.textContent = 'Validation errors to fix: ' + this.#stats.validationErrors;
+		this.#report.insertBefore ( htmlElement, firstChild );
 	}
 
 	/**
@@ -115,6 +120,7 @@ class Report {
 		this.#stats.doneNotOk = 0;
 		this.#stats.doneOk = 0;
 		this.#stats.toDo = 0;
+		this.#stats.validationErrors = 0;
 		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
 		this.#report = document.getElementById ( 'report' );
 		this.#report.classList.remove ( 'errorsOnly' );
@@ -145,7 +151,16 @@ class Report {
 	 */
 
 	addToDo ( quantity ) {
-		this.#stats.toDo += quantity ? quantity : 1;
+		this.#stats.toDo += quantity;
+	}
+
+	/**
+	 * Coming soon
+	 * @param {Number} quantity
+	 */
+
+	addValidationErrors ( quantity ) {
+		this.#stats.validationErrors += quantity;
 	}
 
 	/**
@@ -199,7 +214,7 @@ class Report {
 			break;
 		case 'h3' :
 			this.#currentH3Div = document.createElement ( 'div' );
-			this.#currentH2Div.appendChild ( this.#currentH3Div );
+			( this.#currentH2Div || this.#currentH1Div ).appendChild ( this.#currentH3Div );
 			this.#currentH3Div.appendChild ( htmlElement );
 			break;
 		case 'p' :
@@ -223,6 +238,14 @@ class Report {
 			this.getOsmLink ( osmObject ) +
 			this.#getJosmEdit ( osmObject );
 
+		if ( text.startsWith ( 'Error' ) ) {
+			htmlElement.classList.add ( 'isError' );
+		}
+
+		if ( text.startsWith ( 'Warning' ) ) {
+			htmlElement.classList.add ( 'isWarning' );
+		}
+
 		if (
 			-1 !== text.indexOf ( '🔵' )
 			||
@@ -231,6 +254,10 @@ class Report {
 			-1 !== text.indexOf ( '🔴' )
 			||
 			-1 !== text.indexOf ( '🟣' )
+			||
+			text.startsWith ( 'Error' )
+			||
+			text.startsWith ( 'Warning' )
 		) {
 			if ( this.#currentH3Div ) {
 				this.#currentH3Div.classList.add ( 'haveErrors' );

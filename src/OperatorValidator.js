@@ -22,22 +22,15 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theOperator from './Operator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * fixme tag validator
+ * Validator for the tag operator
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class FixmeValidator {
-
-	/**
-     * A counter for the errors
-     * @type {Number}
-     */
-
-	#errorCounter = 0;
+class OperatorValidator {
 
 	/**
      * A reference to the osm object to validate
@@ -47,32 +40,51 @@ class FixmeValidator {
 	#osmObject = {};
 
 	/**
-	 *  Validate the fixme tags
+     * A counter for the errors
+     * @type {Number}
+     */
+
+	#errorCounter = 0;
+
+	/**
+	* Validate the operator tag
 	 */
 
 	validate ( ) {
 		this.#errorCounter = 0;
-		if ( this.#osmObject?.tags?.fixme ) {
-			theReport.add (
-				'p',
-				'Warning R019:  fixme exists for this object (' + this.#osmObject.tags.fixme + ')'
+		if ( this.#osmObject?.tags?.operator ) {
+
+			let operators = this.#osmObject?.tags?.operator.split ( ';' );
+			let validOperatorFound = false;
+			operators.forEach (
+				operator => {
+					if ( operator === theOperator.osmOperator ) {
+						validOperatorFound = true;
+					}
+				}
 			);
-			this.#errorCounter ++;
+			if ( ! validOperatorFound ) {
+				theReport.add (
+					'p',
+					'Error R020: the operator is not valid ( expected '
+					+ theOperator.osmOperator + ' but found ' + this.#osmObject?.tags?.operator + ' )'
+				);
+				this.#errorCounter ++;
+			}
 		}
 		return this.#errorCounter;
 	}
 
 	/**
-	 * The constructor
- 	 * @param {Object} osmObject
-  	 */
+     * The constructor
+     * @param {Object} osmObject an OSM object with an operator tag
+     */
 
 	constructor ( osmObject ) {
 		this.#osmObject = osmObject;
-		Object.freeze ( this );
 	}
 }
 
-export default FixmeValidator;
+export default OperatorValidator;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

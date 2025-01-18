@@ -33,7 +33,14 @@ import theDocConfig from './DocConfig.js';
 
 class NameFromtoRefValidator {
 
-   	/**
+	/**
+     * A counter for the errors
+     * @type {Number}
+     */
+
+	#errorCounter = 0;
+
+	/**
 	 * The route currently controlled
 	 * @type {Object}
 	 */
@@ -66,8 +73,9 @@ class NameFromtoRefValidator {
 			// no from tag
 			theReport.add (
 				'p',
-				'A from tag is not found for route'
+				'Error R002: a from tag is not found for route'
 			);
+			this.#errorCounter ++;
 		}
 		else if (
 			this.#route?.tags?.from !== this.#platforms[ 0 ]?.tags?.name
@@ -78,8 +86,9 @@ class NameFromtoRefValidator {
 			// from tag is not the same than the name of the first platform
 			theReport.add (
 				'p',
-				'The from tag is not equal to the name of the first platform for route '
+				'Error R003: the from tag is not equal to the name of the first platform for route '
 			);
+			this.#errorCounter ++;
 		}
 	}
 
@@ -93,8 +102,9 @@ class NameFromtoRefValidator {
 			// no to tag
 			theReport.add (
 				'p',
-				'A to tag is not found for route'
+				'Error R004: a to tag is not found for route'
 			);
+			this.#errorCounter ++;
 		}
 		else if (
 			this.#route?.tags?.to !== this.#platforms.toReversed ( )[ 0 ]?.tags?.name
@@ -109,8 +119,9 @@ class NameFromtoRefValidator {
 			// to tag is not the same than the name of the last platform
 			theReport.add (
 				'p',
-				'The to tag is not equal to the name of the last platform for route'
+				'Error R005: the to tag is not equal to the name of the last platform for route'
 			);
+			this.#errorCounter ++;
 		}
 	}
 
@@ -126,15 +137,17 @@ class NameFromtoRefValidator {
 			if ( this.#route?.tags?.name !== goodName ) {
 				theReport.add (
 					'p',
-					'Invalid name ("' + this.#route?.tags?.name + '" but expected "' + goodName + '") for route '
+					'Error R006: Invalid name ("' + this.#route?.tags?.name + '" but expected "' + goodName + '") for route '
 				);
+				this.#errorCounter ++;
 			}
 		}
 		else {
 			theReport.add (
 				'p',
-				'Missing from, to, ref or name tags for route'
+				'Error R007: missing from, to, ref or name tags for route'
 			);
+			this.#errorCounter ++;
 		}
 	}
 
@@ -143,9 +156,11 @@ class NameFromtoRefValidator {
 	 */
 
 	validate ( ) {
+		this.#errorCounter = 0;
 		this.#validateFrom ( );
 		this.#validateTo ( );
 		this.#validateName ( );
+		return this.#errorCounter;
 	}
 
 	/**

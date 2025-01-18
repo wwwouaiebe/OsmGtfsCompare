@@ -58,7 +58,7 @@ class TagsValidator {
 				if ( tag.isMandatory && ! this.#relation.tags [ tag.name ] ) {
 					theReport.add (
 						'p',
-						'No ' + tag.name + ' key for this route'
+						'Error T003: no ' + tag.name + ' tag'
 					);
 				}
 				if ( this.#relation.tags [ tag.name ] && tag.values ) {
@@ -66,7 +66,7 @@ class TagsValidator {
 						if ( -1 === tag.values.indexOf ( this.#relation.tags [ tag.name ] ) ) {
 							theReport.add (
 								'p',
-								'Invalid value ' + this.#relation.tags [ tag.name ] +
+								'Error T002 :invalid value ' + this.#relation.tags [ tag.name ] +
 									' for tag ' + tag.name
 							);
 						}
@@ -74,7 +74,7 @@ class TagsValidator {
 					else if ( this.#relation.tags [ tag.name ] !== tag.values ) {
 						theReport.add (
 							'p',
-							'Invalid value ' + this.#relation.tags [ tag.name ] +
+							'Error T002 :invalid value ' + this.#relation.tags [ tag.name ] +
 								' for tag ' + tag.name
 						);
 					}
@@ -95,7 +95,7 @@ class TagsValidator {
 			if ( ! this.#tags.get ( key ) ) {
 				theReport.add (
 					'p',
-					'Unuseful ' + key + ' tag for this route'
+					'Warning T001: unuseful ' + key + ' tag for this route'
 				);
 			}
 		}

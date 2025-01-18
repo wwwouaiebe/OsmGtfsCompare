@@ -227,6 +227,7 @@ class RouteMasterComparator {
 					osmRoute
 				);
 				if ( ! this.#isOsmExcluded ( osmRoute.id ) ) {
+					theReport.add ( 'h3', 'GTFS comparison results' );
 					this.#comparePlatformsHight ( osmRoute );
 				}
 			}
@@ -258,7 +259,7 @@ class RouteMasterComparator {
 									isIncluded = true;
 								}
 								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute, null );
-								theReport.addToDo ( );
+								theReport.addToDo ( 1 );
 							}
 						}
 					);
@@ -266,7 +267,7 @@ class RouteMasterComparator {
 						let isValidDate = new Date ( gtfsRoute.endDate ).valueOf ( ) > Date.now ( );
 						theReport.add ( 'p', gtfsRoute.name + ( isValidDate ? ' 🔴' : ' ⚫' ), null, gtfsRoute.shapePk );
 						if ( isValidDate ) {
-							theReport.addToDo ( );
+							theReport.addToDo ( 1 );
 						}
 					}
 				}
@@ -286,7 +287,7 @@ class RouteMasterComparator {
 		) {
 			theReport.add (
 				'p',
-				'The osm description is not equal to the GTFS route long name 🔴',
+				'Error C001: the osm description is not equal to the GTFS route long name 🔴',
 				null,
 				null
 			);

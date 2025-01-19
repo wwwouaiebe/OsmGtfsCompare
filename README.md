@@ -6,14 +6,10 @@
 
 First use your brain.
 
-### Route wihout route_master ...
+### Error M001: Route wihout route_master ...
 
 A route is not attached to a route_master. Search or create the route_master and add the route.
 It's important to fix this error first because routes without route_master are not longer controlled.
-
-### Route with more than one route_master...
-
-A route is attached to more than one route_master. Correct the route_masters and probably remove one of the route_master
 
 ### Error M003: a relation member of the route_master is not a bus/tram/subway relation
 
@@ -104,6 +100,8 @@ The role is not a valid role for a bus/tram/subway relation. Verify the role or 
 ### Warning R017: A road under construction ...  is used as way for the route
 
 ### Error R018: route with more than one route_master
+
+A route is attached to more than one route_master. Correct the route_masters and probably remove one of the route_master
 
 ### Warning R019: a fixme exists for this relation ...
 

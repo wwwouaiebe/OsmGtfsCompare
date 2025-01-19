@@ -32,6 +32,7 @@ import GtfsDataLoader from './GtfsDataLoader.js';
 import OsmGtfsComparator from './OsmGtfsComparator.js';
 import theDocConfig from './DocConfig.js';
 import OsmRouteMasterValidator from './OsmRouteMasterValidator.js';
+import MissingRouteMasterValidator from './MissingRouteMasterValidator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -69,6 +70,8 @@ class AppLoader {
 
 		// loading osm data
 		await theOsmDataLoader.fetchData (	);
+
+		await new MissingRouteMasterValidator ( ).fetchData ( );
 
 		// validating the osm routes and route master
 		new OsmRouteMasterValidator ( ).validate ( );

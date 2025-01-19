@@ -155,7 +155,7 @@ main p {
 }
 
 .isWarning {
-	color: purple;
+	color: rgb(255,0,255);
 }
 
 .isError {

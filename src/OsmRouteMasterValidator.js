@@ -173,6 +173,7 @@ class OsmRouteMasterValidator {
 	 */
 
 	#validateOnlyOneRouteMaster ( ) {
+		let errorCounter = 0;
 		theReport.add ( 'h1', 'Routes with more than one route_master' );
 		theOsmDataLoader.routes.forEach (
 			route => {
@@ -189,10 +190,13 @@ class OsmRouteMasterValidator {
 					);
 					text += ') routes:' + theReport.getOsmLink ( route );
 					theReport.add ( 'p', text );
+					errorCounter ++;
 				}
 			}
-
 		);
+		if ( 0 === errorCounter ) {
+			theReport.add ( 'p', 'Nothing found' );
+		}
 	}
 
 	/**
@@ -265,7 +269,6 @@ class OsmRouteMasterValidator {
 
 	validate ( ) {
 
-		// await new MissingRouteMasterValidator ( ).fetchData ( );
 		this.#validateOnlyOneRouteMaster ( );
 
 		theOsmDataLoader.routeMasters.forEach (

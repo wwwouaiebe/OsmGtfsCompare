@@ -27,6 +27,7 @@ import RouteMasterComparator from './RouteMasterComparator.js';
 import { theGtfsTree, theOsmTree } from './DataTree.js';
 import theReport from './Report.js';
 import theExcludeList from './ExcludeList.js';
+import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -49,6 +50,10 @@ class OsmGtfsComparator {
      */
 
 	searchMissingOsmRouteMaster ( ) {
+
+		if ( 'used' !== theDocConfig.type ) {
+			return;
+		}
 
 		theReport.add ( 'h1', 'Gtfs relations not found in the osm data' );
 
@@ -137,6 +142,10 @@ class OsmGtfsComparator {
      */
 
 	compare ( ) {
+
+		if ( 'used' !== theDocConfig.type ) {
+			return;
+		}
 
 		// loop on osm route master
 		theOsmTree.routesMaster.forEach (

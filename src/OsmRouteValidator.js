@@ -26,7 +26,7 @@ import theReport from './Report.js';
 import TagsValidator from './TagsValidator.js';
 import RolesValidator from './RolesValidator.js';
 import ContinuousRouteValidator from './ContinuousRouteValidator.js';
-import NameFromtoRefValidator from './NameFromToRefValidator.js';
+import NameFromToRefValidator from './NameFromToRefValidator.js';
 import TagsBuilder from './TagsBuilder.js';
 import FixmeValidator from './FixmeValidator.js';
 import OperatorValidator from './OperatorValidator.js';
@@ -70,13 +70,6 @@ class OsmRouteValidator {
 	#ways = [];
 
 	/**
-     * the used tags
-     * @type {Object}
-     */
-
-	#tags;
-
-	/**
 	 * Validate a route
      * @param { Object } route The route to validate
 	 */
@@ -98,16 +91,16 @@ class OsmRouteValidator {
 
 		theReport.add ( 'h3', 'Validation of tags, roles and members for route' );
 
-		new TagsValidator ( this.#route, this.#tags ).validate ( );
+		this.#errorCounter += new TagsValidator ( this.#route, TagsBuilder.RouteTags ).validate ( );
 		this.#errorCounter += new OperatorValidator ( this.#route ).validate ( );
 		this.#errorCounter += new NetworkValidator ( this.#route ).validate ( );
 		this.#errorCounter += new FixmeValidator ( this.#route ).validate ( );
 		this.#errorCounter += new RolesValidator ( this.#route, this.#platforms, this.#ways ).validate ( );
 		this.#errorCounter += new ContinuousRouteValidator ( this.#route, this.#ways ).validate ( );
-		this.#errorCounter += new NameFromtoRefValidator ( this.#route, this.#platforms ).validate ( );
+		this.#errorCounter += new NameFromToRefValidator ( this.#route, this.#platforms ).validate ( );
 
 		if ( 0 === this.#errorCounter ) {
-			theReport.add ( 'p', 'No validation errors found' );
+			theReport.add ( 'p', 'No validation errors found for route' );
 		}
 		theReport.addValidationErrors ( this.#errorCounter );
 	}
@@ -118,7 +111,6 @@ class OsmRouteValidator {
 
 	constructor ( ) {
 		Object.freeze ( this );
-		this.#tags = new TagsBuilder ( ).getRouteTags ( );
 	}
 }
 

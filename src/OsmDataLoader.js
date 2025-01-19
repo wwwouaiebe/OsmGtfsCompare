@@ -269,8 +269,8 @@ class OsmDataLoader {
 		uri =
 			'https://lz4.overpass-api.de/api/interpreter?data=[out:json][timeout:40];' +
 			'rel["network"~"' + theDocConfig.network + '"]' +
-			'["route"=' + theDocConfig.vehicle + ']' +
-			'[type="route"]' +
+			'["' + ( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route"="' + theDocConfig.vehicle + '"]' +
+			'["type"="' + ( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route"]' +
 			( '' === theDocConfig.ref ? '' : '["ref"="' + theDocConfig.ref + '"]' ) +
 			'->.rou;(.rou <<; - .rou;); >> ->.rm;.rm out;';
 

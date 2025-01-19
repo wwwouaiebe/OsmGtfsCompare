@@ -34,6 +34,13 @@ import theDocConfig from './DocConfig.js';
 class TagsValidator {
 
 	/**
+     * A counter for the errors
+     * @type {Number}
+     */
+
+	#errorCounter = 0;
+
+	/**
      * the used tags
      * @type {Object}
      */
@@ -60,6 +67,7 @@ class TagsValidator {
 						'p',
 						'Error T003: no ' + tag.name + ' tag'
 					);
+					this.#errorCounter ++;
 				}
 				if ( this.#relation.tags [ tag.name ] && tag.values ) {
 					if ( Array.isArray ( tag.values ) ) {
@@ -69,6 +77,7 @@ class TagsValidator {
 								'Error T002 :invalid value ' + this.#relation.tags [ tag.name ] +
 									' for tag ' + tag.name
 							);
+							this.#errorCounter ++;
 						}
 					}
 					else if ( this.#relation.tags [ tag.name ] !== tag.values ) {
@@ -77,6 +86,7 @@ class TagsValidator {
 							'Error T002 :invalid value ' + this.#relation.tags [ tag.name ] +
 								' for tag ' + tag.name
 						);
+						this.#errorCounter ++;
 					}
 				}
 			}
@@ -106,8 +116,12 @@ class TagsValidator {
      */
 
 	validate ( ) {
+		this.#errorCounter = 0;
+
 		this.#searchMissingTags ( );
 		this.#searchUnusefulTags ( );
+
+		return this.#errorCounter;
 	}
 
 	/**

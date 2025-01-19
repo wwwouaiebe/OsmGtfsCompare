@@ -66,12 +66,20 @@ class OperatorValidator {
 			if ( ! validOperatorFound ) {
 				theReport.add (
 					'p',
-					'Error R020: the operator is not valid ( expected '
+					'Error T004: the operator is not valid ( expected '
 					+ theOperator.osmOperator + ' but found ' + this.#osmObject?.tags?.operator + ' )'
 				);
 				this.#errorCounter ++;
 			}
 		}
+		else {
+			theReport.add (
+				'p',
+				'Error T005: no operator tag found'
+			);
+			this.#errorCounter ++;
+		}
+
 		return this.#errorCounter;
 	}
 

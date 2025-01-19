@@ -35,6 +35,8 @@ Verify the ref tag of the route and on the route master
 
 The name must be 'Bus ' or 'Tram ' or 'Subway' + the value of the ref tag
 
+### Error M008:
+
 ### Error R001: hole found for route ... between way id ... and way id ...
 
 A hole is found in the ways of the bus/tram/subway route. Verify the order of the ways and verify if a way is not missing.
@@ -62,10 +64,6 @@ is also valid
 ### Error R006: invalid name for route ...
 
 The name of a route must be 'Bus ' + the ref tag of the route + ': ' + the from tag of the route + ' → ' + the to tag of the route
-
-### Error R007: missing from, to, ref or name tags for route ...
-
-A tag name, from, to or ref is missing
 
 ### Error R008: an unordered object with a role ... is found in the ways of route ...
 
@@ -109,14 +107,22 @@ The role is not a valid role for a bus/tram/subway relation. Verify the role or 
 
 ### Warning R019: a fixme exists for this relation ...
 
-### Error R020: the operator is not valid for this route ... 
+### Error R020: a ref tag is not found for route
 
-### Error R021: the network is not valid for this route ...
+### Error R021: a name tag is not found for route
 
 ### Warning T001: unuseful ... tag
 
 ### Error T002: invalid value ... for tag...
 
 ### Error T003: no ... tag
+
+### Error T004: the operator tag is not valid  ... 
+
+### Error T005: no operator tag found
+
+### Error T006: the network tag is not valid  ...
+
+### Error T007: no network tag found
 
 ### Error C001: the osm description is not equal to the GTFS route long name

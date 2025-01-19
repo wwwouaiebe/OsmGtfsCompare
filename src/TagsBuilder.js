@@ -41,6 +41,7 @@ class TagsBuilder {
 	 * @type {Array}
 	 */
 
+	/*
 	#customTags = [
 		{
 			network : 'TECL',
@@ -143,57 +144,48 @@ class TagsBuilder {
 			]
 		}
 	];
-
-	/**
-	 * The default tags
-	 * @type {Object}
-	 */
-
-	#defaultTags = {
-		routeTags : [
-			new TagValue ( 'from', true ),
-			new TagValue ( 'name', true ),
-			new TagValue ( 'network', true, [ 'TECB', 'TECC', 'TECH', 'TECL', 'TECN', 'TECX', 'IBXL' ] ),
-			new TagValue ( 'operator', true, [ 'TEC', 'STIB/MIVB' ] ),
-			new TagValue ( 'public_transport:version', true, '2' ),
-			new TagValue ( 'ref', true ),
-			new TagValue ( 'route', true, [ 'bus', 'subway', 'tram' ] ),
-			new TagValue ( 'to', true ),
-			new TagValue ( 'type', true, 'route' )
-		],
-		routeMasterTags : [
-			new TagValue ( 'name', true ),
-			new TagValue ( 'network', true, [ 'TECB', 'TECC', 'TECH', 'TECL', 'TECN', 'TECX', 'IBXL' ] ),
-			new TagValue ( 'operator', true, [ 'TEC', 'STIB/MIVB' ] ),
-			new TagValue ( 'ref', true ),
-			new TagValue ( 'description', true ),
-			new TagValue ( 'route_master', true, [ 'bus', 'subway', 'tram' ] ),
-			new TagValue ( 'type', true, 'route_master' )
-		]
-	};
+	*/
 
 	/**
 	 * Get the route tags to verify
-	 * @returns {Object} the route tags to verify
+	 * @type {Array}
 	 */
 
-	getRouteTags ( ) {
-		let customTags =
-			this.#customTags.find ( element => element.network === theDocConfig.network && element.type === theDocConfig.type );
-
-		return customTags?.routeTags || this.#defaultTags.routeTags;
+	static get RouteTags ( ) {
+		return [
+			new TagValue ( 'public_transport:version', true, '2' ),
+			new TagValue (
+				( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route',
+				 true,
+				 theDocConfig.vehicle
+			),
+			new TagValue (
+				'type',
+				true,
+				( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route'
+			)
+		];
 	}
 
 	/**
 	 * Get the route_master tags to verify
-	 * @returns {Object}  the route_master tags to verify
+	 * @type {Array}
 	 */
 
-	getRouteMasterTags ( ) {
-		let customTags =
-			this.#customTags.find ( element => element.network === theDocConfig.network && element.type === theDocConfig.type );
-
-		return customTags?.routeMasterTags || this.#defaultTags.routeMasterTags;
+	static get RouteMasterTags ( ) {
+		return [
+			new TagValue ( 'description', true ),
+			new TagValue (
+				( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route_master',
+				 true,
+				 theDocConfig.vehicle
+			),
+			new TagValue (
+				'type',
+				true,
+				( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route_master'
+			)
+		];
 	}
 
 	/**

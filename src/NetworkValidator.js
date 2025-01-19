@@ -23,6 +23,7 @@ Changes:
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theDocConfig from './DocConfig.js';
+import theReport from './Report.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -66,12 +67,20 @@ class NetworkValidator {
 			if ( ! validNetworkFound ) {
 				theReport.add (
 					'p',
-					'Error R021: the network is not valid ( expected '
+					'Error T006: the network is not valid ( expected '
 					+ theDocConfig.network + ' but found ' + this.#osmObject?.tags?.network + ' )'
 				);
 				this.#errorCounter ++;
 			}
 		}
+		else {
+			theReport.add (
+				'p',
+				'Error T007: no network tag found'
+			);
+			this.#errorCounter ++;
+		}
+
 		return this.#errorCounter;
 	}
 

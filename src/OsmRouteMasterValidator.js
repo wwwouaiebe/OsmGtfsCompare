@@ -207,12 +207,12 @@ class OsmRouteMasterValidator {
 
 	#isOsmExcluded ( osmId ) {
 		const excludeData = theExcludeList.getOsmData ( osmId );
-		if ( excludeData?.note ) {
-			theReport.add ( 'p', excludeData.note );
-		}
 		if ( excludeData?.reason ) {
 			theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
 			return true;
+		}
+		if ( excludeData?.note ) {
+			theReport.add ( 'p', excludeData.note );
 		}
 		return false;
 	}

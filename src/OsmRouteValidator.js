@@ -31,6 +31,7 @@ import TagsBuilder from './TagsBuilder.js';
 import FixmeValidator from './FixmeValidator.js';
 import OperatorValidator from './OperatorValidator.js';
 import NetworkValidator from './NetworkValidator.js';
+import theExcludeList from './ExcludeList.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -70,6 +71,24 @@ class OsmRouteValidator {
 	#ways = [];
 
 	/**
+	 * Coming soon
+	 * @param {String} osmId Coming soon
+	 * @returns {boolean} Coming soon
+	 */
+
+	#isOsmExcluded ( osmId ) {
+		const excludeData = theExcludeList.getOsmData ( osmId );
+		if ( excludeData?.reason ) {
+			theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
+			return true;
+		}
+		if ( excludeData?.note ) {
+			theReport.add ( 'p', excludeData.note );
+		}
+		return false;
+	}
+
+	/**
 	 * Validate a route
      * @param { Object } route The route to validate
 	 */
@@ -88,6 +107,10 @@ class OsmRouteValidator {
 			( this.#route.tags.via ? 'via ' + this.#route.tags.via.replace ( ';', ', ' ) + ' ' : '' ),
 			this.#route
 		);
+
+		if ( this.#isOsmExcluded ( this.#route.id ) ) {
+			return;
+		}
 
 		theReport.add ( 'h3', 'Validation of tags, roles and members for route' );
 

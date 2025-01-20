@@ -455,7 +455,7 @@
 						},
 						{
 							"id" : 18242732,
-							"note" : "Missing platforms LLrc1652 and LLrc1992 and LLrcour2 are on the GTFS files, on the schedule and on WalOnMap but not on the field",
+							"note" : "Missing platforms LLrc1652, LLrc1992 and LLrcour2 are on the GTFS files, on the schedule and on WalOnMap but not on the field",
 							"name" : "Bus 388: Spa Pompea → Theux Saint-Roch"
 						}
 					],

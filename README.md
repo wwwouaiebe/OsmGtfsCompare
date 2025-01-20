@@ -1,6 +1,7 @@
 # OsmGtfsCompare
 
 This application checks the data entered into OSM for a bus network and compares this network with the contents of the GTFS files.
+
 Select a network, a vehicle and a type ("proposed" is only for TECL) and click an the go btton.
 Wait till the red animation stop.
 
@@ -162,6 +163,8 @@ with the GTFS data (see route_master ref 63 for the TECX network or ref 1 or 2 f
 
 ## GTFS comparison errors and how to solve
 
+__It's better that all the validation errors will be fixed before starting to fix the GTFS comparison errors__.
+
 For each OSM bus route, the apps search a similar GTFS route, comparing the bus_stop between OSM and GTFS.
 
 First the apps search a GTFS route with the same bus_stop than in the OSM route and in the same order. 
@@ -180,14 +183,18 @@ of bus_stop to remove.
 
 If not found, a error is diplayed with a red bullet "No gtfs route found 🔴"
 
-And finally is list of all GTFS routes that cannot be linked to an OSM route is displayed
+And finally a list of all GTFS routes that cannot be linked to an OSM route is displayed
 - with a red bullet 🔴
 - with a purple bullet 🟣 when the GTFS route is a part of a already existing OSM route. In that case a list of the OSM routes is also displayed.
 -with a black bullet ⚫ when the validity end date of the GTFS route is in the past
 
 When all osm route_master and routes are linked and displayed , a list of the GTFS route_master not linked to an osm_route_master is displayed.
 
-''Be carefull before deleting an OSM route that seems not linked to a GTFS route! Verify and compare!''
+__Be carefull before deleting an OSM route that seems not linked to a GTFS route! Verify and compare!__
+
+__Fixing the comparison errors is not easy, so first use your brain, then use your brain and finally use your brain!__
+
+Good luck
 
 
 

@@ -81,6 +81,9 @@ class RouteMasterComparator {
 				}
 			);
 		theReport.add ( 'p', 'Platforms to remove in the osm relation:' + missingGtfsPlatforms );
+		if ( '' === missingOsmPlatforms && '' === missingOsmPlatforms ) {
+			theReport.add ( 'p', 'No platforms to add or to remove. Verify the order of the platforms and the duplicates' );
+		}
 	}
 
 	/**

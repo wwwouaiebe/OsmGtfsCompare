@@ -213,7 +213,7 @@ class OsmDataLoader {
 
 		theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
 		if ( 0 === this.#platformsWithMoreThanOneRef.length ) {
-			theReport.add ( 'p', 'Nothing found');
+			theReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			this.#platformsWithMoreThanOneRef.forEach (
@@ -225,7 +225,7 @@ class OsmDataLoader {
 
 		theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
 		if ( 0 === this.#platformsWithoutNetwork.length ) {
-			theReport.add ( 'p', 'Nothing found');
+			theReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			this.#platformsWithoutNetwork.forEach (
@@ -238,7 +238,7 @@ class OsmDataLoader {
 
 		theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
 		if ( 0 === this.#platformsWithoutOperator.length ) {
-			theReport.add ( 'p', 'Nothing found');
+			theReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			this.#platformsWithoutOperator.forEach (

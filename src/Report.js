@@ -163,11 +163,6 @@ class Report {
 
 	/**
 	 * Coming soon
-	 * @param {Number} quantity
-	 */
-
-	/**
-	 * Coming soon
 	 * @param {String} htmlTag Coming soon
 	 * @param {String} text Coming soon
 	 * @param {Object} osmObject Coming soon

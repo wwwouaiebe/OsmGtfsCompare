@@ -234,12 +234,12 @@ class OsmRouteMasterValidator {
 			this.#routeMaster
 		);
 
-		// heading for validation
-		theReport.add ( 'h3', 'Validation of tags, roles and members for route master' );
-
 		if ( this.#isOsmExcluded ( this.#routeMaster.id ) ) {
 			return;
 		}
+
+		// heading for validation
+		theReport.add ( 'h3', 'Validation of tags, roles and members for route master' );
 
 		// validation of the route_master
 		this.#errorCounter += new TagsValidator ( this.#routeMaster, TagsBuilder.RouteMasterTags ).validate ( );

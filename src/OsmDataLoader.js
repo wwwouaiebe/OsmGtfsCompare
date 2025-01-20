@@ -211,24 +211,36 @@ class OsmDataLoader {
 			}
 		);
 
-		if ( 0 !== this.#platformsWithMoreThanOneRef.length ) {
-			theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
+		theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
+		if ( 0 === this.#platformsWithMoreThanOneRef.length ) {
+			theReport.add ( 'p', 'Nothing found');
+		}
+		else {
 			this.#platformsWithMoreThanOneRef.forEach (
 				osmObject => {
 					theReport.add ( 'p', osmObject.tags.name + osmObject.tags[ 'ref:' + theDocConfig.network ], osmObject );
 				}
 			);
 		}
-		if ( 0 !== this.#platformsWithoutNetwork.length ) {
-			theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
+
+		theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
+		if ( 0 === this.#platformsWithoutNetwork.length ) {
+			theReport.add ( 'p', 'Nothing found');
+		}
+		else {
 			this.#platformsWithoutNetwork.forEach (
 				osmObject => {
 					theReport.add ( 'p', osmObject.tags.name + '- network : ' + ( osmObject.tags.network ?? '' ), osmObject );
 				}
 			);
+
 		}
-		if ( 0 !== this.#platformsWithoutOperator.length ) {
-			theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
+
+		theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
+		if ( 0 === this.#platformsWithoutOperator.length ) {
+			theReport.add ( 'p', 'Nothing found');
+		}
+		else {
 			this.#platformsWithoutOperator.forEach (
 				osmObject => {
 					theReport.add ( 'p', osmObject.tags.name + '- operator : ' + ( osmObject.tags.operator ?? '' ), osmObject );

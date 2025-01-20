@@ -129,8 +129,10 @@ class OsmTreeRouteMaster {
 		osmRouteMaster.members.forEach (
 			osmRouteMasterMember => {
 				let osmRoute = theOsmDataLoader.routes.get ( osmRouteMasterMember.ref );
-				let osmTreeRoute = new OsmTreeRoute ( osmRoute );
-				this.#routes.push ( osmTreeRoute );
+				if ( osmRoute ) {
+					let osmTreeRoute = new OsmTreeRoute ( osmRoute );
+					this.#routes.push ( osmTreeRoute );
+				}
 			}
 		);
 

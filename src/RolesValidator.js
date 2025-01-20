@@ -103,7 +103,7 @@ class RolesValidator {
 			if ( 'bus_stop' !== busStop?.tags?.highway ) {
 				theReport.add (
 					'p',
-					'Error R009: an invalid node (' + theReport.getOsmLink ( member ) +
+					'Error R009: an invalid node (' + theReport.getOsmLink ( busStop ) +
 						') is used as platform for the route'
 				);
 				this.#errorCounter ++;
@@ -139,7 +139,7 @@ class RolesValidator {
 			if ( 'stop_position' !== stopPosition?.tags?.public_transport ) {
 				theReport.add (
 					'p',
-					'Error R011: an invalid node (' + theReport.getOsmLink ( member ) +
+					'Error R011: an invalid node (' + theReport.getOsmLink ( stopPosition ) +
 						') is used as stop_position for the route'
 				);
 				this.#errorCounter ++;
@@ -293,6 +293,8 @@ class RolesValidator {
 					this.#validatePlatformRole ( member );
 					break;
 				case 'stop' :
+				case 'stop_entry_only' :
+				case 'stop_exit_only' :
 					this.#validateStopRole ( member );
 					break;
 				case '' :

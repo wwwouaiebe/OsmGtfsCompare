@@ -227,7 +227,7 @@ class RouteMasterComparator {
 					osmRoute
 				);
 				if ( ! this.#isOsmExcluded ( osmRoute.id ) ) {
-					theReport.add ( 'h3', 'GTFS comparison results' );
+					theReport.add ( 'h3', 'GTFS comparison results for route' );
 					this.#comparePlatformsHight ( osmRoute );
 				}
 			}
@@ -287,9 +287,12 @@ class RouteMasterComparator {
 		) {
 			theReport.add (
 				'p',
-				'Error C001: the osm description is not equal to the GTFS route long name 🔴',
-				null,
-				null
+				'Error C001: the osm description of the route_master ( ' +
+				this.#osmRouteMaster.description +
+				') is not equal to the GTFS route long name ( ' +
+				this.#gtfsRouteMaster.description +
+				' )',
+				this.#osmRouteMaster
 			);
 			return false;
 		}
@@ -316,6 +319,7 @@ class RouteMasterComparator {
 			return;
 		}
 
+		theReport.add ( 'h3', 'GTFS comparison results for route_master');
 		if ( ! this.#compareRouteMasterDescription ( ) ) {
 			return;
 		}

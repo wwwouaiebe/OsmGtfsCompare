@@ -120,7 +120,7 @@ class NameFromToRefValidator {
 		theDocConfig.vehicle.substring ( 1 ) + ' ';
 		if ( this.#haveTagsNameFromToRef ( ) ) {
 			let goodName = vehicle + this.#route?.tags?.ref + ': ' + this.#route?.tags?.from + ' → ' + this.#route?.tags?.to;
-			if ( this.#route?.tags?.name !== goodName ) {
+			if ( this.#route?.tags?.name.replaceAll ( '=>', '→' ) !== goodName ) {
 				theReport.add (
 					'p',
 					'Error R006: Invalid name ("' + this.#route?.tags?.name + '" but expected "' + goodName + '") for route '

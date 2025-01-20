@@ -102,7 +102,6 @@ class OsmRouteValidator {
 		if ( 0 === this.#errorCounter ) {
 			theReport.add ( 'p', 'No validation errors found for route' );
 		}
-		theReport.addValidationErrors ( this.#errorCounter );
 	}
 
  	/**

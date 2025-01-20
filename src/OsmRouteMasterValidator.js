@@ -134,7 +134,7 @@ class OsmRouteMasterValidator {
 		if ( ! this.#routeMaster?.tags?.name ) {
 			theReport.add (
 				'p',
-				'Error M008: No name tag for route_master'
+				'Error M008: no name tag for route_master'
 			);
 			this.#errorCounter ++;
 		}
@@ -235,10 +235,7 @@ class OsmRouteMasterValidator {
 		);
 
 		// heading for validation
-		theReport.add (
-			'h3',
-			'Validation of tags, roles and members for route master'
-		);
+		theReport.add ( 'h3', 'Validation of tags, roles and members for route master' );
 
 		if ( this.#isOsmExcluded ( this.#routeMaster.id ) ) {
 			return;
@@ -248,7 +245,7 @@ class OsmRouteMasterValidator {
 		this.#errorCounter += new TagsValidator ( this.#routeMaster, TagsBuilder.RouteMasterTags ).validate ( );
 		this.#errorCounter += new OperatorValidator ( this.#routeMaster ).validate ( );
 		this.#errorCounter += new NetworkValidator ( this.#routeMaster ).validate ( );
-		this.#errorCounter += new FixmeValidator ( ).validate ( this.#routeMaster );
+		this.#errorCounter += new FixmeValidator ( this.#routeMaster ).validate ( );
 
 		this.#validateMembers ( );
 		this.#validateRefTag ( );
@@ -258,9 +255,9 @@ class OsmRouteMasterValidator {
 		if ( 0 === this.#errorCounter ) {
 			theReport.add ( 'p', 'No validation errors found for route_master' );
 		}
-		theReport.addValidationErrors ( this.#errorCounter );
 
 		this.#validateRoutes ( );
+
 	}
 
 	/**

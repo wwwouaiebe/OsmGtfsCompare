@@ -71,7 +71,8 @@ class Report {
 		doneNotOk : 0,
 		doneOk : 0,
 		toDo : 0,
-		validationErrors : 0
+		validationErrors : 0,
+		validationWarnings : 0
 	};
 
 	/**
@@ -110,6 +111,10 @@ class Report {
 		htmlElement = document.createElement ( 'p' );
 		htmlElement.textContent = 'Validation errors to fix: ' + this.#stats.validationErrors;
 		this.#report.insertBefore ( htmlElement, firstChild );
+
+		htmlElement = document.createElement ( 'p' );
+		htmlElement.textContent = 'Validation warnings nice to fix: ' + this.#stats.validationWarnings;
+		this.#report.insertBefore ( htmlElement, firstChild );
 	}
 
 	/**
@@ -121,6 +126,8 @@ class Report {
 		this.#stats.doneOk = 0;
 		this.#stats.toDo = 0;
 		this.#stats.validationErrors = 0;
+		this.#stats.validationWarnings = 0;
+
 		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
 		this.#report = document.getElementById ( 'report' );
 		this.#report.classList.remove ( 'errorsOnly' );
@@ -159,10 +166,6 @@ class Report {
 	 * @param {Number} quantity
 	 */
 
-	addValidationErrors ( quantity ) {
-		this.#stats.validationErrors += quantity;
-	}
-
 	/**
 	 * Coming soon
 	 * @param {String} htmlTag Coming soon
@@ -176,10 +179,11 @@ class Report {
 
 		let htmlElement = document.createElement ( htmlTag );
 
+		// console.log ( 'htmltag ' + htmlTag + ' - text ' + text );
 		switch ( htmlTag ) {
 		case 'h1' :
 			if ( osmObject ) {
-				this.#currentH1Div = document.getElementById ( 'routeMaster' + osmObject.id );
+				this.#currentH1Div = document.getElementById ( 'osm' + osmObject.id );
 			}
 			else {
 				this.#currentH1Div = null;
@@ -187,7 +191,7 @@ class Report {
 			if ( ! this.#currentH1Div ) {
 				this.#currentH1Div = document.createElement ( 'div' );
 				if ( osmObject ) {
-					this.#currentH1Div.id = 'routeMaster' + osmObject.id;
+					this.#currentH1Div.id = 'osm' + osmObject.id;
 				}
 				this.#report.appendChild ( this.#currentH1Div );
 				this.#currentH1Div.appendChild ( htmlElement );
@@ -197,7 +201,7 @@ class Report {
 			break;
 		case 'h2' :
 			if ( osmObject ) {
-				this.#currentH2Div = document.getElementById ( 'route' + osmObject.id );
+				this.#currentH2Div = document.getElementById ( 'osm' + osmObject.id );
 			}
 			else {
 				this.#currentH2Div = null;
@@ -240,10 +244,12 @@ class Report {
 
 		if ( text.startsWith ( 'Error' ) ) {
 			htmlElement.classList.add ( 'isError' );
+			this.#stats.validationErrors ++;
 		}
 
 		if ( text.startsWith ( 'Warning' ) ) {
 			htmlElement.classList.add ( 'isWarning' );
+			this.#stats.validationWarnings ++;
 		}
 
 		if (
@@ -269,13 +275,6 @@ class Report {
 				this.#currentH1Div.classList.add ( 'haveErrors' );
 			}
 		}
-
-		/*
-		else {
-			htmlElement.classList.add ( 'noErrors' );
-		}
-		*/
-
 	}
 
 	/**
@@ -316,14 +315,21 @@ class Report {
 	 */
 
 	getOsmLink ( osmObject ) {
-		if ( ! osmObject?.id || ! osmObject?.type ) {
+		let osmId = '';
+		if ( osmObject?.id && osmObject?.type ) {
+			osmId = osmObject.id;
+		}
+		else if ( osmObject?.ref && osmObject?.type ) {
+			osmId = osmObject.ref;
+		}
+		else {
 			return '';
 		}
-		let osmId = osmObject.id;
 		let osmType = osmObject.type;
+
 		return '<a target="_blank" href="https://www.openstreetmap.org/' +
-				osmType +
-                '/' + osmId + '"> ' + osmType + ' : ' + osmId + '</a>';
+			osmType +
+			'/' + osmId + '"> ' + osmType + ' : ' + osmId + '</a>';
 	}
 
 	/**

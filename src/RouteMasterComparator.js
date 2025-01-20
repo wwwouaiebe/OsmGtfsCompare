@@ -291,11 +291,11 @@ class RouteMasterComparator {
 				this.#osmRouteMaster.description +
 				') is not equal to the GTFS route long name ( ' +
 				this.#gtfsRouteMaster.description +
-				' )',
-				this.#osmRouteMaster
+				' )'
 			);
 			return false;
 		}
+		theReport.add ( 'p', 'No validation errors found for route_master' );
 
 		return true;
 	}
@@ -319,10 +319,9 @@ class RouteMasterComparator {
 			return;
 		}
 
-		theReport.add ( 'h3', 'GTFS comparison results for route_master');
-		if ( ! this.#compareRouteMasterDescription ( ) ) {
-			return;
-		}
+		theReport.add ( 'h3', 'GTFS comparison results for route_master' );
+
+		this.#compareRouteMasterDescription ( );
 
 		this.#compareRoutes ( );
 

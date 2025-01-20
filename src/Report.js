@@ -60,7 +60,7 @@ class Report {
 	 * @type {Object}
 	 */
 
-	#currentH3Div = null;
+	#currentDataDiv = null;
 
 	/**
 	 * Coming soon
@@ -184,52 +184,48 @@ class Report {
 		case 'h1' :
 			if ( osmObject ) {
 				this.#currentH1Div = document.getElementById ( 'osm' + osmObject.id );
+				this.#currentDataDiv = document.getElementById ( 'osm' + osmObject.id + 'DataDiv' );
 			}
 			else {
 				this.#currentH1Div = null;
 			}
 			if ( ! this.#currentH1Div ) {
 				this.#currentH1Div = document.createElement ( 'div' );
-				if ( osmObject ) {
-					this.#currentH1Div.id = 'osm' + osmObject.id;
-				}
 				this.#report.appendChild ( this.#currentH1Div );
 				this.#currentH1Div.appendChild ( htmlElement );
+				this.#currentDataDiv = document.createElement ( 'div' );
+				this.#currentH1Div.appendChild ( this.#currentDataDiv );
+				if ( osmObject ) {
+					this.#currentH1Div.id = 'osm' + osmObject.id;
+					this.#currentDataDiv.id = 'osm' + osmObject.id + 'DataDiv';
+				}
 			}
 			this.#currentH2Div = null;
-			this.#currentH3Div = null;
 			break;
 		case 'h2' :
 			if ( osmObject ) {
 				this.#currentH2Div = document.getElementById ( 'osm' + osmObject.id );
+				this.#currentDataDiv = document.getElementById ( 'osm' + osmObject.id + 'DataDiv' );
 			}
 			else {
 				this.#currentH2Div = null;
 			}
 			if ( ! this.#currentH2Div ) {
 				this.#currentH2Div = document.createElement ( 'div' );
-				if ( osmObject ) {
-					this.#currentH2Div.id = 'route' + osmObject.id;
-				}
 				this.#currentH1Div.appendChild ( this.#currentH2Div );
 				this.#currentH2Div.appendChild ( htmlElement );
+				this.#currentDataDiv = document.createElement ( 'div' );
+				this.#currentH2Div.appendChild ( this.#currentDataDiv );
+				if ( osmObject ) {
+					this.#currentH2Div.id = 'osm' + osmObject.id;
+					this.#currentDataDiv.id = 'osm' + osmObject.id + 'DataDiv';
+				}
 			}
-			this.#currentH3Div = null;
 			break;
 		case 'h3' :
-			this.#currentH3Div = document.createElement ( 'div' );
-			( this.#currentH2Div || this.#currentH1Div ).appendChild ( this.#currentH3Div );
-			this.#currentH3Div.appendChild ( htmlElement );
-			break;
 		case 'p' :
-			if ( this.#currentH3Div ) {
-				this.#currentH3Div.appendChild ( htmlElement );
-			}
-			else if ( this.#currentH2Div ) {
-				this.#currentH2Div.appendChild ( htmlElement );
-			}
-			else if ( this.#currentH1Div ) {
-				this.#currentH1Div.appendChild ( htmlElement );
+			if ( this.#currentDataDiv ) {
+				this.#currentDataDiv.appendChild ( htmlElement );
 			}
 			break;
 		default :
@@ -265,8 +261,8 @@ class Report {
 			||
 			text.startsWith ( 'Warning' )
 		) {
-			if ( this.#currentH3Div ) {
-				this.#currentH3Div.classList.add ( 'haveErrors' );
+			if ( this.#currentDataDiv ) {
+				this.#currentDataDiv.classList.add ( 'haveErrors' );
 			}
 			if ( this.#currentH2Div ) {
 				this.#currentH2Div.classList.add ( 'haveErrors' );

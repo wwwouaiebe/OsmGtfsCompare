@@ -81,6 +81,9 @@ class RouteMasterComparator {
 				}
 			);
 		theReport.add ( 'p', 'Platforms to remove in the osm relation:' + missingGtfsPlatforms );
+		if ( '' === missingOsmPlatforms && '' === missingOsmPlatforms ) {
+			theReport.add ( 'p', 'No platforms to add or to remove. Verify the order of the platforms and the duplicates' );
+		}
 	}
 
 	/**
@@ -208,11 +211,7 @@ class RouteMasterComparator {
 
 	#isOsmExcluded ( osmId ) {
 		const excludeData = theExcludeList.getOsmData ( osmId );
-		if ( excludeData?.note ) {
-			theReport.add ( 'p', excludeData.note );
-		}
 		if ( excludeData?.reason ) {
-			theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
 			return true;
 		}
 		return false;
@@ -220,47 +219,29 @@ class RouteMasterComparator {
 
 	/**
 	 * Coming soon
-	 * @param {Object} osmRouteMaster Coming soon
-	 * @param {Object} gtfsRouteMaster Coming soon
 	 */
 
-	compare ( osmRouteMaster, gtfsRouteMaster ) {
-		this.#gtfsRouteMaster = gtfsRouteMaster;
-		this.#osmRouteMaster = osmRouteMaster;
-		theReport.add (
-			'h1',
-			this.#osmRouteMaster.name + ': ' + ( this.#osmRouteMaster.description ?? '' ),
-			this.#osmRouteMaster
-		);
-
-		if (
-			( this.#osmRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
-			!==
-			( this.#gtfsRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
-		) {
-			theReport.add (
-				'p',
-				'The osm description is not equal to the GTFS route long name 🔴',
-				null,
-				null
-			);
-		}
-
-		// console.log ( osmRouteMaster );
-		// console.log ( gtfsRouteMaster );
-
-		if ( this.#isOsmExcluded ( osmRouteMaster.id ) ) {
-			return;
-		}
-
+	#compareRoutes ( ) {
 		this.#osmRouteMaster.routes.forEach (
 			osmRoute => {
-				theReport.add ( 'h2', osmRoute.name, osmRoute );
+				theReport.add (
+					'h2',
+					osmRoute.name + ( osmRoute.via ? ' via ' + osmRoute.via.replaceAll ( ';', ', ' ) : '' ),
+					osmRoute
+				);
 				if ( ! this.#isOsmExcluded ( osmRoute.id ) ) {
+					theReport.add ( 'h3', 'GTFS comparison results for route' );
 					this.#comparePlatformsHight ( osmRoute );
 				}
 			}
 		);
+	}
+
+	/**
+	 * Coming soon
+	 */
+
+	#reportMissingOsmRoutes ( ) {
 		let addHeading = true;
 		this.#gtfsRouteMaster.routes.sort (
 			( first, second ) => first.name.localeCompare ( second.name )
@@ -281,7 +262,7 @@ class RouteMasterComparator {
 									isIncluded = true;
 								}
 								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute, null );
-								theReport.addToDo ( );
+								theReport.addToDo ( 1 );
 							}
 						}
 					);
@@ -289,12 +270,65 @@ class RouteMasterComparator {
 						let isValidDate = new Date ( gtfsRoute.endDate ).valueOf ( ) > Date.now ( );
 						theReport.add ( 'p', gtfsRoute.name + ( isValidDate ? ' 🔴' : ' ⚫' ), null, gtfsRoute.shapePk );
 						if ( isValidDate ) {
-							theReport.addToDo ( );
+							theReport.addToDo ( 1 );
 						}
 					}
 				}
 			}
 		);
+	}
+
+	/**
+	 * Coming soon
+	 */
+
+	#compareRouteMasterDescription ( ) {
+		if (
+			( this.#osmRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
+			!==
+			( this.#gtfsRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
+		) {
+			theReport.add (
+				'p',
+				'Error C001: the osm description of the route_master ( ' +
+				this.#osmRouteMaster.description +
+				') is not equal to the GTFS route long name ( ' +
+				this.#gtfsRouteMaster.description +
+				' )'
+			);
+			return false;
+		}
+		theReport.add ( 'p', 'No validation errors found for route_master' );
+
+		return true;
+	}
+
+	/**
+	 * Coming soon
+	 * @param {Object} osmRouteMaster Coming soon
+	 * @param {Object} gtfsRouteMaster Coming soon
+	 */
+
+	compare ( osmRouteMaster, gtfsRouteMaster ) {
+		this.#gtfsRouteMaster = gtfsRouteMaster;
+		this.#osmRouteMaster = osmRouteMaster;
+		theReport.add (
+			'h1',
+			this.#osmRouteMaster.name + ': ' + ( this.#osmRouteMaster.description ?? '' ),
+			this.#osmRouteMaster
+		);
+
+		if ( this.#isOsmExcluded ( osmRouteMaster.id ) ) {
+			return;
+		}
+
+		theReport.add ( 'h3', 'GTFS comparison results for route_master' );
+
+		this.#compareRouteMasterDescription ( );
+
+		this.#compareRoutes ( );
+
+		this.#reportMissingOsmRoutes ( );
 	}
 
 	/**

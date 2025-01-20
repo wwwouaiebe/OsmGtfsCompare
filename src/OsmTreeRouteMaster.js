@@ -24,6 +24,7 @@ Doc reviewed 20250110
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import OsmTreeRoute from './OsmTreeRoute.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -113,10 +114,9 @@ class OsmTreeRouteMaster {
 	/**
 	 * The constructor
 	 * @param {Object} osmRouteMaster
-	 * @param {Object} osmDataLoader
 	 */
 
-	constructor ( osmRouteMaster, osmDataLoader ) {
+	constructor ( osmRouteMaster ) {
 
 		this.#ref = osmRouteMaster.tags.ref;
 
@@ -128,9 +128,11 @@ class OsmTreeRouteMaster {
 
 		osmRouteMaster.members.forEach (
 			osmRouteMasterMember => {
-				let osmRoute = osmDataLoader.routes.get ( osmRouteMasterMember.ref );
-				let osmTreeRoute = new OsmTreeRoute ( osmRoute, osmDataLoader );
-				this.#routes.push ( osmTreeRoute );
+				let osmRoute = theOsmDataLoader.routes.get ( osmRouteMasterMember.ref );
+				if ( osmRoute ) {
+					let osmTreeRoute = new OsmTreeRoute ( osmRoute );
+					this.#routes.push ( osmTreeRoute );
+				}
 			}
 		);
 

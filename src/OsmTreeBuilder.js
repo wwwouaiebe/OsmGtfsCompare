@@ -25,6 +25,7 @@ Doc reviewed 20250110
 
 import { theOsmTree } from './DataTree.js';
 import OsmTreeRouteMaster from './OsmTreeRouteMaster.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -38,49 +39,18 @@ class OsmTreeBuilder {
 	 * Coming soon
 	 */
 
-	#sortRoutesMaster ( ) {
-		theOsmTree.routesMaster.sort (
-			( first, second ) => {
-
-				// split the name into the numeric part and the alphanumeric part:
-				// numeric part
-				let firstPrefix = String ( Number.parseInt ( first.ref ) );
-				let secondPrefix = String ( Number.parseInt ( second.ref ) );
-
-				// alpha numeric part
-				let firstPostfix = ( first.ref ?? '' ).replace ( firstPrefix, '' );
-				let secondPostfix = ( second.ref ?? '' ).replace ( secondPrefix, '' );
-
-				// complete the numeric part with spaces on the left and compare
-				let result =
-					( firstPrefix.padStart ( 5, ' ' ) + firstPostfix )
-						.localeCompare ( secondPrefix.padStart ( 5, ' ' ) + secondPostfix );
-
-				return result;
-			}
-		);
-	}
-
-	/**
-	 * Coming soon
-	 * @param {OsmDataLoader} osmDataLoader Coming soon
-	 */
-
-	buildTree ( osmDataLoader ) {
+	buildTree ( ) {
 
 		theOsmTree.clear ( );
-
-		osmDataLoader.routeMasters.forEach (
+		theOsmDataLoader.routeMasters.forEach (
 			osmRouteMaster => {
-				let osmTreeRouteMaster = new OsmTreeRouteMaster ( osmRouteMaster, osmDataLoader );
+				let osmTreeRouteMaster = new OsmTreeRouteMaster ( osmRouteMaster );
 				osmTreeRouteMaster.routes.sort (
 					( first, second ) => first.name.localeCompare ( second.name )
 				);
 				theOsmTree.routesMaster.push ( osmTreeRouteMaster );
 			}
 		);
-
-		this.#sortRoutesMaster ( );
 	}
 
 	/**

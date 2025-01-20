@@ -26,6 +26,7 @@ Doc reviewed 20250110
 import theDocConfig from './DocConfig.js';
 import theExcludeList from './ExcludeList.js';
 import theOperator from './Operator.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -82,6 +83,13 @@ class osmTreeRoute {
 	 * @type {String}
 	 */
 
+	#via = '';
+
+	/**
+	 * Coming soon
+	 * @type {String}
+	 */
+
 	get name ( ) { return this.#name; }
 
 	/**
@@ -128,6 +136,13 @@ class osmTreeRoute {
 
 	/**
 	 * Coming soon
+	 * @type {String}
+	 */
+
+	get via ( ) { return this.#via; }
+
+	/**
+	 * Coming soon
 	 * @param {Object} osmPlatform Coming soon
 	 */
 
@@ -165,14 +180,15 @@ class osmTreeRoute {
 	/**
 	 * The constructor
 	 * @param {Object} osmRoute Coming Soon
-	 * @param {Object} osmDataLoader Coming soon
 	 */
 
-	constructor ( osmRoute, osmDataLoader ) {
+	constructor ( osmRoute ) {
 
 		this.#name = osmRoute.tags.name;
 
 		this.#id = osmRoute.id;
+
+		this.#via = osmRoute.tags?.via ?? '';
 
 		let haveFrom = false;
 		osmRoute.members.forEach (
@@ -185,9 +201,9 @@ class osmTreeRoute {
                     )
 				) {
 					let osmPlatform =
-                        osmDataLoader.nodes.get ( osmRouteMember.ref )
+						theOsmDataLoader.nodes.get ( osmRouteMember.ref )
                         ||
-                        osmDataLoader.ways.get ( osmRouteMember.ref );
+                        theOsmDataLoader.ways.get ( osmRouteMember.ref );
 
 					let platformRef = this.#getOsmPlatformRef ( osmPlatform );
 					this.#platforms += platformRef + ';';

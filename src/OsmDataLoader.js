@@ -41,7 +41,7 @@ class OsmDataLoader {
 	 * @type {Map}
 	 */
 
-	routeMasters = new Map ( );
+	routeMasters = [];
 
 	/**
 	 * A js map for the osm route relations
@@ -86,14 +86,44 @@ class OsmDataLoader {
 	#platformsWithoutOperator = [];
 
 	/**
-	 * Cleaner for the maps
+	 * Coming soon
 	 */
 
-	clear ( ) {
+	#clear ( ) {
+		this.routeMasters.splice ( 0 );
 		this.nodes.clear ( );
-		this.routeMasters.clear ( );
-		this.routes.clear ( );
 		this.ways.clear ( );
+		this.routes.clear ( );
+		this.#platformsWithMoreThanOneRef.splice ( 0 );
+		this.#platformsWithoutNetwork.splice ( 0 );
+		this.#platformsWithoutOperator.splice ( 0 );
+	}
+
+	/**
+	 * Coming soon
+	 */
+
+	#sortRoutesMaster ( ) {
+		this.routeMasters.sort (
+			( first, second ) => {
+
+				// split the name into the numeric part and the alphanumeric part:
+				// numeric part
+				let firstPrefix = String ( Number.parseInt ( first.tags.ref ) );
+				let secondPrefix = String ( Number.parseInt ( second.tags.ref ) );
+
+				// alpha numeric part
+				let firstPostfix = ( first.tags.ref ?? '' ).replace ( firstPrefix, '' );
+				let secondPostfix = ( second.tags.ref ?? '' ).replace ( secondPrefix, '' );
+
+				// complete the numeric part with spaces on the left and compare
+				let result =
+						( firstPrefix.padStart ( 5, ' ' ) + firstPostfix )
+							.localeCompare ( secondPrefix.padStart ( 5, ' ' ) + secondPostfix );
+
+				return result;
+			}
+		);
 	}
 
 	/**
@@ -102,8 +132,6 @@ class OsmDataLoader {
 	 */
 
 	#loadOsmData ( elements ) {
-		this.clear ( );
-
 		elements.forEach (
 			element => {
 				switch ( element.type ) {
@@ -112,7 +140,7 @@ class OsmDataLoader {
 					case 'route_master' :
 					case 'proposed:route_master' :
 					case 'disused:route_master' :
-						this.routeMasters.set ( element.id, element );
+						this.routeMasters.push ( element );
 						break;
 					case 'route' :
 					case 'proposed:route' :
@@ -135,6 +163,7 @@ class OsmDataLoader {
 				}
 			}
 		);
+		this.#sortRoutesMaster ( );
 	}
 
 	/**
@@ -182,24 +211,36 @@ class OsmDataLoader {
 			}
 		);
 
-		if ( 0 !== this.#platformsWithMoreThanOneRef.length ) {
-			theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
+		theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
+		if ( 0 === this.#platformsWithMoreThanOneRef.length ) {
+			theReport.add ( 'p', 'Nothing found' );
+		}
+		else {
 			this.#platformsWithMoreThanOneRef.forEach (
 				osmObject => {
 					theReport.add ( 'p', osmObject.tags.name + osmObject.tags[ 'ref:' + theDocConfig.network ], osmObject );
 				}
 			);
 		}
-		if ( 0 !== this.#platformsWithoutNetwork.length ) {
-			theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
+
+		theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
+		if ( 0 === this.#platformsWithoutNetwork.length ) {
+			theReport.add ( 'p', 'Nothing found' );
+		}
+		else {
 			this.#platformsWithoutNetwork.forEach (
 				osmObject => {
 					theReport.add ( 'p', osmObject.tags.name + '- network : ' + ( osmObject.tags.network ?? '' ), osmObject );
 				}
 			);
+
 		}
-		if ( 0 !== this.#platformsWithoutOperator.length ) {
-			theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
+
+		theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
+		if ( 0 === this.#platformsWithoutOperator.length ) {
+			theReport.add ( 'p', 'Nothing found' );
+		}
+		else {
 			this.#platformsWithoutOperator.forEach (
 				osmObject => {
 					theReport.add ( 'p', osmObject.tags.name + '- operator : ' + ( osmObject.tags.operator ?? '' ), osmObject );
@@ -233,13 +274,15 @@ class OsmDataLoader {
 
 	async fetchData ( ) {
 
+		this.#clear ( );
+
 		// uri creation
 		let uri = '';
 		uri =
 			'https://lz4.overpass-api.de/api/interpreter?data=[out:json][timeout:40];' +
 			'rel["network"~"' + theDocConfig.network + '"]' +
-			'["route"=' + theDocConfig.vehicle + ']' +
-			'[type="route"]' +
+			'["' + ( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route"="' + theDocConfig.vehicle + '"]' +
+			'["type"="' + ( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route"]' +
 			( '' === theDocConfig.ref ? '' : '["ref"="' + theDocConfig.ref + '"]' ) +
 			'->.rou;(.rou <<; - .rou;); >> ->.rm;.rm out;';
 
@@ -281,6 +324,12 @@ class OsmDataLoader {
 	}
 }
 
-export default OsmDataLoader;
+/**
+ * The one and only one object OsmDataLoader
+ */
+
+const theOsmDataLoader = new OsmDataLoader ( );
+
+export default theOsmDataLoader;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

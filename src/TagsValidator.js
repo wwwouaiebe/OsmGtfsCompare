@@ -1,0 +1,146 @@
+/*
+Copyright - 2024 - wwwouaiebe - Contact: https://www.ouaie.be/
+
+This  program is free software;
+you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation;
+either version 3 of the License, or any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+/*
+Changes:
+	- v1.0.0:
+		- created
+*/
+/* ------------------------------------------------------------------------------------------------------------------------- */
+
+import theReport from './Report.js';
+import theDocConfig from './DocConfig.js';
+
+/* ------------------------------------------------------------------------------------------------------------------------- */
+/**
+ * Validator for the tags
+ */
+/* ------------------------------------------------------------------------------------------------------------------------- */
+
+class TagsValidator {
+
+	/**
+     * A counter for the errors
+     * @type {Number}
+     */
+
+	#errorCounter = 0;
+
+	/**
+     * the used tags
+     * @type {Object}
+     */
+
+	#tags;
+
+ 	/**
+	 * The relation currently controlled
+	 * @type {Object}
+	 */
+
+	#relation;
+
+	/**
+     * Search the missing tags
+     */
+
+	#searchMissingTags ( ) {
+
+		this.#tags.forEach (
+			tag => {
+				if ( tag.isMandatory && ! this.#relation.tags [ tag.name ] ) {
+					theReport.add (
+						'p',
+						'Error T003: no ' + tag.name + ' tag'
+					);
+					this.#errorCounter ++;
+				}
+				if ( this.#relation.tags [ tag.name ] && tag.values ) {
+					if ( Array.isArray ( tag.values ) ) {
+						if ( -1 === tag.values.indexOf ( this.#relation.tags [ tag.name ] ) ) {
+							theReport.add (
+								'p',
+								'Error T002 :invalid value ' + this.#relation.tags [ tag.name ] +
+									' for tag ' + tag.name
+							);
+							this.#errorCounter ++;
+						}
+					}
+					else if ( this.#relation.tags [ tag.name ] !== tag.values ) {
+						theReport.add (
+							'p',
+							'Error T002 :invalid value ' + this.#relation.tags [ tag.name ] +
+								' for tag ' + tag.name
+						);
+						this.#errorCounter ++;
+					}
+				}
+			}
+		);
+	}
+
+	/**
+     * Search the unuseful tags
+     */
+
+	#searchUnusefulTags ( ) {
+		if ( 'TECL' !== theDocConfig.network || 'proposed:route' !== theDocConfig.type ) {
+			return;
+		}
+		for ( const key of Object.keys ( this.#relation.tags ) ) {
+			if ( ! this.#tags.get ( key ) ) {
+				theReport.add (
+					'p',
+					'Warning T001: unuseful ' + key + ' tag for this route'
+				);
+			}
+		}
+	}
+
+	/**
+     * Start the validation
+     */
+
+	validate ( ) {
+		this.#errorCounter = 0;
+
+		this.#searchMissingTags ( );
+		this.#searchUnusefulTags ( );
+
+		return this.#errorCounter;
+	}
+
+	/**
+	 * The constructor
+	 * @param {Object} relation The controlled route or route_master
+     * @param {Object} tags The valid tags
+	 */
+
+	constructor ( relation, tags ) {
+		this.#relation = relation;
+		this.#tags = new Map ( );
+		tags.forEach (
+			tag => { this.#tags.set ( tag.name, tag ); }
+		);
+
+		Object.freeze ( this );
+	}
+}
+
+export default TagsValidator;
+
+/* --- End of file --------------------------------------------------------------------------------------------------------- */

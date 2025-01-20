@@ -60,7 +60,7 @@ class Report {
 	 * @type {Object}
 	 */
 
-	#currentH3Div = null;
+	#currentDataDiv = null;
 
 	/**
 	 * Coming soon
@@ -70,7 +70,9 @@ class Report {
 	#stats = {
 		doneNotOk : 0,
 		doneOk : 0,
-		toDo : 0
+		toDo : 0,
+		validationErrors : 0,
+		validationWarnings : 0
 	};
 
 	/**
@@ -105,6 +107,14 @@ class Report {
 		htmlElement = document.createElement ( 'p' );
 		htmlElement.textContent = 'Osm route relations todo: ' + this.#stats.toDo;
 		this.#report.insertBefore ( htmlElement, firstChild );
+
+		htmlElement = document.createElement ( 'p' );
+		htmlElement.textContent = 'Validation errors to fix: ' + this.#stats.validationErrors;
+		this.#report.insertBefore ( htmlElement, firstChild );
+
+		htmlElement = document.createElement ( 'p' );
+		htmlElement.textContent = 'Validation warnings nice to fix: ' + this.#stats.validationWarnings;
+		this.#report.insertBefore ( htmlElement, firstChild );
 	}
 
 	/**
@@ -115,6 +125,9 @@ class Report {
 		this.#stats.doneNotOk = 0;
 		this.#stats.doneOk = 0;
 		this.#stats.toDo = 0;
+		this.#stats.validationErrors = 0;
+		this.#stats.validationWarnings = 0;
+
 		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
 		this.#report = document.getElementById ( 'report' );
 		this.#report.classList.remove ( 'errorsOnly' );
@@ -145,7 +158,7 @@ class Report {
 	 */
 
 	addToDo ( quantity ) {
-		this.#stats.toDo += quantity ? quantity : 1;
+		this.#stats.toDo += quantity;
 	}
 
 	/**
@@ -156,39 +169,58 @@ class Report {
 	 * @param {Number} shapePk Coming soon
 	 */
 
-	// eslint-disable-next-line max-params
+	// eslint-disable-next-line max-params, complexity
 	add ( htmlTag, text, osmObject, shapePk ) {
 
 		let htmlElement = document.createElement ( htmlTag );
 
+		// console.log ( 'htmltag ' + htmlTag + ' - text ' + text );
 		switch ( htmlTag ) {
 		case 'h1' :
-			this.#currentH1Div = document.createElement ( 'div' );
-			this.#report.appendChild ( this.#currentH1Div );
-			this.#currentH1Div.appendChild ( htmlElement );
+			if ( osmObject ) {
+				this.#currentH1Div = document.getElementById ( 'osm' + osmObject.id );
+				this.#currentDataDiv = document.getElementById ( 'osm' + osmObject.id + 'DataDiv' );
+			}
+			else {
+				this.#currentH1Div = null;
+			}
+			if ( ! this.#currentH1Div ) {
+				this.#currentH1Div = document.createElement ( 'div' );
+				this.#report.appendChild ( this.#currentH1Div );
+				this.#currentH1Div.appendChild ( htmlElement );
+				this.#currentDataDiv = document.createElement ( 'div' );
+				this.#currentH1Div.appendChild ( this.#currentDataDiv );
+				if ( osmObject ) {
+					this.#currentH1Div.id = 'osm' + osmObject.id;
+					this.#currentDataDiv.id = 'osm' + osmObject.id + 'DataDiv';
+				}
+			}
 			this.#currentH2Div = null;
-			this.#currentH3Div = null;
 			break;
 		case 'h2' :
-			this.#currentH2Div = document.createElement ( 'div' );
-			this.#currentH1Div.appendChild ( this.#currentH2Div );
-			this.#currentH2Div.appendChild ( htmlElement );
-			this.#currentH3Div = null;
+			if ( osmObject ) {
+				this.#currentH2Div = document.getElementById ( 'osm' + osmObject.id );
+				this.#currentDataDiv = document.getElementById ( 'osm' + osmObject.id + 'DataDiv' );
+			}
+			else {
+				this.#currentH2Div = null;
+			}
+			if ( ! this.#currentH2Div ) {
+				this.#currentH2Div = document.createElement ( 'div' );
+				this.#currentH1Div.appendChild ( this.#currentH2Div );
+				this.#currentH2Div.appendChild ( htmlElement );
+				this.#currentDataDiv = document.createElement ( 'div' );
+				this.#currentH2Div.appendChild ( this.#currentDataDiv );
+				if ( osmObject ) {
+					this.#currentH2Div.id = 'osm' + osmObject.id;
+					this.#currentDataDiv.id = 'osm' + osmObject.id + 'DataDiv';
+				}
+			}
 			break;
 		case 'h3' :
-			this.#currentH3Div = document.createElement ( 'div' );
-			this.#currentH2Div.appendChild ( this.#currentH3Div );
-			this.#currentH3Div.appendChild ( htmlElement );
-			break;
 		case 'p' :
-			if ( this.#currentH3Div ) {
-				this.#currentH3Div.appendChild ( htmlElement );
-			}
-			else if ( this.#currentH2Div ) {
-				this.#currentH2Div.appendChild ( htmlElement );
-			}
-			else if ( this.#currentH1Div ) {
-				this.#currentH1Div.appendChild ( htmlElement );
+			if ( this.#currentDataDiv ) {
+				this.#currentDataDiv.appendChild ( htmlElement );
 			}
 			break;
 		default :
@@ -198,8 +230,18 @@ class Report {
 		htmlElement.innerHTML =
 			this.#getGpxDownload ( shapePk ) +
 			text +
-			this.#getOsmLink ( osmObject ) +
+			this.getOsmLink ( osmObject ) +
 			this.#getJosmEdit ( osmObject );
+
+		if ( text.startsWith ( 'Error' ) ) {
+			htmlElement.classList.add ( 'isError' );
+			this.#stats.validationErrors ++;
+		}
+
+		if ( text.startsWith ( 'Warning' ) ) {
+			htmlElement.classList.add ( 'isWarning' );
+			this.#stats.validationWarnings ++;
+		}
 
 		if (
 			-1 !== text.indexOf ( '🔵' )
@@ -209,9 +251,13 @@ class Report {
 			-1 !== text.indexOf ( '🔴' )
 			||
 			-1 !== text.indexOf ( '🟣' )
+			||
+			text.startsWith ( 'Error' )
+			||
+			text.startsWith ( 'Warning' )
 		) {
-			if ( this.#currentH3Div ) {
-				this.#currentH3Div.classList.add ( 'haveErrors' );
+			if ( this.#currentDataDiv ) {
+				this.#currentDataDiv.classList.add ( 'haveErrors' );
 			}
 			if ( this.#currentH2Div ) {
 				this.#currentH2Div.classList.add ( 'haveErrors' );
@@ -220,13 +266,6 @@ class Report {
 				this.#currentH1Div.classList.add ( 'haveErrors' );
 			}
 		}
-
-		/*
-		else {
-			htmlElement.classList.add ( 'noErrors' );
-		}
-		*/
-
 	}
 
 	/**
@@ -266,15 +305,22 @@ class Report {
 	 * @param {Object} osmObject Coming soon
 	 */
 
-	#getOsmLink ( osmObject ) {
-		if ( ! osmObject?.id || ! osmObject?.type ) {
+	getOsmLink ( osmObject ) {
+		let osmId = '';
+		if ( osmObject?.id && osmObject?.type ) {
+			osmId = osmObject.id;
+		}
+		else if ( osmObject?.ref && osmObject?.type ) {
+			osmId = osmObject.ref;
+		}
+		else {
 			return '';
 		}
-		let osmId = osmObject.id;
 		let osmType = osmObject.type;
+
 		return '<a target="_blank" href="https://www.openstreetmap.org/' +
-				osmType +
-                '/' + osmId + '"> ' + osmType + ' : ' + osmId + '</a>';
+			osmType +
+			'/' + osmId + '"> ' + osmType + ' : ' + osmId + '</a>';
 	}
 
 	/**

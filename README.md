@@ -1,8 +1,20 @@
 # OsmGtfsCompare
 
-## Coming soon
+This application checks the data entered into OSM for a bus network and compares this network with the contents of the GTFS files.
+Select a network, a vehicle and a type ("proposed" is only for TECL) and click an the go btton.
+Wait till the red animation stop.
 
-## detected errors and how to solve
+## Using JOSM with OsmGtfsCompare
+
+In the report, a "JOSM" button is added for each osm object. When clicked, the osm object is loaded in the JOSM editor in a new layer or in the current layer, depending of the state of the 'new JOSM layer checkbox'.
+
+Notice: JOSM must be opened before using this button and the remote control activated. See: https://josm.openstreetmap.de/wiki/Help/Preferences/RemoteControl
+
+## gpx files
+
+For each bus route relation, a "Download gpx" button is added. So, youcan download a gpx trace of the bus, included the bus_stop positions and the bus_stop order.
+
+## Validation errors and how to solve
 
 First use your brain.
 
@@ -32,6 +44,8 @@ Verify the ref tag of the route and on the route master
 The name must be 'Bus ' or 'Tram ' or 'Subway' + the value of the ref tag
 
 ### Error M008: no name tag for route_master
+
+Add a name tag
 
 ### Error R001: hole found for route ... between way id ... and way id ...
 
@@ -99,28 +113,82 @@ The role is not a valid role for a bus/tram/subway relation. Verify the role or 
 
 ### Warning R017: A road under construction ...  is used as way for the route
 
+Nothing to do... only a warning.
+
 ### Error R018: route with more than one route_master
 
 A route is attached to more than one route_master. Correct the route_masters and probably remove one of the route_master
 
 ### Warning R019: a fixme exists for this relation ...
 
+Try to correct the fixme
+
 ### Error R020: a ref tag is not found for route
+
+Add a ref tag
 
 ### Error R021: a name tag is not found for route
 
-### Warning T001: unuseful ... tag
+Add a name tag
 
 ### Error T002: invalid value ... for tag...
 
+Correct the tag
+
 ### Error T003: no ... tag
+
+A tag is missing for a route or a route_master. Add the tag
 
 ### Error T004: the operator tag is not valid  ... 
 
+Correct the operator tag
+
 ### Error T005: no operator tag found
+
+Add the operator tag
 
 ### Error T006: the network tag is not valid  ...
 
+Correct the network tag
+
 ### Error T007: no network tag found
 
-### Error C001: the osm description is not equal to the GTFS route long name
+Add a network tag.
+
+### Error C001: the osm description tag of the route_master is not equal to the GTFS route long name
+
+Add or correct the description tag. When more than one route_master heve the same ref, teh description is used to link the route_master 
+with the GTFS data (see route_master ref 63 for the TECX network or ref 1 or 2 for TECH network...)
+
+## GTFS comparison errors and how to solve
+
+For each OSM bus route, the apps search a similar GTFS route, comparing the bus_stop between OSM and GTFS.
+
+First the apps search a GTFS route with the same bus_stop than in the OSM route and in the same order. 
+
+If found the GTFS route is displayed in the report with a green bullet 🟢 and the apps stop to search
+
+If not found, the apps search all the GTFS route having the same starting bus_stop and the same ending bus_stop.
+
+If found the GTFS routes are displayed in the report with a blue bullet 🔵 and with a list of bus stop to add and a list 
+of bus_stop to remove.
+
+If not found the apps search all the GTFS route having a similar starting bus_stop and a similar ending bus_stop (similar will say that the ref:TEC... are the same in the OSM bus_stop and GTFS bus_stop, except the last character).
+
+If found the GTFS routes displayed in the report with a yellow bullet 🟡 and with a list of bus stop to add and a list 
+of bus_stop to remove.
+
+If not found, a error is diplayed with a red bullet "No gtfs route found 🔴"
+
+And finally is list of all GTFS routes that cannot be linked to an OSM route is displayed
+- with a red bullet 🔴
+- with a purple bullet 🟣 when the GTFS route is a part of a already existing OSM route. In that case a list of the OSM routes is also displayed.
+-with a black bullet ⚫ when the validity end date of the GTFS route is in the past
+
+When all osm route_master and routes are linked and displayed , a list of the GTFS route_master not linked to an osm_route_master is displayed.
+
+''Be carefull before deleting an OSM route that seems not linked to a GTFS route! Verify and compare!''
+
+
+
+

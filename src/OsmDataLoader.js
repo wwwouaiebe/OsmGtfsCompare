@@ -24,9 +24,6 @@ Doc reviewed 20250110
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theDocConfig from './DocConfig.js';
-import theExcludeList from './ExcludeList.js';
-import theOperator from './Operator.js';
-import theReport from './Report.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -66,27 +63,6 @@ class OsmDataLoader {
 
 	/**
 	 * Coming soon
-	 * @type {Array}
-	 */
-
-	#platformsWithMoreThanOneRef = [];
-
-	/**
-	 * Coming soon
-	 * @type {Array}
-	 */
-
-	#platformsWithoutNetwork = [];
-
-	/**
-	 * Coming soon
-	 * @type {Array}
-	 */
-
-	#platformsWithoutOperator = [];
-
-	/**
-	 * Coming soon
 	 */
 
 	#clear ( ) {
@@ -94,9 +70,6 @@ class OsmDataLoader {
 		this.nodes.clear ( );
 		this.ways.clear ( );
 		this.routes.clear ( );
-		this.#platformsWithMoreThanOneRef.splice ( 0 );
-		this.#platformsWithoutNetwork.splice ( 0 );
-		this.#platformsWithoutOperator.splice ( 0 );
 	}
 
 	/**
@@ -167,89 +140,6 @@ class OsmDataLoader {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {Object} osmObject Coming soon
-	 */
-
-	#controlPlatform ( osmObject ) {
-		if (
-			'bus_stop' === osmObject?.tags?.highway
-			||
-			'tram_stop' === osmObject?.tags?.railway
-		) {
-			let osmRef = osmObject.tags [ 'ref:' + theDocConfig.network ];
-			if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
-				theExcludeList.excludePlatform ( osmRef );
-				this.#platformsWithMoreThanOneRef.push ( osmObject );
-			}
-			if (
-				! osmObject.tags.network
-				||
-				! osmObject.tags.network.includes ( theDocConfig.network )
-			) {
-				this.#platformsWithoutNetwork.push ( osmObject );
-			}
-			if (
-				! osmObject.tags.operator
-				||
-				! osmObject.tags.operator.includes ( theOperator.osmOperator )
-			) {
-				this.#platformsWithoutOperator.push ( osmObject );
-			}
-		}
-	}
-
-	/**
-	 * Coming soon
-	 */
-
-	#excludePlatforms ( ) {
-		this.#platformsWithMoreThanOneRef = [];
-		this.nodes.forEach (
-			node => {
-				this.#controlPlatform ( node );
-			}
-		);
-
-		theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
-		if ( 0 === this.#platformsWithMoreThanOneRef.length ) {
-			theReport.add ( 'p', 'Nothing found' );
-		}
-		else {
-			this.#platformsWithMoreThanOneRef.forEach (
-				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + osmObject.tags[ 'ref:' + theDocConfig.network ], osmObject );
-				}
-			);
-		}
-
-		theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
-		if ( 0 === this.#platformsWithoutNetwork.length ) {
-			theReport.add ( 'p', 'Nothing found' );
-		}
-		else {
-			this.#platformsWithoutNetwork.forEach (
-				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + '- network : ' + ( osmObject.tags.network ?? '' ), osmObject );
-				}
-			);
-
-		}
-
-		theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
-		if ( 0 === this.#platformsWithoutOperator.length ) {
-			theReport.add ( 'p', 'Nothing found' );
-		}
-		else {
-			this.#platformsWithoutOperator.forEach (
-				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + '- operator : ' + ( osmObject.tags.operator ?? '' ), osmObject );
-				}
-			);
-		}
-	}
-
-	/**
 	 * Add the route_masters id to the routeMasters array of the routes
 	 */
 
@@ -301,7 +191,6 @@ class OsmDataLoader {
 				jsonResponse => {
 
 					this.#loadOsmData ( jsonResponse.elements );
-					this.#excludePlatforms ( );
 					this.#addRouteMastersToRoutes ( );
 
 					success = true;

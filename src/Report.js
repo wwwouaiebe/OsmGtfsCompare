@@ -25,6 +25,7 @@ Doc reviewed 20250110
 
 import JosmButtonClickEL from './JosmButtonClickEL.js';
 import GpxButtonClickEL from './GpxButtonClickEL.js';
+import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -134,6 +135,28 @@ class Report {
 		while ( this.#report.firstChild ) {
 			this.#report.removeChild ( this.#report.firstChild );
 		}
+	}
+
+	/**
+	 * Add the route_master shortcuts in the header of the web page
+	 */
+
+	addShortcuts ( ) {
+
+		const busShortcutsdiv = document.getElementById ( 'busShortcuts' );
+		while ( busShortcutsdiv.firstChild ) {
+			busShortcutsdiv.removeChild ( busShortcutsdiv.firstChild );
+		}
+
+		theOsmDataLoader.routeMasters.forEach (
+			routeMaster => {
+				let busShortcutsAnchor = document.createElement ( 'a' );
+				busShortcutsAnchor.classList.add ( 'busShortcutAnchor' );
+				busShortcutsAnchor.innerText = routeMaster.tags.ref + ' ';
+				busShortcutsAnchor.href = '#osm' + routeMaster.id;
+				busShortcutsdiv.appendChild ( busShortcutsAnchor );
+			}
+		);
 	}
 
 	/**

@@ -33,6 +33,7 @@ import OsmGtfsComparator from './OsmGtfsComparator.js';
 import theDocConfig from './DocConfig.js';
 import OsmRouteMasterValidator from './OsmRouteMasterValidator.js';
 import MissingRouteMasterValidator from './MissingRouteMasterValidator.js';
+import PlatformsValidator from './PlatformsValidator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -62,14 +63,18 @@ class AppLoader {
 		// reading the form
 		theDocConfig.loadData ( );
 
-		// opening report
-		theReport.open ( );
-
 		// loading exclude list
 		await theExcludeList.loadData ( );
 
+		// opening report
+		theReport.open ( );
+
 		// loading osm data
 		await theOsmDataLoader.fetchData (	);
+
+		theReport.addShortcuts ( );
+
+		new PlatformsValidator ( ).validate ( );
 
 		await new MissingRouteMasterValidator ( ).fetchData ( );
 

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -31,68 +31,77 @@ import theOperator from './Operator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * A validator for the platforms
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class PlatformsValidator {
 
    	/**
-	 * Coming soon
-	 * @type {Array}
+	 * An array with platforms with more than one ref:NETWORK
+	 * @type {Array.<Object>}
 	 */
 
 	#platformsWithMoreThanOneRef = [];
 
 	/**
-	 * Coming soon
-	 * @type {Array}
+	 * An array with platforms without network
+	 * @type {Array.<Object>}
 	 */
 
 	#platformsWithoutNetwork = [];
 
 	/**
-	 * Coming soon
-	 * @type {Array}
+	 * An array with platforms without operator
+	 * @type {Array.<Object>}
 	 */
 
 	#platformsWithoutOperator = [];
 
 	/**
-	 * Coming soon
-	 * @param {Object} osmObject Coming soon
+	 * this method control the platforms and add the platforms to the arrays, depending of the errors found
+	 * @param {Object} osmObject The object to control
 	 */
 
 	#controlPlatform ( osmObject ) {
+
+		// filtering on bus_stop and tram_stop
 		if (
-			'bus_stop' === osmObject?.tags?.highway
-			||
-			'tram_stop' === osmObject?.tags?.railway
+			'bus_stop' !== osmObject?.tags?.highway
+			&&
+			'tram_stop' !== osmObject?.tags?.railway
 		) {
-			let osmRef = osmObject.tags [ 'ref:' + theDocConfig.network ];
-			if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
-				theExcludeList.translateOsmPlatform ( osmRef );
-				this.#platformsWithMoreThanOneRef.push ( osmObject );
-			}
-			if (
-				! osmObject.tags.network
+			return;
+		}
+
+		// More than 1 ref:NETWORK Adding to the array and to the exclude list
+		let osmRef = osmObject.tags [ 'ref:' + theDocConfig.network ];
+		if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
+			theExcludeList.translateOsmPlatform ( osmRef );
+			this.#platformsWithMoreThanOneRef.push ( osmObject );
+		}
+
+		// No network
+		if (
+			! osmObject.tags.network
 				||
 				! osmObject.tags.network.includes ( theDocConfig.network )
-			) {
-				this.#platformsWithoutNetwork.push ( osmObject );
-			}
-			if (
-				! osmObject.tags.operator
+		) {
+			this.#platformsWithoutNetwork.push ( osmObject );
+		}
+
+		// No operator
+		if (
+			! osmObject.tags.operator
 				||
 				! osmObject.tags.operator.includes ( theOperator.osmOperator )
-			) {
-				this.#platformsWithoutOperator.push ( osmObject );
-			}
+		) {
+			this.#platformsWithoutOperator.push ( osmObject );
 		}
 	}
 
 	/**
-	 * Coming soon
+	 * Report platforms with more than 1 ref:NETWORK
 	 */
 
 	#reportPlatformsMore1Ref ( ) {
@@ -110,7 +119,7 @@ class PlatformsValidator {
 	}
 
 	/**
-	 * Coming soon
+	 * Report platforms without network
 	 */
 
 	#reportPlatformsWithoutNetwork ( ) {
@@ -130,7 +139,7 @@ class PlatformsValidator {
 	}
 
 	/**
-	 * Coming soon
+	 * Report platforms without operator
 	 */
 
 	#reportPlatformsWithoutOperator ( ) {
@@ -149,7 +158,7 @@ class PlatformsValidator {
 	}
 
 	/**
-	 * Coming soon
+	 * Validate the platforms
 	 */
 
 	validate ( ) {

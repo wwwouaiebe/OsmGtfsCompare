@@ -95,10 +95,15 @@ class Report {
 
 	/**
 	 * The current div with a osm...DataDiv id where the element of the report will be added
-	 * @type {Object}
+	 * @type {HTMLElement}
 	 */
 
 	#currentDataDiv = null;
+
+	/**
+	 * the currently added HTMLElement
+	 * @type {HTMLElement}
+	 */
 
 	#currentHTMLElement = null;
 
@@ -389,7 +394,7 @@ class Report {
 	/**
 	 * Return an HTML string with a "Download gpx" button
 	 * @param {?Number} shapePk A unique identifier given to a GTFS route and coming from mySQL db
-	 * @returns a HTML string with an ButtonHTMLElement or an empty string when the shapePk is null
+	 * @returns {String} a HTML string with an ButtonHTMLElement or an empty string when the shapePk is null
 	 */
 
 	#getGpxDownload ( shapePk ) {

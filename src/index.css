@@ -98,7 +98,7 @@ header span.fontLarge {
 	font-size: 140%;
 }
 
-#busShortcuts {
+#routesLinks {
 	visibility : hidden;
 	width: 0;
 	height: 0;
@@ -106,7 +106,7 @@ header span.fontLarge {
 	margin-bottom: 0;
 }
 
-header:hover > #busShortcuts {
+header:hover > #routesLinks {
 	visibility: visible;
 	width:auto;
 	height:auto;

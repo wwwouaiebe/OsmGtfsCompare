@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -27,45 +27,84 @@ import JosmButtonClickEL from './JosmButtonClickEL.js';
 import GpxButtonClickEL from './GpxButtonClickEL.js';
 import theOsmDataLoader from './OsmDataLoader.js';
 
+/*
+Structure of the report:
++--------------------------------------+
+| div id=osm.....                      |
+| +----------------------------------+ |
+| | h1                               | |
+| +----------------------------------+ |
+| +----------------------------------+ |
+| | div id=osm.....DataDiv           | |
+| | +------------------------------+ | |
+| | | h3                           | | |
+| |	+------------------------------+ | |
+| | +------------------------------+ | |
+| | | p                            | | |
+| | +------------------------------+ | |
+| +----------------------------------+ |
+| +----------------------------------+ |
+| | div id=osm.....                  | |
+| | +------------------------------+ | |
+| | | h2                           | | |
+| | +------------------------------+ | |
+| | +------------------------------+ | |
+| | | div id=osm.....DataDiv       | | |
+| | | +--------------------------+ | | |
+| | | | h3                       | | | |
+| | | +--------------------------+ | | |
+| | | +--------------------------+ | | |
+| | | | p                        | | | |
+| | | +--------------------------+ | | |
+| | | +--------------------------+ | | |
+| | | | p                        | | | |
+| | | +--------------------------+ | | |
+| | +------------------------------+ | |
+| +----------------------------------+ |
++--------------------------------------+
+*/
+
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * This class contains methods to create the report
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class Report {
 
 	/**
-	 * Coming soon
+	 * The HTMLElement where the report will be added (= the main HTMLElement)
 	 * @type {HTMLElement}
 	 */
 
 	#report;
 
 	/**
-	 * Coming soon
-	 * @type {Object}
+	 * The current div with a h1 heading where the element of the report will be added
+	 * @type {HTMLElement}
 	 */
 
 	#currentH1Div = null;
 
 	/**
-	 * Coming soon
-	 * @type {Object}
+	 * The current div with a h2 heading where the element of the report will be added
+	 * @type {HTMLElement}
 	 */
 
 	#currentH2Div = null;
 
 	/**
-	 * Coming soon
+	 * The current div with a osm...DataDiv id where the element of the report will be added
 	 * @type {Object}
 	 */
 
 	#currentDataDiv = null;
 
+	#currentHTMLElement = null;
+
 	/**
-	 * Coming soon
-	 * @type {Object}
+	 * An object with somme properties for storing statistics
+	 * @type {HTMLElement}
 	 */
 
 	#stats = {
@@ -77,21 +116,25 @@ class Report {
 	};
 
 	/**
-	 * Coming soon
+	 * This method close the report (= do some actions at the end of the process)
 	 */
 
 	close ( ) {
-		document.getElementById ( 'waitAnimation' ).style.visibility = 'hidden';
-		let josmButtons = document.getElementsByClassName ( 'josmButton' );
+
+		// Add event listeners on josm buttons
+		const josmButtons = document.getElementsByClassName ( 'josmButton' );
 		for ( let counter = 0; counter < josmButtons.length; counter ++ ) {
 			josmButtons[ counter ].addEventListener ( 'click', new JosmButtonClickEL ( ) );
 		}
-		let gpxButtons = document.getElementsByClassName ( 'gpxButton' );
+
+		// Add event listeners on gpx buttons
+		const gpxButtons = document.getElementsByClassName ( 'gpxButton' );
 		for ( let counter = 0; counter < gpxButtons.length; counter ++ ) {
 			gpxButtons[ counter ].addEventListener ( 'click', new GpxButtonClickEL ( ) );
 		}
 
-		let firstChild = this.#report.firstChild;
+		// Adding stats on top of the report
+		const firstChild = this.#report.firstChild;
 
 		let htmlElement = document.createElement ( 'h1' );
 		htmlElement.textContent = 'Stats :';
@@ -116,51 +159,59 @@ class Report {
 		htmlElement = document.createElement ( 'p' );
 		htmlElement.textContent = 'Validation warnings nice to fix: ' + this.#stats.validationWarnings;
 		this.#report.insertBefore ( htmlElement, firstChild );
+
+		// adding bus shortcuts
+		const routesLinksdiv = document.getElementById ( 'routesLinks' );
+		theOsmDataLoader.routeMasters.forEach (
+			routeMaster => {
+				let routeLink = document.createElement ( 'a' );
+				routeLink.classList.add ( 'busShortcutAnchor' );
+				routeLink.innerText = routeMaster.tags.ref + ' ';
+				routeLink.href = '#osm' + routeMaster.id;
+				routesLinksdiv.appendChild ( routeLink );
+			}
+		);
+
+		// Hidding the animation
+		document.getElementById ( 'waitAnimation' ).style.visibility = 'hidden';
+
 	}
 
 	/**
-	 * Coming soon
+	 * This method open the report (= do some actions at the beginning of the process)
 	 */
 
 	open ( ) {
+
+		// show the animation
+		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
+
+		this.#report = document.getElementById ( 'report' );
+
+		// clear the stats
 		this.#stats.doneNotOk = 0;
 		this.#stats.doneOk = 0;
 		this.#stats.toDo = 0;
 		this.#stats.validationErrors = 0;
 		this.#stats.validationWarnings = 0;
 
-		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
-		this.#report = document.getElementById ( 'report' );
+		// clear the route links
+		const routesLinksdiv = document.getElementById ( 'routesLinks' );
+		while ( routesLinksdiv.firstChild ) {
+			routesLinksdiv.removeChild ( routesLinksdiv.firstChild );
+		}
+
+		// reset of the errorOnly class
 		this.#report.classList.remove ( 'errorsOnly' );
+
+		// clear the report
 		while ( this.#report.firstChild ) {
 			this.#report.removeChild ( this.#report.firstChild );
 		}
 	}
 
 	/**
-	 * Add the route_master shortcuts in the header of the web page
-	 */
-
-	addShortcuts ( ) {
-
-		const busShortcutsdiv = document.getElementById ( 'busShortcuts' );
-		while ( busShortcutsdiv.firstChild ) {
-			busShortcutsdiv.removeChild ( busShortcutsdiv.firstChild );
-		}
-
-		theOsmDataLoader.routeMasters.forEach (
-			routeMaster => {
-				let busShortcutsAnchor = document.createElement ( 'a' );
-				busShortcutsAnchor.classList.add ( 'busShortcutAnchor' );
-				busShortcutsAnchor.innerText = routeMaster.tags.ref + ' ';
-				busShortcutsAnchor.href = '#osm' + routeMaster.id;
-				busShortcutsdiv.appendChild ( busShortcutsAnchor );
-			}
-		);
-	}
-
-	/**
-	 * Coming soon
+	 * Increment the doneOk value of the stats
 	 */
 
 	addDoneOk ( ) {
@@ -168,7 +219,7 @@ class Report {
 	}
 
 	/**
-	 * Coming soon
+	 * Increment the doneOk value of the stats
 	 */
 
 	addDoneNotOk ( ) {
@@ -176,7 +227,7 @@ class Report {
 	}
 
 	/**
-	 * Coming soon
+	 * Increment the toDo value of the stats
 	 * @param {Number} quantity
 	 */
 
@@ -185,87 +236,131 @@ class Report {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {String} htmlTag Coming soon
-	 * @param {String} text Coming soon
-	 * @param {Object} osmObject Coming soon
-	 * @param {Number} shapePk Coming soon
+	 * This method creates all the needed HTMLElements when an H1HTMLElement is added to the report
+	 * @param {Object} osmObject An osmObject linked to the added HTMLElement
 	 */
 
-	// eslint-disable-next-line max-params, complexity
+	#createH1HTMLElements ( osmObject ) {
+
+		// adding the osm id to the currentH1Div and currentDataDiv if an OSM object is present
+		if ( osmObject ) {
+			this.#currentH1Div = document.getElementById ( 'osm' + osmObject.id );
+			this.#currentDataDiv = document.getElementById ( 'osm' + osmObject.id + 'DataDiv' );
+		}
+		else {
+			this.#currentH1Div = null;
+		}
+		if ( ! this.#currentH1Div ) {
+
+			// creating the currentH1Div...
+			this.#currentH1Div = document.createElement ( 'div' );
+			this.#report.appendChild ( this.#currentH1Div );
+			this.#currentH1Div.appendChild ( this.#currentHTMLElement );
+
+			// and the currentDataDiv
+			this.#currentDataDiv = document.createElement ( 'div' );
+			this.#currentH1Div.appendChild ( this.#currentDataDiv );
+			if ( osmObject ) {
+				this.#currentH1Div.id = 'osm' + osmObject.id;
+				this.#currentDataDiv.id = 'osm' + osmObject.id + 'DataDiv';
+			}
+		}
+
+		// set the currentH2Div to null
+		this.#currentH2Div = null;
+	}
+
+	/**
+	 * This method creates all the needed HTMLElements when an H2HTMLElement is added to the report
+	 * @param {Object} osmObject An osmObject linked to the added HTMLElement
+	 */
+
+	#createH2HTMLElements ( osmObject ) {
+
+		// adding the osm id to the currentH2Div and currentDataDiv if an OSM object is present
+		if ( osmObject ) {
+			this.#currentH2Div = document.getElementById ( 'osm' + osmObject.id );
+			this.#currentDataDiv = document.getElementById ( 'osm' + osmObject.id + 'DataDiv' );
+		}
+		else {
+			this.#currentH2Div = null;
+		}
+		if ( ! this.#currentH2Div ) {
+
+			// creating the currentH2Div...
+			this.#currentH2Div = document.createElement ( 'div' );
+			this.#currentH1Div.appendChild ( this.#currentH2Div );
+			this.#currentH2Div.appendChild ( this.#currentHTMLElement );
+
+			// and the currentDataDiv
+			this.#currentDataDiv = document.createElement ( 'div' );
+			this.#currentH1Div.appendChild ( this.#currentDataDiv );
+			this.#currentDataDiv = document.createElement ( 'div' );
+			this.#currentH2Div.appendChild ( this.#currentDataDiv );
+			if ( osmObject ) {
+				this.#currentH2Div.id = 'osm' + osmObject.id;
+				this.#currentDataDiv.id = 'osm' + osmObject.id + 'DataDiv';
+			}
+		}
+	}
+
+	/**
+	 * Add an HTMLElement to the report
+	 * @param {String} htmlTag The HTML tag to add (h1, h2, h3 or p)
+	 * @param {String} text The text to add in the HTMLElement
+	 * @param {Object} osmObject an OSM object to add as a link or a JOSM buton in the HTMLElement
+	 * @param {Number} shapePk A unique identifier given to a GTFS route and coming from mySQL db
+	 */
+
+	// eslint-disable-next-line max-params
 	add ( htmlTag, text, osmObject, shapePk ) {
 
-		let htmlElement = document.createElement ( htmlTag );
+		// creation of the HTMLElement
+		this.#currentHTMLElement = document.createElement ( htmlTag );
 
-		// console.log ( 'htmltag ' + htmlTag + ' - text ' + text );
 		switch ( htmlTag ) {
 		case 'h1' :
-			if ( osmObject ) {
-				this.#currentH1Div = document.getElementById ( 'osm' + osmObject.id );
-				this.#currentDataDiv = document.getElementById ( 'osm' + osmObject.id + 'DataDiv' );
-			}
-			else {
-				this.#currentH1Div = null;
-			}
-			if ( ! this.#currentH1Div ) {
-				this.#currentH1Div = document.createElement ( 'div' );
-				this.#report.appendChild ( this.#currentH1Div );
-				this.#currentH1Div.appendChild ( htmlElement );
-				this.#currentDataDiv = document.createElement ( 'div' );
-				this.#currentH1Div.appendChild ( this.#currentDataDiv );
-				if ( osmObject ) {
-					this.#currentH1Div.id = 'osm' + osmObject.id;
-					this.#currentDataDiv.id = 'osm' + osmObject.id + 'DataDiv';
-				}
-			}
-			this.#currentH2Div = null;
+			this.#createH1HTMLElements ( osmObject );
 			break;
 		case 'h2' :
-			if ( osmObject ) {
-				this.#currentH2Div = document.getElementById ( 'osm' + osmObject.id );
-				this.#currentDataDiv = document.getElementById ( 'osm' + osmObject.id + 'DataDiv' );
-			}
-			else {
-				this.#currentH2Div = null;
-			}
-			if ( ! this.#currentH2Div ) {
-				this.#currentH2Div = document.createElement ( 'div' );
-				this.#currentH1Div.appendChild ( this.#currentH2Div );
-				this.#currentH2Div.appendChild ( htmlElement );
-				this.#currentDataDiv = document.createElement ( 'div' );
-				this.#currentH2Div.appendChild ( this.#currentDataDiv );
-				if ( osmObject ) {
-					this.#currentH2Div.id = 'osm' + osmObject.id;
-					this.#currentDataDiv.id = 'osm' + osmObject.id + 'DataDiv';
-				}
-			}
+			this.#createH2HTMLElements ( osmObject );
 			break;
 		case 'h3' :
 		case 'p' :
 			if ( this.#currentDataDiv ) {
-				this.#currentDataDiv.appendChild ( htmlElement );
+				this.#currentDataDiv.appendChild ( this.#currentHTMLElement );
 			}
 			break;
 		default :
 			break;
 		}
 
-		htmlElement.innerHTML =
+		// Adding text in the HTMLElement
+		this.#currentHTMLElement.innerHTML =
+
+			// gpx button
 			this.#getGpxDownload ( shapePk ) +
 			text +
+
+			// OSM link
 			this.getOsmLink ( osmObject ) +
+
+			// JOSM button
 			this.#getJosmEdit ( osmObject );
 
+		// Adding the isError class
 		if ( text.startsWith ( 'Error' ) ) {
-			htmlElement.classList.add ( 'isError' );
+			this.#currentHTMLElement.classList.add ( 'isError' );
 			this.#stats.validationErrors ++;
 		}
 
+		// Adding the isWarning class
 		if ( text.startsWith ( 'Warning' ) ) {
-			htmlElement.classList.add ( 'isWarning' );
+			this.#currentHTMLElement.classList.add ( 'isWarning' );
 			this.#stats.validationWarnings ++;
 		}
 
+		// Adding the haveErrors class
 		if (
 			-1 !== text.indexOf ( '🔵' )
 			||
@@ -292,8 +387,9 @@ class Report {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {Number} shapePk Coming soon
+	 * Return an HTML string with a "Download gpx" button
+	 * @param {?Number} shapePk A unique identifier given to a GTFS route and coming from mySQL db
+	 * @returns a HTML string with an ButtonHTMLElement or an empty string when the shapePk is null
 	 */
 
 	#getGpxDownload ( shapePk ) {
@@ -309,8 +405,9 @@ class Report {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {Object} osmObject Coming soon
+	 * Return an HTML string with a "JOSM" button
+	 * @param {?Object} osmObject The OSM object for witch the button must be created
+	 * @returns {String} a HTML string with an ButtonHTMLElement or an empty string when the osmObject is null
 	 */
 
 	#getJosmEdit ( osmObject ) {
@@ -324,8 +421,9 @@ class Report {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {Object} osmObject Coming soon
+	 * Return an HTML string with a OSM link
+	 * @param {?Object} osmObject The OSM object for witch the link must be created
+	 * @returns {String} a HTML string with an AnchorHTMLElement or an empty string when the osmObject is null
 	 */
 
 	getOsmLink ( osmObject ) {
@@ -357,8 +455,8 @@ class Report {
 }
 
 /**
-	 * Coming soon
-	 */
+ * The one and only one object Report
+ */
 
 const theReport = new Report ( );
 

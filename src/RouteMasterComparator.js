@@ -210,7 +210,7 @@ class RouteMasterComparator {
 	 */
 
 	#isOsmExcluded ( osmId ) {
-		const excludeData = theExcludeList.getOsmData ( osmId );
+		const excludeData = theExcludeList.getExcludedOsmRelationData ( osmId );
 		if ( excludeData?.reason ) {
 			return true;
 		}

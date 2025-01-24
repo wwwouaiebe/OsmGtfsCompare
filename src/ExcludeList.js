@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -27,88 +27,141 @@ import theOperator from './Operator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * A container with osm and gtfs objects that have to be excluded from the OSM GTFS comparison due to errors in the
+ * osm or gtfs data
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class ExcludeList {
 
 	/**
-	 * Coming soom
+	 * A map with osm relations that have to be excluded or with notes that have to be displayed in the report
+	 * Each value in the map is an object like this:
+	 *	{
+	 * 		id : the osm id of the route or route_master relation
+	 * 		note : a note to be displayed in the report (mandatory when a note must be displayed)
+	 * 		ref : the osm ref of the relation (not mandatory be usefull to identify the relation)
+	 * 		reason : the reason of the exclusion (mandatory when a relation must be excluded)
+	 *	}
+	 * The keys of the map are the osm id
 	 * @type {Map}
 	 */
 
 	#excludedRelationsOsm = new Map;
 
 	/**
-	 * Coming soom
+	 * A map with osm platforms for witch the ref:NETWORK need to be modified
+	 * Each value in the map is an object like this:
+	 *	{
+	 *		"from" : the ref:NETWORK used in osm (mandatory)
+	 *		"to" : the ref:NETWORK used for the OSM GTFS comparison (mandatory),
+	 *		"reason" : the reason for witch the ref:NETWORK must be changed (not mandatory)
+	 *	}
+	 * The keys of the map are the from value of the object
 	 * @type {Map}
 	 */
 
 	#translatedOsmRefPlatforms = new Map;
 
 	/**
-	 * Coming soom
+	 * A map with gtfs platforms for witch the ref:NETWORK need to be modified
+	 * Each value in the map is an object like this:
+	 *	{
+	 *		"from" : the ref:NETWORK used in gtfs (mandatory)
+	 *		"to" : the ref:NETWORK used for the OSM GTFS comparison (mandatory),
+	 *		"reason" : the reason for witch the ref:NETWORK must be changed (not mandatory)
+	 *	}
+	 * The keys of the map are the from value of the object
 	 * @type {Map}
 	 */
 
 	#translatedGtfsRefPlatforms = new Map;
 
 	/**
-	 * Coming soom
+	 * A map with GTFS platforms that are considered as disused on the OSM side
+	 * Each value in the map is an object like this:
+	 *	{
+	 *		"ref" : the ref:NETWORK used in gtfs (mandatory)
+	 *		"name" : the name of the platform (not mandatory),
+	 *		"reason" : the reason for witch the platform is considered as disused (not mandatory)
+	 *	}
 	 * @type {Map}
 	 */
 
 	#gtfsDisusedRefPlatforms = new Map;
 
 	/**
-	 * Coming soom
+	 * A map with GTFS relations that have to be excluded
+	 * Each value in the map is an object like this:
+	 *	{
+	 * 		ref : the ref of the relation (not mandatory)
+	 * 		reason : the reason of the exclusion (mandatory)
+	 *	}
+	 * The keys of the map are the ref of the relations
 	 * @type {Map}
 	 */
 
-	#excludeListGtfs = new Map;
+	#excludedRelationsGtfs = new Map;
 
 	/**
-	 * Coming soom
-	 * @param {Object} jsonResponse Coming soon
+	 * Clean the existing data
 	 */
 
-	#buildLists ( jsonResponse ) {
+	#clear ( ) {
+		this.#excludedRelationsOsm.clear ( );
+		this.#translatedOsmRefPlatforms.clear ( );
+		this.#excludedRelationsGtfs.clear ( );
+		this.#translatedGtfsRefPlatforms.clear ( );
+		this.#gtfsDisusedRefPlatforms.clear ( );
+	}
 
-		if ( ! jsonResponse ) {
+	/**
+	 * Load the data in the dfferent maps.
+	 * Reminder : data are coming from a json file where maps are unknown
+	 */
+
+	async loadData ( ) {
+
+		this.#clear ( );
+
+		// loading data from theOperator
+		const excludeList = theOperator.excludeList;
+
+		// no data... return
+		if ( ! excludeList ) {
 			return;
 		}
 
-		this.#excludedRelationsOsm.clear ( );
-		jsonResponse.osm.excludedRelations.forEach (
+		// loading OSM excluded relations
+		excludeList.osm.excludedRelations.forEach (
 			excludedRelation => {
 				this.#excludedRelationsOsm.set ( excludedRelation.id, excludedRelation );
 			}
 		);
 
-		this.#translatedOsmRefPlatforms.clear ( );
-		jsonResponse.osm.translatedRefPlatforms.forEach (
+		// loading OSM translated platforms
+		excludeList.osm.translatedRefPlatforms.forEach (
 			translatedPlatform => {
 				this.#translatedOsmRefPlatforms.set ( translatedPlatform.from, translatedPlatform.to );
 			}
 		);
 
-		this.#excludeListGtfs.clear ( );
-		jsonResponse.gtfs.excludedRelations.forEach (
+		// loading GTFS excluded relations
+		excludeList.gtfs.excludedRelations.forEach (
 			excludeItem => {
-				this.#excludeListGtfs.set ( excludeItem.ref, excludeItem );
+				this.#excludedRelationsGtfs.set ( excludeItem.ref, excludeItem );
 			}
 		);
 
-		this.#translatedGtfsRefPlatforms.clear ( );
-		jsonResponse.gtfs.translatedRefPlatforms.forEach (
+		// loading GTFS translated platforms
+		excludeList.gtfs.translatedRefPlatforms.forEach (
 			translatedRefPlatform => {
 				this.#translatedGtfsRefPlatforms.set ( translatedRefPlatform.from, translatedRefPlatform.to );
 			}
 		);
 
-		this.#gtfsDisusedRefPlatforms.clear ( );
-		jsonResponse.gtfs.disusedRefPlatforms.forEach (
+		// loading GTFS disused platforms
+		excludeList.gtfs.disusedRefPlatforms.forEach (
 			disusedRefPlatform => {
 				this.#gtfsDisusedRefPlatforms.set ( disusedRefPlatform.ref, disusedRefPlatform );
 			}
@@ -116,16 +169,9 @@ class ExcludeList {
 	}
 
 	/**
-	 * Coming soom
-	 */
-
-	async loadData ( ) {
-		this.#buildLists ( theOperator.getExcludeList ( ) );
-	}
-
-	/**
-	 * Coming soom
-	 * @param {String} platformRef Coming soon
+	 * Test if a GTFS patform is disused
+	 * @param {String} platformRef the ref of the platform to test
+	 * @returns {?Object} an object with the ref and reason when disused or null otherwise
 	 */
 
 	isGtfsDisusedPlatform ( platformRef ) {
@@ -133,8 +179,9 @@ class ExcludeList {
 	}
 
 	/**
-	 * Coming soom
-	 * @param {string} osmRef Coming soon
+	 * Get the new ref:NETWORK of an OSM platform when translated
+	 * @param {String} osmRef the ref:NETWORK to translate
+	 * @returns {String} the translated ref:NETWORK or the original ref:NETWORK when no translation found
 	 */
 
 	translateOsmRefPlatform ( osmRef ) {
@@ -142,8 +189,9 @@ class ExcludeList {
 	}
 
 	/**
-	 * Coming soom
-	 * @param {string} gtfsRef Coming soon
+	 * Get the new ref of a GTFS platform when translated
+	 * @param {String} gtfsRef the ref to translate
+	 * @returns {String} the translated ref or the original ref when no translation found
 	 */
 
 	translateGtfsRefPlatform ( gtfsRef ) {
@@ -151,22 +199,23 @@ class ExcludeList {
 	}
 
 	/**
-	 * Coming soom
-	 * @param {String} osmId
+	 * get the exclusion data of an OSM route or route_master relation
+	 * @param {String} osmId the OSM id of the route
+	 * @returns {?Object} the exclusion data of the OSM relation or null if the relation is not excluded
 	 */
 
-	getOsmData ( osmId ) {
+	getExcludedOsmRelationData ( osmId ) {
 		return this.#excludedRelationsOsm.get ( osmId );
 	}
 
 	/**
-     * Coming soon
-     * @param {String} gtfsRef Coming soon
-     * @returns {boolean} Coming soon
+     * Get the exclusion data of a GTFS route or route_master
+     * @param {String} gtfsRef the ref of the GTFS route
+     * @returns {?String} the exclusion reason or null if the route is not excluded
      */
 
-	getExcludeReason ( gtfsRef ) {
-		const excludeData = this.#excludeListGtfs.get ( gtfsRef );
+	getExcludedGTFSRelationReason ( gtfsRef ) {
+		const excludeData = this.#excludedRelationsGtfs.get ( gtfsRef );
 		if ( excludeData?.reason ) {
 			return 'This relation is excluded from the comparison ( reason : ' + excludeData.reason + ' )';
 		}
@@ -174,11 +223,11 @@ class ExcludeList {
 	}
 
 	/**
-	 * Coming soom
-	 * @param {String} osmRef Coming soon
+	 * Translate an OSM platform with multiple ref:NETWORK
+	 * @param {String} osmRef the OSM ref:NETWORK with multiple ref:NETWORK
 	 */
 
-	excludePlatform ( osmRef ) {
+	translateOsmPlatform ( osmRef ) {
 		this.#translatedOsmRefPlatforms.set ( osmRef, osmRef.split ( ';' ) [ 0 ] );
 		this.#translatedGtfsRefPlatforms.set ( osmRef.split ( ';' ) [ 1 ], osmRef.split ( ';' ) [ 0 ] );
 	}

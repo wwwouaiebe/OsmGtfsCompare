@@ -44,7 +44,7 @@ import PlatformsValidator from './PlatformsValidator.js';
 class AppLoader {
 
 	/**
-     * The costructor
+     * The constructor
      */
 
 	constructor ( ) {
@@ -74,24 +74,26 @@ class AppLoader {
 
 		theReport.addShortcuts ( );
 
+		// Validating the platforms
 		new PlatformsValidator ( ).validate ( );
 
+		// Search routes without route_master
 		await new MissingRouteMasterValidator ( ).fetchData ( );
 
-		// validating the osm routes and route master
+		// validating the osm routes and route_ master
 		new OsmRouteMasterValidator ( ).validate ( );
 
-		// building the osmtree
+		// building the osmtree for the comparison osm gtfs
 		new OsmTreeBuilder ( ).buildTree ( );
 
-		// loading gtfs data
+		// loading gtfs data for the comparison osm gtfs
 		await new GtfsDataLoader ( ).fetchData ( );
 
-		// building the gtfs tree
+		// building the gtfs tree for the comparison osm gtfs
 		new GtfsTreeBuilder ( ).buildTree ( );
 
-		// compare existing osm route master with gtfs route
-		let osmGtfsComparator = new OsmGtfsComparator ( );
+		// compare existing osm route_master with gtfs route_master
+		const osmGtfsComparator = new OsmGtfsComparator ( );
 		osmGtfsComparator.compare ( );
 
 		// Search Missing osm route master only if no osm ref given by user

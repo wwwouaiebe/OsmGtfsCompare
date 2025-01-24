@@ -71,7 +71,7 @@ class PlatformsValidator {
 		) {
 			let osmRef = osmObject.tags [ 'ref:' + theDocConfig.network ];
 			if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
-				theExcludeList.excludePlatform ( osmRef );
+				theExcludeList.translateOsmPlatform ( osmRef );
 				this.#platformsWithMoreThanOneRef.push ( osmObject );
 			}
 			if (

@@ -19,76 +19,76 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Simple container for values in the the html form
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class DocConfig {
 
 	/**
-     * Coming soon
+     * The network
      * @type {String}
      */
 
 	#network = '';
 
 	/**
-     * Coming soon
+     * the vehicle
      * @type {String}
      */
 
 	#vehicle = '';
 
 	/**
-     * Coming soon
+     * the type
      * @type {String}
      */
 
 	#type = '';
 
 	/**
-     * Coming soon
+     * the ref
      * @type {String}
      */
 
 	#ref = '';
 
 	/**
-     * Coming soon
+     * the network
      * @type {String}
      */
 
 	get network ( ) { return this.#network; }
 
 	/**
-     * Coming soon
+     * the vehicle
      * @type {String}
      */
 
 	get vehicle ( ) { return this.#vehicle; }
 
 	/**
-     * Coming soon
+     * the type
      * @type {String}
      */
 
 	get type ( ) { return this.#type; }
 
 	/**
-     * Coming soon
+     * the ref
      * @type {String}
      */
 
 	get ref ( ) { return this.#ref; }
 
 	/**
-     * Coming soon
+     * Load the data from the html form
      */
 
 	loadData ( ) {
@@ -109,6 +109,7 @@ class DocConfig {
 
 /**
  * The one and only one object DocConfig
+ * @type {DocConfig}
  */
 
 const theDocConfig = new DocConfig ( );

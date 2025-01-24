@@ -64,7 +64,7 @@ class OsmGtfsComparator {
 				if ( vehicle !== [ 'tram', 'subway', 'train', 'bus', 'ferry,' ] [ routeMaster.type ] ) {
 					return;
 				}
-				const excludedString = theExcludeList.getExcludeReason ( routeMaster.ref );
+				const excludedString = theExcludeList.getExcludedGTFSRelationReason ( routeMaster.ref );
 				if ( excludedString ) {
 					theReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
 					theReport.add ( 'p', excludedString );

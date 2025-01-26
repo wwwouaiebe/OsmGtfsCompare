@@ -19,31 +19,25 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theOsmDataLoader from './OsmDataLoader.js';
-import GtfsTreeBuilder from './GtfsTreeBuilder.js';
-import OsmTreeBuilder from './OsmTreeBuilder.js';
-import theReport from './Report.js';
-import theExcludeList from './ExcludeList.js';
-import GtfsDataLoader from './GtfsDataLoader.js';
-import OsmGtfsComparator from './OsmGtfsComparator.js';
-import theDocConfig from './DocConfig.js';
-import OsmRouteMasterValidator from './OsmRouteMasterValidator.js';
-import MissingRouteMasterValidator from './MissingRouteMasterValidator.js';
+import theVersion from './version.js';
+import GoButtonClickEL from './GoButtonClickEL.js';
+import AutoStartup from './AutoStartup.js';
+import ErrorsOnlyButtonClickEL from './ErrorsOnlyButtonClickEL.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Load the app when opening the HTML page
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class AppLoader {
 
 	/**
-     * The costructor
+     * The constructor
      */
 
 	constructor ( ) {
@@ -51,51 +45,20 @@ class AppLoader {
 	}
 
 	/**
-	 * Coming soon
+	 * Start the app
 	 */
 
-	async start ( ) {
+	start ( ) {
 
-		// reset of the Errors only button
-		document.getElementById ( 'errorsOnlyInput' ).value = 'Errors only';
+		// Adding event listeners on buttons
+		document.getElementById ( 'goInput' ).addEventListener ( 'click', new GoButtonClickEL ( ), false );
+		document.getElementById ( 'errorsOnlyInput' ).addEventListener ( 'click', new ErrorsOnlyButtonClickEL ( ), false );
 
-		// reading the form
-		theDocConfig.loadData ( );
+		// Adding version
+		document.getElementById ( 'version' ).innerText = 'Version: ' + theVersion;
 
-		// opening report
-		theReport.open ( );
-
-		// loading exclude list
-		await theExcludeList.loadData ( );
-
-		// loading osm data
-		await theOsmDataLoader.fetchData (	);
-
-		await new MissingRouteMasterValidator ( ).fetchData ( );
-
-		// validating the osm routes and route master
-		new OsmRouteMasterValidator ( ).validate ( );
-
-		// building the osmtree
-		new OsmTreeBuilder ( ).buildTree ( );
-
-		// loading gtfs data
-		await new GtfsDataLoader ( ).fetchData ( );
-
-		// building the gtfs tree
-		new GtfsTreeBuilder ( ).buildTree ( );
-
-		// compare existing osm route master with gtfs route
-		let osmGtfsComparator = new OsmGtfsComparator ( );
-		osmGtfsComparator.compare ( );
-
-		// Search Missing osm route master only if no osm ref given by user
-		if ( ! theDocConfig.ref ) {
-			osmGtfsComparator.searchMissingOsmRouteMaster ( );
-		}
-
-		// close...
-		theReport.close ( );
+		// Loading the autostartup
+		new AutoStartup ( ).start ( );
 	}
 }
 

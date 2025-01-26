@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -28,18 +28,20 @@ import { theGtfsTree } from './DataTree.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Simple event handler for click on the Download gpx
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class GpxButtonClickEL {
 
 	/**
-	 * Coming soon
-	 * @param {String} shapePk Coming soon
+	 * Search a route identified by the unique identifier in the GTFS data
+	 * @param {String} shapePk The unique identifier if the route given by mySql
 	 */
 
 	#getRouteFromShapePk ( shapePk ) {
+
+		// parsing to number because data in the button dataset are always string
 		let iShapePk = Number.parseInt ( shapePk );
 		let returnRoute = null;
 		theGtfsTree.routesMaster.forEach (
@@ -70,7 +72,11 @@ class GpxButtonClickEL {
 	 */
 
 	handleEvent ( clickEvent ) {
+
+		// set the button as visited
 		clickEvent.target.classList.add ( 'visited' );
+
+		// Building the gtfs file
 		new GpxFactory ( ).buildGpx ( this.#getRouteFromShapePk ( clickEvent.target.dataset.shapePk ) );
 	}
 }

@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -27,10 +28,10 @@ import TagsValidator from './TagsValidator.js';
 import RolesValidator from './RolesValidator.js';
 import ContinuousRouteValidator from './ContinuousRouteValidator.js';
 import NameFromToRefValidator from './NameFromToRefValidator.js';
-import TagsBuilder from './TagsBuilder.js';
 import FixmeValidator from './FixmeValidator.js';
-import OperatorValidator from './OperatorValidator.js';
-import NetworkValidator from './NetworkValidator.js';
+import TagKeyValue from './TagKeyValue.js';
+import theOperator from './Operator.js';
+import theDocConfig from './DocConfig.js';
 import theExcludeList from './ExcludeList.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
@@ -57,7 +58,7 @@ class OsmRouteValidator {
 
 	/**
 	 * The platforms associated to the route (= members with 'platform' role)
-	 * @type {Array}
+	 * @type {Array.<Object>}
 	 */
 
 	#platforms = [];
@@ -65,27 +66,36 @@ class OsmRouteValidator {
 	/**
 	 * the ways associated to the route (= members without role but having an highway tag
 	 * for bus or a railway tag for tram and subway)
-	 * @type {Array}
+	 * @type {Array.<Object>}
 	 */
 
 	#ways = [];
 
 	/**
-	 * Coming soon
-	 * @param {String} osmId Coming soon
-	 * @returns {boolean} Coming soon
+	 * Get the route TagKeyValue
+	 * @type {Array}
 	 */
 
-	#isOsmExcluded ( osmId ) {
-		const excludeData = theExcludeList.getOsmData ( osmId );
-		if ( excludeData?.reason ) {
-			theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
-			return true;
-		}
-		if ( excludeData?.note ) {
-			theReport.add ( 'p', excludeData.note );
-		}
-		return false;
+	#routeTagKeyValues ( ) {
+		return [
+			new TagKeyValue ( 'public_transport:version', '2' ),
+			new TagKeyValue (
+				( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route',
+				theDocConfig.vehicle
+			),
+			new TagKeyValue (
+				'type',
+				( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route'
+			),
+			new TagKeyValue (
+				'operator',
+				[ theOperator.osmOperator ]
+			),
+			new TagKeyValue (
+				'network',
+				[ theDocConfig.network ]
+			)
+		];
 	}
 
 	/**
@@ -108,15 +118,13 @@ class OsmRouteValidator {
 			this.#route
 		);
 
-		if ( this.#isOsmExcluded ( this.#route.id ) ) {
+		if ( theExcludeList.isOsmExcluded ( this.#route.id, true ) ) {
 			return;
 		}
 
 		theReport.add ( 'h3', 'Validation of tags, roles and members for route' );
 
-		this.#errorCounter += new TagsValidator ( this.#route, TagsBuilder.RouteTags ).validate ( );
-		this.#errorCounter += new OperatorValidator ( this.#route ).validate ( );
-		this.#errorCounter += new NetworkValidator ( this.#route ).validate ( );
+		this.#errorCounter += new TagsValidator ( this.#route.tags, this.#routeTagKeyValues ( ) ).validate ( );
 		this.#errorCounter += new FixmeValidator ( this.#route ).validate ( );
 		this.#errorCounter += new RolesValidator ( this.#route, this.#platforms, this.#ways ).validate ( );
 		this.#errorCounter += new ContinuousRouteValidator ( this.#route, this.#ways ).validate ( );

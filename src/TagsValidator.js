@@ -19,11 +19,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theReport from './Report.js';
-import theDocConfig from './DocConfig.js';
+import TagKeyValue from './TagKeyValue.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -41,102 +42,133 @@ class TagsValidator {
 	#errorCounter = 0;
 
 	/**
-     * the used tags
-     * @type {Object}
+     * An array of TagKeyValue mandatory for the controled object
+     * @type {Array.<TagKeyValue>}
      */
 
-	#tags;
+	#tagKeyValues = [];
 
  	/**
-	 * The relation currently controlled
+	 * The tags of the object currently controlled
 	 * @type {Object}
 	 */
 
-	#relation;
+	#tags;
 
 	/**
-     * Search the missing tags
-     */
+	 * A validator for tags where the value must be one of a list values
+	 * @param {String} tagValue The value of the controled tag
+	 * @param {TagKeyValue} tagKeyValue A TagKeyValue corresponding to the controled tag
+	 */
 
-	#searchMissingTags ( ) {
-
-		this.#tags.forEach (
-			tag => {
-				if ( tag.isMandatory && ! this.#relation.tags [ tag.name ] ) {
-					theReport.add (
-						'p',
-						'Error T003: no ' + tag.name + ' tag'
-					);
-					this.#errorCounter ++;
-				}
-				if ( this.#relation.tags [ tag.name ] && tag.values ) {
-					if ( Array.isArray ( tag.values ) ) {
-						if ( -1 === tag.values.indexOf ( this.#relation.tags [ tag.name ] ) ) {
-							theReport.add (
-								'p',
-								'Error T002 :invalid value ' + this.#relation.tags [ tag.name ] +
-									' for tag ' + tag.name
-							);
-							this.#errorCounter ++;
-						}
-					}
-					else if ( this.#relation.tags [ tag.name ] !== tag.values ) {
-						theReport.add (
-							'p',
-							'Error T002 :invalid value ' + this.#relation.tags [ tag.name ] +
-								' for tag ' + tag.name
-						);
-						this.#errorCounter ++;
-					}
-				}
-			}
+	#validateMustBeOneOf ( tagValue, tagKeyValue ) {
+		const expectedValue = tagKeyValue.value;
+		let isValid = false;
+		expectedValue.forEach (
+			value => { isValid ||= value === tagValue; }
 		);
+		if ( ! isValid ) {
+			this.#errorCounter ++;
+			theReport.add (
+				'p',
+				'Error T001: The value of the tag ' + tagKeyValue.key + ' must be one of "' +
+					expectedValue.toString ( ) +
+					'" (found "' + tagValue + '")'
+			);
+		}
 	}
 
 	/**
-     * Search the unuseful tags
-     */
+	 * A validator for tags where the value is a list separed by semi-columns and must contains a precise value
+	 * @param {String} tagValue The value of the controled tag
+	 * @param {TagKeyValue} tagKeyValue A TagKeyValue corresponding to the controled tag
+	 */
 
-	#searchUnusefulTags ( ) {
-		if ( 'TECL' !== theDocConfig.network || 'proposed:route' !== theDocConfig.type ) {
-			return;
+	#validateMustContains ( tagValue, tagKeyValue ) {
+		const expectedValue = tagKeyValue.value [ 0 ];
+		let isValid = false;
+		tagValue.split ( ';' ).forEach (
+			value => { isValid ||= value === expectedValue; }
+		);
+		if ( ! isValid ) {
+			this.#errorCounter ++;
+			theReport.add (
+				'p',
+				'Error T002: The value of the tag ' + tagKeyValue.key + ' must include "' +
+					expectedValue +
+					'" (found "' + tagValue + '")'
+			);
 		}
-		for ( const key of Object.keys ( this.#relation.tags ) ) {
-			if ( ! this.#tags.get ( key ) ) {
-				theReport.add (
-					'p',
-					'Warning T001: unuseful ' + key + ' tag for this route'
-				);
-			}
+	}
+
+	/**
+	 * A validator for tags where the value must be a precise value
+	 * @param {String} tagValue The value of the controled tag
+	 * @param {TagKeyValue} tagKeyValue A TagKeyValue corresponding to the controled object
+	 */
+
+	#validateMustBe ( tagValue, tagKeyValue ) {
+		const expectedValue = tagKeyValue.value;
+		let isValid = tagValue === expectedValue;
+		if ( ! isValid ) {
+			this.#errorCounter ++;
+			theReport.add (
+				'p',
+				'Error T003: The value of the tag ' + tagKeyValue.key + ' must be "' +
+					expectedValue +
+					'" (found "' + tagValue + '")'
+			);
 		}
 	}
 
 	/**
      * Start the validation
+	 * @returns {Number} the number of errors found
      */
 
 	validate ( ) {
-		this.#errorCounter = 0;
 
-		this.#searchMissingTags ( );
-		this.#searchUnusefulTags ( );
+		this.#errorCounter = 0;
+		this.#tagKeyValues.forEach (
+			tagKeyValue => {
+				const tagValue = this.#tags [ tagKeyValue.key ];
+				if ( tagValue ) {
+					switch ( tagKeyValue.valueType ) {
+					case TagKeyValue.valueTypes.mustBeOneOf :
+						this.#validateMustBeOneOf ( tagValue, tagKeyValue );
+						break;
+					case TagKeyValue.valueTypes.mustContains :
+						this.#validateMustContains ( tagValue, tagKeyValue );
+						break;
+					case TagKeyValue.valueTypes.mustBe :
+						this.#validateMustBe ( tagValue, tagKeyValue );
+						break;
+					default :
+						break;
+					}
+				}
+				else {
+					theReport.add (
+						'p',
+						'Error T004: No tag ' + tagKeyValue.key
+					);
+					this.#errorCounter ++;
+				}
+			}
+		);
 
 		return this.#errorCounter;
 	}
 
 	/**
 	 * The constructor
-	 * @param {Object} relation The controlled route or route_master
-     * @param {Object} tags The valid tags
+	 * @param {Object} tags The tags of the controlled object
+     * @param {Array.<TagKeyValue>} tagKeyValues An array of TagKeyValue objects corresponding to the controled object
 	 */
 
-	constructor ( relation, tags ) {
-		this.#relation = relation;
-		this.#tags = new Map ( );
-		tags.forEach (
-			tag => { this.#tags.set ( tag.name, tag ); }
-		);
-
+	constructor ( tags, tagKeyValues ) {
+		this.#tags = tags;
+		this.#tagKeyValues = tagKeyValues;
 		Object.freeze ( this );
 	}
 }

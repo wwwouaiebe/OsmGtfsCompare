@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -31,7 +32,7 @@ import theDocConfig from './DocConfig.js';
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class MissingRouteMasterValidator {
+class RoutesWithoutRouteMasterValidator {
 
 	/**
 	 * Add the errors to the report
@@ -40,24 +41,22 @@ class MissingRouteMasterValidator {
 
 	#reportMissingRouteMaster ( elements ) {
 
-		let errorsCounter = 0;
 		theReport.add ( 'h1', 'Routes without route_master' );
 
-		// errors
-		elements.forEach (
-			element => {
-				theReport.add (
-					'p',
-					'Error M001: route wihout route_master ' + theReport.getOsmLink ( element ),
-					element
-				);
-				errorsCounter ++;
-			}
-		);
-		if ( 0 === errorsCounter ) {
+		if ( 0 === elements.length ) {
 			theReport.add ( 'p', 'Nothing found' );
 		}
-
+		else {
+			elements.forEach (
+				element => {
+					theReport.add (
+						'p',
+						'Error M001: route wihout route_master ' + theReport.getOsmLink ( element ),
+						element
+					);
+				}
+			);
+		}
 	}
 
 	/**
@@ -128,6 +127,6 @@ class MissingRouteMasterValidator {
 	}
 }
 
-export default MissingRouteMasterValidator;
+export default RoutesWithoutRouteMasterValidator;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -55,7 +56,7 @@ class FixmeValidator {
 		if ( this.#osmObject?.tags?.fixme ) {
 			theReport.add (
 				'p',
-				'Warning R019:  fixme exists for this object (' + this.#osmObject.tags.fixme + ')'
+				'Warning R019: a fixme exists for this object (' + this.#osmObject.tags.fixme + ')'
 			);
 			this.#errorCounter ++;
 		}

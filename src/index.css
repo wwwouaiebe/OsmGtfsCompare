@@ -97,6 +97,28 @@ header span.fontLarge {
 	margin-left: 2em;
 	font-size: 140%;
 }
+
+#routesLinks {
+	visibility : hidden;
+	width: 0;
+	height: 0;
+	transform: scale(0);
+	margin-bottom: 0;
+}
+
+header:hover > #routesLinks {
+	visibility: visible;
+	width:auto;
+	height:auto;
+	transform: scale(1);
+	margin-bottom: 1em;
+}
+
+.busShortcutAnchor{
+
+	margin-right: 0.1em;
+}
+
 footer {
 	border-top-style: solid ;
 	border-top-width: 0.1em;
@@ -112,7 +134,6 @@ footer {
 footer span {
 	margin-left: 1em;
 	margin-right: 1em;
-
 }
 
 main {
@@ -128,7 +149,7 @@ main h1 {
     font-size:  160%;
 	font-weight: bold;
 	text-decoration: underline;
-	margin-top : 2em;
+	margin-top : 3em;
 	margin-bottom: 1em;
 }
 
@@ -138,7 +159,7 @@ main h2 {
     margin-top : 1em;
     margin-left : 2em;
 	margin-bottom : 1em;
-	text-decoration: underline;
+	text-decoration: underline dotted;
 }
 
 main h3 {

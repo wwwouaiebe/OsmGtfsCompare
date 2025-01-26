@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -27,21 +27,21 @@ import PolylineEncoder from './PolylineEncoder.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Factory for gpx file
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class GpxFactory {
 
 	/**
-	 * Coming soon
+	 * The route to push in the GPX file
 	 * @type {Object}
 	 */
 
 	#route;
 
 	/**
-	 * Coming soon...
+	 * An XML string with the route information
 	 * @type {String}
 	 */
 
@@ -215,8 +215,8 @@ class GpxFactory {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {Array} route Coming soon
+	 * Build and save the GPX file
+	 * @param {Object} route The toute to save in the GPX file
 	 */
 
 	buildGpx ( route ) {

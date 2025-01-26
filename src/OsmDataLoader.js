@@ -19,74 +19,50 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theDocConfig from './DocConfig.js';
-import theExcludeList from './ExcludeList.js';
-import theOperator from './Operator.js';
-import theReport from './Report.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * This class call the overpass-api to obtains the data and load the data in the OsmData object
+ * This class call the overpass-api to obtains the OSM data
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class OsmDataLoader {
 
 	/**
-	 * A js map for the osm route_masters relations
-	 * @type {Map}
+	 * An array for the osm route_masters relations
+	 * @type {Array.<Object>}
 	 */
 
 	routeMasters = [];
 
 	/**
-	 * A js map for the osm route relations
+	 * A js map for the osm route relations. The key of the map objects is the OSM id
 	 * @type {Map}
 	 */
 
 	routes = new Map ( );
 
 	/**
-	 * A js map for the osm ways
+	 * A js map for the osm ways. The key of the map objects is the OSM id
 	 * @type {Map}
 	 */
 
 	ways = new Map ( );
 
 	/**
-	 * A js map for the osm nodes
+	 * A js map for the osm nodes. The key of the map objects is the OSM id
 	 * @type {Map}
 	 */
 
 	nodes = new Map ( );
 
 	/**
-	 * Coming soon
-	 * @type {Array}
-	 */
-
-	#platformsWithMoreThanOneRef = [];
-
-	/**
-	 * Coming soon
-	 * @type {Array}
-	 */
-
-	#platformsWithoutNetwork = [];
-
-	/**
-	 * Coming soon
-	 * @type {Array}
-	 */
-
-	#platformsWithoutOperator = [];
-
-	/**
-	 * Coming soon
+	 * Clear maps and array.
 	 */
 
 	#clear ( ) {
@@ -94,13 +70,10 @@ class OsmDataLoader {
 		this.nodes.clear ( );
 		this.ways.clear ( );
 		this.routes.clear ( );
-		this.#platformsWithMoreThanOneRef.splice ( 0 );
-		this.#platformsWithoutNetwork.splice ( 0 );
-		this.#platformsWithoutOperator.splice ( 0 );
 	}
 
 	/**
-	 * Coming soon
+	 * Sort the route masters
 	 */
 
 	#sortRoutesMaster ( ) {
@@ -127,7 +100,7 @@ class OsmDataLoader {
 	}
 
 	/**
-	* load the data in the OsmData object
+	* load the data in the maps and array
 	* @param {Array} elements An array with the elements part of the overpass-api response
 	 */
 
@@ -140,12 +113,14 @@ class OsmDataLoader {
 					case 'route_master' :
 					case 'proposed:route_master' :
 					case 'disused:route_master' :
+						Object.freeze ( element );
 						this.routeMasters.push ( element );
 						break;
 					case 'route' :
 					case 'proposed:route' :
 					case 'disused:route' :
 						element.routeMasters = [];
+						Object.freeze ( element );
 						this.routes.set ( element.id, element );
 						break;
 					default :
@@ -153,9 +128,11 @@ class OsmDataLoader {
 					}
 					break;
 				case 'way' :
+					Object.freeze ( element );
 					this.ways.set ( element.id, element );
 					break;
 				case 'node' :
+					Object.freeze ( element );
 					this.nodes.set ( element.id, element );
 					break;
 				default :
@@ -167,90 +144,8 @@ class OsmDataLoader {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {Object} osmObject Coming soon
-	 */
-
-	#controlPlatform ( osmObject ) {
-		if (
-			'bus_stop' === osmObject?.tags?.highway
-			||
-			'tram_stop' === osmObject?.tags?.railway
-		) {
-			let osmRef = osmObject.tags [ 'ref:' + theDocConfig.network ];
-			if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
-				theExcludeList.excludePlatform ( osmRef );
-				this.#platformsWithMoreThanOneRef.push ( osmObject );
-			}
-			if (
-				! osmObject.tags.network
-				||
-				! osmObject.tags.network.includes ( theDocConfig.network )
-			) {
-				this.#platformsWithoutNetwork.push ( osmObject );
-			}
-			if (
-				! osmObject.tags.operator
-				||
-				! osmObject.tags.operator.includes ( theOperator.osmOperator )
-			) {
-				this.#platformsWithoutOperator.push ( osmObject );
-			}
-		}
-	}
-
-	/**
-	 * Coming soon
-	 */
-
-	#excludePlatforms ( ) {
-		this.#platformsWithMoreThanOneRef = [];
-		this.nodes.forEach (
-			node => {
-				this.#controlPlatform ( node );
-			}
-		);
-
-		theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
-		if ( 0 === this.#platformsWithMoreThanOneRef.length ) {
-			theReport.add ( 'p', 'Nothing found' );
-		}
-		else {
-			this.#platformsWithMoreThanOneRef.forEach (
-				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + osmObject.tags[ 'ref:' + theDocConfig.network ], osmObject );
-				}
-			);
-		}
-
-		theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
-		if ( 0 === this.#platformsWithoutNetwork.length ) {
-			theReport.add ( 'p', 'Nothing found' );
-		}
-		else {
-			this.#platformsWithoutNetwork.forEach (
-				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + '- network : ' + ( osmObject.tags.network ?? '' ), osmObject );
-				}
-			);
-
-		}
-
-		theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
-		if ( 0 === this.#platformsWithoutOperator.length ) {
-			theReport.add ( 'p', 'Nothing found' );
-		}
-		else {
-			this.#platformsWithoutOperator.forEach (
-				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + '- operator : ' + ( osmObject.tags.operator ?? '' ), osmObject );
-				}
-			);
-		}
-	}
-
-	/**
 	 * Add the route_masters id to the routeMasters array of the routes
+	 * Used to verify that a route have only one route_master
 	 */
 
 	#addRouteMastersToRoutes ( ) {
@@ -301,7 +196,6 @@ class OsmDataLoader {
 				jsonResponse => {
 
 					this.#loadOsmData ( jsonResponse.elements );
-					this.#excludePlatforms ( );
 					this.#addRouteMastersToRoutes ( );
 
 					success = true;

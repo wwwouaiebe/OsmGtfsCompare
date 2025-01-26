@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -27,7 +28,7 @@ import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * fixme tag validator
+ * Validator for the name, from, ref and to tags
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -55,7 +56,7 @@ class NameFromToRefValidator {
 	#platforms;
 
 	/**
-	* Validate the from tag
+	* Validate the from tag. The from tag must be the same than the name of the first platform
 	 */
 
 	#validateFrom ( ) {
@@ -67,8 +68,6 @@ class NameFromToRefValidator {
 			&&
 			this.#route?.tags?.from !== ( this.#platforms [ 0 ]?.tags [ 'name:' + this.#route?.tags?.operator ] ?? '' )
 		) {
-
-			// from tag is not the same than the name of the first platform
 			theReport.add (
 				'p',
 				'Error R003: the from tag is not equal to the name of the first platform for route '
@@ -78,7 +77,7 @@ class NameFromToRefValidator {
 	}
 
 	/**
-	* Validate the to tag
+	* Validate the to tag. The to tag must be the same than the name of the last platform
 	 */
 
 	#validateTo ( )	{
@@ -93,8 +92,6 @@ class NameFromToRefValidator {
 				( this.#platforms.toReversed ( ) [ 0 ]?.tags [ 'name:' + this.#route?.tags?.operator ] ?? '' )
 			)
 		) {
-
-			// to tag is not the same than the name of the last platform
 			theReport.add (
 				'p',
 				'Error R005: the to tag is not equal to the name of the last platform for route'
@@ -131,7 +128,7 @@ class NameFromToRefValidator {
 	}
 
 	/**
-	 * Coming soon
+	 * Start the validation of name, from, to and ref tags
 	 */
 
 	validate ( ) {
@@ -169,7 +166,7 @@ class NameFromToRefValidator {
 
 		if ( ! this.#route?.tags?.name ) {
 
-			// no ref tag
+			// no name tag
 			theReport.add (
 				'p',
 				'Error R021: a name tag is not found for route'

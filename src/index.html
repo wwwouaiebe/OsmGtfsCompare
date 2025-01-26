@@ -25,37 +25,40 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	</head>
 	<body class="cyLight">
         <header id="configForm">
-            <span id="GTFSValidity"></span>
-             <label>Network: 
-                <select id="osmNetworkSelect">
-                 </select>
-            </label>
-            <label>Vehicle: 
-                <select id="osmVehicleSelect">
-                    <option value="bus">bus</option>
-                    <option value="tram">tram</option>
-                    <option value="subway">subway</option>
-                </select>
-            </label>
-            <label>Type: 
-                <select id="osmTypeSelect">
-                    <option value="used">used</option>
-                    <option value="proposed">proposed</option>
-                    <option value="disused">disused</option>
-                </select>
-            </label>
-            <label>
-                Ref: <input type="text" id="osmRef" value="" title="Add the ref an osm bus/tram/subway relation if you will limit the contro to this relation"/>
-            </label>
-            <label>
-                New JOSM layer
-                <input type="checkbox" value="newJosmLayer" id="newJosmLayer" title="JOSM check out in a new layer" checked />
-            </label>
-            <input type="button" value="go" id="goInput" title="Start the control"/>
-            <input type="button" value="Errors only" id="errorsOnlyInput" title="Show all or show only errors"/>
-            <span class="fontLarge"> <a id="cyDarkLight" title="Apparence: sombre">☽</a> </span>
-            <span class="fontLarge"> <a id="help" title="help" target="_blank" href="https://github.com/wwwouaiebe/OsmGtfsCompare#readme">?</a> </span>
+            <div>
+                <span id="GTFSValidity"></span>
+                <label>Network: 
+                    <select id="osmNetworkSelect">
+                    </select>
+                </label>
+                <label>Vehicle: 
+                    <select id="osmVehicleSelect">
+                        <option value="bus">bus</option>
+                        <option value="tram">tram</option>
+                        <option value="subway">subway</option>
+                    </select>
+                </label>
+                <label>Type: 
+                    <select id="osmTypeSelect">
+                        <option value="used">used</option>
+                        <option value="proposed">proposed</option>
+                        <option value="disused">disused</option>
+                    </select>
+                </label>
+                <label>
+                    Ref: <input type="text" id="osmRef" value="" title="Add the ref an osm bus/tram/subway relation if you will limit the contro to this relation"/>
+                </label>
+                <label>
+                    New JOSM layer
+                    <input type="checkbox" value="newJosmLayer" id="newJosmLayer" title="JOSM check out in a new layer" checked />
+                </label>
+                <input type="button" value="go" id="goInput" title="Start the control"/>
+                <input type="button" value="Errors only" id="errorsOnlyInput" title="Show all or show only errors"/>
+                <span class="fontLarge"> <a id="cyDarkLight" title="Apparence: sombre">☽</a> </span>
+                <span class="fontLarge"> <a id="help" title="help" target="_blank" href="https://github.com/wwwouaiebe/OsmGtfsCompare#readme">?</a> </span>
+            </div>
             <div id="waitAnimation"><div id="waitAnimationBullet"></div></div>
+            <div id="routesLinks"></div>
        </header>
         <main id="report">
         </main>

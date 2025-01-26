@@ -29,24 +29,12 @@ Doc reviewed 20250110
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theVersion from './version.js';
-import GoButtonClickEL from './GoButtonClickEL.js';
-import AutoStartup from './AutoStartup.js';
-import ErrorsOnlyButtonClickEL from './ErrorsOnlyButtonClickEL.js';
-
 // all the necessary code is inside the constructor of theThemeChanger so only an import
 // is needed to enable theThemeChanger and so :
 // eslint-disable-next-line no-unused-vars
 import theThemeChanger from './ThemeChanger.js';
+import AppLoader from './AppLoader.js';
 
-// Adding event listeners on buttons
-document.getElementById ( 'goInput' ).addEventListener ( 'click', new GoButtonClickEL ( ), false );
-document.getElementById ( 'errorsOnlyInput' ).addEventListener ( 'click', new ErrorsOnlyButtonClickEL ( ), false );
-
-// Adding version
-document.getElementById ( 'version' ).innerText = 'Version: ' + theVersion;
-
-// Loading the autostartup
-new AutoStartup ( ).start ( );
+new AppLoader ( ).start ( );
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

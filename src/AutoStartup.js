@@ -24,7 +24,7 @@ Doc reviewed 20250124
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theOperator from './Operator.js';
-import AppLoader from './AppLoader.js';
+import ValidationAndComparisonStarter from './ValidationAndComparisonStarter.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -252,7 +252,7 @@ class AutoStartup {
 
 		// auto startup. Reminder that a value is not needed for the autostartup, only the presence of a parameter!
 		if ( null !== this.#autoStartup ) {
-			new AppLoader ( ).start ( );
+			new ValidationAndComparisonStarter ( ).start ( );
 		}
 	}
 

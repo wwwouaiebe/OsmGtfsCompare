@@ -28,15 +28,16 @@ import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Loader for the GTFS data. The GTFS date are prepared from the GTFS files by the gtfs2mysql2json app
+ * and saved in a light format in the json files that are in the json folder.
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class GtfsDataLoader {
 
 	/**
-	 * Coming soon
-	 * @param {String} startDate Coming soon
+	 * Add the validity date of the GTFS data in the header
+	 * @param {String} startDate the validity date of the GTFS data
 	 */
 
 	#addStartDate ( startDate ) {
@@ -55,7 +56,7 @@ class GtfsDataLoader {
 	}
 
 	/**
-	 * Coming soon
+	 * Reading the data from the json file (Using fetch... import is always experimental...)
 	 */
 
 	async fetchData ( ) {

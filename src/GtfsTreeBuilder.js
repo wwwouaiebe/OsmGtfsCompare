@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -28,16 +28,16 @@ import { theGtfsTree } from './DataTree.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Transform the GTFS tree in a way usable by JS. Reminder: json don't know maps...
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class GtfsTreeBuilder {
 
 	/**
-	 * Coming soon
-	 * @param {String} sourceDate Coming soon
-	 * @returns {String} Coming soon
+	 * Convert a date to the format year-month-day
+	 * @param {String} sourceDate The date as in the json file. Dates in the json file are ISO date with UTC hours...
+	 * @returns {String} the date in the format year-month-day
 	 */
 
 	#convertDate ( sourceDate ) {
@@ -50,33 +50,55 @@ class GtfsTreeBuilder {
 	}
 
 	/**
-	 * Coming soon
+	 * Build the GTFS tree
 	 */
 
 	buildTree ( ) {
 
+		// Loop on route_master
 		theGtfsTree.routesMaster.forEach (
 			routeMaster => {
+
+				// loop on route
 				routeMaster.routes.forEach (
 					route => {
 						let fromName = '';
 						let toName = '';
+
+						// creating a map for platform names. the key of the map
+						// is the platform id and the value is the platform name
 						route.platformNames = new Map ( );
+
+						// loop on platforms
 						route.platforms.forEach (
 							( platform, index ) => {
+
+								// only platforms not marked as disused are added
 								if ( ! theExcludeList.isGtfsDisusedPlatform ( platform.id ) ) {
+
+									// platforms id are translated if needed
 									let translatedPlatformId = theExcludeList.translateGtfsRefPlatform ( platform.id );
+
+									// a csv string with valid platforms is created
 									route.platformsString += translatedPlatformId + ';';
 									if ( 0 === index ) {
+
+										// Saving the first platforms name and id
 										route.from = translatedPlatformId;
 										fromName = platform.name;
 									}
+
+									// Saving the last platforms name and id
 									route.to = translatedPlatformId;
 									toName = platform.name;
+
+									// adding the platform name to the map
 									route.platformNames.set ( translatedPlatformId, platform.name );
 								}
 							}
 						);
+
+						// giving a name to the GTFS route
 						route.name =
 							[ 'Tram', 'Subway', 'Train', 'Bus', 'Ferry,' ] [ routeMaster.type ] +
 								' ' + routeMaster.ref +
@@ -87,7 +109,11 @@ class GtfsTreeBuilder {
 								' ) - ' + route.shapePk +
 								' - valid from ' + this.#convertDate ( route.startDate ) +
 								' - valid to ' + this.#convertDate ( route.endDate );
+
+						// Adding a flag to the route. When true an osm route corresponding to the GTFS is found
 						route.osmRoute = false;
+
+						// Route is sealed. No more properties possible.
 						Object.seal ( route );
 					}
 				);
@@ -104,11 +130,6 @@ class GtfsTreeBuilder {
 	}
 
 }
-
-/**
- * Coming soon
- * @type {Object}
- */
 
 export default GtfsTreeBuilder;
 

@@ -19,11 +19,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import AppLoader from './AppLoader.js';
+import ValidationAndComparisonStarter from './ValidationAndComparisonStarter.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -46,7 +46,7 @@ class GoButtonClickEL {
 	 */
 
 	async handleEvent ( ) {
-		await new AppLoader ( ). start ( );
+		await new ValidationAndComparisonStarter ( ). start ( );
 	}
 
 }

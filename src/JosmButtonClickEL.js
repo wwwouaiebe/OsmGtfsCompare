@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -53,6 +53,7 @@ class JosmButtonClickEL {
 		// changing the button color
 		event.target.classList.add ( 'josmButtonVisited' );
 
+		// reading the newJosmLayer checkbox
 		let newJosmLayer =
 			document.getElementById ( 'newJosmLayer' ).checked
 				?
@@ -60,10 +61,8 @@ class JosmButtonClickEL {
 				:
 				'false';
 
-		// calling josm
-
+		// uri creation
 		let uri = 'http://localhost:8111/load_object?new_layer=' + newJosmLayer;
-
 		switch ( osmObjType ) {
 		case 'relation' :
 			uri += '&relation_members=true&objects=r' + osmObjId;
@@ -78,6 +77,7 @@ class JosmButtonClickEL {
 			break;
 		}
 
+		// calling JOSM
 		await fetch ( uri )
 			.then (
 				response => {

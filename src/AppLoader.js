@@ -23,17 +23,10 @@ Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theOsmDataLoader from './OsmDataLoader.js';
-import GtfsTreeBuilder from './GtfsTreeBuilder.js';
-import OsmTreeBuilder from './OsmTreeBuilder.js';
-import theReport from './Report.js';
-import theExcludeList from './ExcludeList.js';
-import GtfsDataLoader from './GtfsDataLoader.js';
-import OsmGtfsComparator from './OsmGtfsComparator.js';
-import theDocConfig from './DocConfig.js';
-import OsmRouteMasterValidator from './OsmRouteMasterValidator.js';
-import MissingRouteMasterValidator from './MissingRouteMasterValidator.js';
-import PlatformsValidator from './PlatformsValidator.js';
+import theVersion from './version.js';
+import GoButtonClickEL from './GoButtonClickEL.js';
+import AutoStartup from './AutoStartup.js';
+import ErrorsOnlyButtonClickEL from './ErrorsOnlyButtonClickEL.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -52,55 +45,20 @@ class AppLoader {
 	}
 
 	/**
-	 * Coming soon
+	 * Start the app
 	 */
 
-	async start ( ) {
+	start ( ) {
 
-		// reset of the Errors only button
-		document.getElementById ( 'errorsOnlyInput' ).value = 'Errors only';
+		// Adding event listeners on buttons
+		document.getElementById ( 'goInput' ).addEventListener ( 'click', new GoButtonClickEL ( ), false );
+		document.getElementById ( 'errorsOnlyInput' ).addEventListener ( 'click', new ErrorsOnlyButtonClickEL ( ), false );
 
-		// reading the form
-		theDocConfig.loadData ( );
+		// Adding version
+		document.getElementById ( 'version' ).innerText = 'Version: ' + theVersion;
 
-		// loading exclude list
-		await theExcludeList.loadData ( );
-
-		// opening report
-		theReport.open ( );
-
-		// loading osm data
-		await theOsmDataLoader.fetchData (	);
-
-		// Validating the platforms
-		new PlatformsValidator ( ).validate ( );
-
-		// Search routes without route_master
-		await new MissingRouteMasterValidator ( ).fetchData ( );
-
-		// validating the osm routes and route_ master
-		new OsmRouteMasterValidator ( ).validate ( );
-
-		// building the osmtree for the comparison osm gtfs
-		new OsmTreeBuilder ( ).buildTree ( );
-
-		// loading gtfs data for the comparison osm gtfs
-		await new GtfsDataLoader ( ).fetchData ( );
-
-		// building the gtfs tree for the comparison osm gtfs
-		new GtfsTreeBuilder ( ).buildTree ( );
-
-		// compare existing osm route_master with gtfs route_master
-		const osmGtfsComparator = new OsmGtfsComparator ( );
-		osmGtfsComparator.compare ( );
-
-		// Search Missing osm route master only if no osm ref given by user
-		if ( ! theDocConfig.ref ) {
-			osmGtfsComparator.searchMissingOsmRouteMaster ( );
-		}
-
-		// close...
-		theReport.close ( );
+		// Loading the autostartup
+		new AutoStartup ( ).start ( );
 	}
 }
 

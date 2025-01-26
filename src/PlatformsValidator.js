@@ -112,7 +112,10 @@ class PlatformsValidator {
 		else {
 			this.#platformsWithMoreThanOneRef.forEach (
 				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + osmObject.tags[ 'ref:' + theDocConfig.network ], osmObject );
+					theReport.add (
+						'p',
+						osmObject.tags.name + ' ' + osmObject.tags[ 'ref:' + theDocConfig.network ],
+						osmObject );
 				}
 			);
 		}

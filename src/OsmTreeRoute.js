@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -30,145 +30,144 @@ import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * An object with route data needed for the comparison
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class osmTreeRoute {
 
 	/**
-	 * Coming soon
+	 * The name of the route
 	 * @type {String}
 	 */
 
 	#name = '';
 
 	/**
-	 * Coming soon
-	 * @type {String}
+	 * the osm id of the route
+	 * @type {Number}
 	 */
 
-	#id = '';
+	#id = 0;
 
 	/**
-	 * Coming soon
+	 * A csv string with the platforms ref
 	 * @type {String}
 	 */
 
 	#platforms = '';
 
 	/**
-	 * Coming soon
+	 * The strarting platform name
 	 * @type {String}
 	 */
 
 	#from = '';
 
 	/**
-	 * Coming soon
+	 * The ending platform name
 	 * @type {String}
 	 */
 
 	#to = '';
 
 	/**
-	 * Coming soon
+	 * A map with the platforms name. The key is the platform ref and the value is the platform name
 	 * @type {Map}
 	 */
 
 	#platformNames = new Map ( );
 
 	/**
-	 * Coming soon
+	 * The via of the route
 	 * @type {String}
 	 */
 
 	#via = '';
 
 	/**
-	 * Coming soon
+	 * The name of the route
 	 * @type {String}
 	 */
 
 	get name ( ) { return this.#name; }
 
 	/**
-	 * Coming soon
-	 * @type {String}
+	 * the osm id of the route
+	 * @type {Number}
 	 */
 
 	get id ( ) { return this.#id; }
 
 	/**
-	 * Coming soon
+	 * The osm type of the route
 	 * @type {String}
 	 */
 
 	get type ( ) { return 'relation'; }
 
 	/**
-	 * Coming soon
+	 * A csv string with the platforms ref
 	 * @type {String}
 	 */
 
 	get platforms ( ) { return this.#platforms; }
 
 	/**
-	 * Coming soon
+	 * The strarting platform name
 	 * @type {String}
 	 */
 
 	get from ( ) { return this.#from; }
 
 	/**
-	 * Coming soon
+	 * The ending platform name
 	 * @type {String}
 	 */
 
 	get to ( ) { return this.#to; }
 
 	/**
-	 * Coming soon
+	 * A map with the platforms name. The key is the platform ref and the value is the platform name
 	 * @type {String}
 	 */
 
 	get platformNames ( ) { return this.#platformNames; }
 
 	/**
-	 * Coming soon
+	 * The via of the route
 	 * @type {String}
 	 */
 
 	get via ( ) { return this.#via; }
 
 	/**
-	 * Coming soon
-	 * @param {Object} osmPlatform Coming soon
+	 * get the ref of a platform to use for the comparison. Can be different of the ref encoded in osm!
+	 * @param {Object} osmPlatform A osm platform for witch the ref is searched
 	 */
 
 	#getOsmPlatformRef ( osmPlatform ) {
 
-		let osmRef = osmPlatform.tags [ 'ref:' + theDocConfig.network ];
+		let platformRef =
+			theExcludeList.translateOsmRefPlatform ( osmPlatform.tags [ 'ref:' + theDocConfig.network ] );
 
-		osmPlatform.tags [ 'ref:' + theDocConfig.network ] =
-            theExcludeList.translateOsmRefPlatform ( osmRef );
-
-		let platformRef = osmPlatform.tags [ 'ref:' + theDocConfig.network ];
 		if ( ! platformRef ) {
-			let refCounter = 0;
-			let networks = theOperator.networksAsStringArray;
-			let tmpPlatformRef = null;
-			networks.forEach (
 
+			// no platform found. Searching with other networks of the operator
+			let refInOtherNetworkCounter = 0;
+			let platformRefInOtherNetwork = null;
+			theOperator.networksAsStringArray.forEach (
 				network => {
+
+					// a ref:inOtherNetwork is found. saving it
 					if ( osmPlatform.tags [ 'ref:' + network ] ) {
-						refCounter ++;
-						tmpPlatformRef = osmPlatform.tags [ 'ref:' + network ];
+						refInOtherNetworkCounter ++;
+						platformRefInOtherNetwork = osmPlatform.tags [ 'ref:' + network ];
 					}
 				}
 			);
-			if ( 1 === refCounter ) {
-				platformRef = tmpPlatformRef;
+			if ( 1 === refInOtherNetworkCounter ) {
+				platformRef = platformRefInOtherNetwork;
 			}
 			else {
 				platformRef = '????????';
@@ -179,7 +178,7 @@ class osmTreeRoute {
 
 	/**
 	 * The constructor
-	 * @param {Object} osmRoute Coming Soon
+	 * @param {Object} osmRoute the osm route received from the Overpass API
 	 */
 
 	constructor ( osmRoute ) {

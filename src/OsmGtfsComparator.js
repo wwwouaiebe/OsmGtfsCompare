@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -31,7 +31,7 @@ import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Compare the osm and GTFS route_master and routes
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -46,30 +46,27 @@ class OsmGtfsComparator {
 	}
 
 	/**
-     * Coming soon
+     * Search all missing osm route_master
      */
 
-	searchMissingOsmRouteMaster ( ) {
-
-		if ( 'used' !== theDocConfig.type ) {
-			return;
-		}
+	#searchMissingOsmRouteMaster ( ) {
 
 		theReport.add ( 'h1', 'Gtfs relations not found in the osm data' );
 
 		// loop on the GTFS routes master
 		theGtfsTree.routesMaster.forEach (
 			routeMaster => {
-				let vehicle = document.getElementById ( 'osmVehicleSelect' ).value;
-				if ( vehicle !== [ 'tram', 'subway', 'train', 'bus', 'ferry,' ] [ routeMaster.type ] ) {
-					return;
-				}
+
 				const excludedString = theExcludeList.getExcludedGTFSRelationReason ( routeMaster.ref );
 				if ( excludedString ) {
+
+					// Reporting the relation if excluded
 					theReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
 					theReport.add ( 'p', excludedString );
 				}
 				else if ( ! routeMaster.osmRouteMaster ) {
+
+					// Reporting the relations if no osm route master
 					theReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
 					routeMaster.routes.forEach (
 						route => {
@@ -83,9 +80,9 @@ class OsmGtfsComparator {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {Object} osmRouteMaster Coming soon
-	 * @returns {Object} Coming soon
+	 * Search a GTFS route master similar to the OSM route
+	 * @param {Object} osmRouteMaster The osm route_master for witch a GTFS route_master is searched
+	 * @returns {Object} a gtfs route_master with the same ref and description than the osmRouteMaster
 	 */
 
 	#SearchGtfsRouteMaster ( osmRouteMaster ) {
@@ -138,14 +135,10 @@ class OsmGtfsComparator {
 	}
 
 	/**
-     * Coming soon
+     * Search and compare the osm route_master and GTFS route_master
      */
 
 	compare ( ) {
-
-		if ( 'used' !== theDocConfig.type ) {
-			return;
-		}
 
 		// loop on osm route master
 		theOsmTree.routesMaster.forEach (
@@ -161,6 +154,10 @@ class OsmGtfsComparator {
 				}
 			}
 		);
+
+		if ( ! theDocConfig.ref ) {
+			this.#searchMissingOsmRouteMaster ( );
+		}
 	}
 }
 

@@ -32,7 +32,7 @@ import theDocConfig from './DocConfig.js';
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-class MissingRouteMasterValidator {
+class RoutesWithoutRouteMasterValidator {
 
 	/**
 	 * Add the errors to the report
@@ -127,6 +127,6 @@ class MissingRouteMasterValidator {
 	}
 }
 
-export default MissingRouteMasterValidator;
+export default RoutesWithoutRouteMasterValidator;
 
 /* --- End of file --------------------------------------------------------------------------------------------------------- */

@@ -29,14 +29,15 @@ import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * This class build a tree with osm route_master and routes from the osm data.
+ * See also OsmTreeRoute and OsmTreeRouteMaster classes
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class OsmTreeBuilder {
 
 	/**
-	 * Coming soon
+	 * Build the tree
 	 */
 
 	buildTree ( ) {

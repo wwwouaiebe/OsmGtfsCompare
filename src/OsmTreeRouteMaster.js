@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
-Doc reviewed 20250110
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -28,84 +28,84 @@ import theOsmDataLoader from './OsmDataLoader.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * An object with route_master data needed for the comparison
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 class OsmTreeRouteMaster {
 
 	/**
-	 * Coming soon
+	 * The ref of the route_master
 	 * @type {String}
 	 */
 
 	#ref = '';
 
 	/**
-	 * Coming soon
+	 * The name of the route_master
 	 * @type {String}
 	 */
 
 	#name = '';
 
 	/**
-	 * Coming soon
+	 * The osm id of the route_master
 	 * @type {String}
 	 */
 
 	#id = '';
 
 	/**
-	 * Coming soon
+	 * The description of the route_master
 	 * @type {String}
 	 */
 
 	#description = '';
 
 	/**
-	 * Coming soon
+	 * The OsmTreeRoutes linked to the route_master
 	 * @type {Array}
 	 */
 
 	#routes = [];
 
 	/**
-	 * Coming soon
+	 * The ref of the route_master
 	 * @type {String}
 	 */
 
 	get ref ( ) { return this.#ref; }
 
 	/**
-	 * Coming soon
+	 * The name of the route_master
 	 * @type {String}
 	 */
 
 	get name ( ) { return this.#name; }
 
 	/**
-	 * Coming soon
+	 * The osm id of the route_master
 	 * @type {String}
 	 */
 
 	get id ( ) { return this.#id; }
 
 	/**
-	 * Coming soon
+	 * The osm type of the route_master
 	 * @type {String}
 	 */
 
 	get type ( ) { return 'relation'; }
 
 	/**
-	 * Coming soon
+	 * The description of the route_master
 	 * @type {String}
 	 */
 
 	get description ( ) { return this.#description; }
 
 	/**
-	 * Coming soon
+	 * The OsmTreeRoutes linked to the route_master
 	 * @type {Array}
 	 */
 

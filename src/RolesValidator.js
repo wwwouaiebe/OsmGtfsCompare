@@ -157,7 +157,7 @@ class RolesValidator {
 
 	/**
 	 * Verify that a way is a valid way for a bus:
-	 * - the highway tag of way is in the validBusHighways highway
+	 * - the highway tag of way is in the validBusHighways array
 	 * - or the way have a bus=yes tag or psv=yes tag
 	 * @param {Object} way The way to verify
 	 */

@@ -32,12 +32,12 @@ import GtfsDataLoader from './GtfsDataLoader.js';
 import OsmGtfsComparator from './OsmGtfsComparator.js';
 import theDocConfig from './DocConfig.js';
 import OsmRouteMasterValidator from './OsmRouteMasterValidator.js';
-import MissingRouteMasterValidator from './MissingRouteMasterValidator.js';
+import RoutesWithoutRouteMasterValidator from './RoutesWithoutRouteMasterValidator.js';
 import PlatformsValidator from './PlatformsValidator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
- * Coming soon
+ * Entry point for the validation and the comparison
  */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
@@ -76,7 +76,7 @@ class ValidationAndComparisonStarter {
 		new PlatformsValidator ( ).validate ( );
 
 		// Search routes without route_master
-		await new MissingRouteMasterValidator ( ).fetchData ( );
+		await new RoutesWithoutRouteMasterValidator ( ).fetchData ( );
 
 		// validating the osm routes and route_ master
 		new OsmRouteMasterValidator ( ).validate ( );
@@ -91,12 +91,8 @@ class ValidationAndComparisonStarter {
 		new GtfsTreeBuilder ( ).buildTree ( );
 
 		// compare existing osm route_master with gtfs route_master
-		const osmGtfsComparator = new OsmGtfsComparator ( );
-		osmGtfsComparator.compare ( );
-
-		// Search Missing osm route master only if no osm ref given by user
-		if ( ! theDocConfig.ref ) {
-			osmGtfsComparator.searchMissingOsmRouteMaster ( );
+		if ( 'used' === theDocConfig.type ) {
+			new OsmGtfsComparator ( ).compare ( );
 		}
 
 		// close...

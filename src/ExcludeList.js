@@ -24,6 +24,7 @@ Doc reviewed 20250124
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theOperator from './Operator.js';
+import theReport from './Report.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -199,13 +200,26 @@ class ExcludeList {
 	}
 
 	/**
-	 * get the exclusion data of an OSM route or route_master relation
-	 * @param {String} osmId the OSM id of the route
-	 * @returns {?Object} the exclusion data of the OSM relation or null if the relation is not excluded
+	 * Verify if a route or a route_master is excluded from the validation and comparison
+	 * @param {Number} osmId The osm id of the route or route_master
+	 * @param {boolean} addToReport A flag indicating the the exclusion must be added to the report
+	 * @returns {boolean} true when the route or route_master is excluded
 	 */
 
-	getExcludedOsmRelationData ( osmId ) {
-		return this.#excludedRelationsOsm.get ( osmId );
+	isOsmExcluded ( osmId, addToReport ) {
+		const excludeData = this.#excludedRelationsOsm.get ( osmId );
+		if ( excludeData?.reason ) {
+			 if ( addToReport ) {
+				theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
+			 }
+			return true;
+		}
+
+		if ( excludeData?.note && addToReport ) {
+			theReport.add ( 'p', excludeData.note );
+		}
+		return false;
+
 	}
 
 	/**

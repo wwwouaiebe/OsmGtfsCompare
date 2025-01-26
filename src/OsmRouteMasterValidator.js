@@ -19,10 +19,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 Changes:
 	- v1.0.0:
 		- created
+Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import TagsBuilder from './TagsBuilder.js';
 import theReport from './Report.js';
 import TagsValidator from './TagsValidator.js';
 import theDocConfig from './DocConfig.js';
@@ -30,8 +30,8 @@ import FixmeValidator from './FixmeValidator.js';
 import OsmRouteValidator from './OsmRouteValidator.js';
 import theExcludeList from './ExcludeList.js';
 import theOsmDataLoader from './OsmDataLoader.js';
-import OperatorValidator from './OperatorValidator.js';
-import NetworkValidator from './NetworkValidator.js';
+import TagKeyValue from './TagKeyValue.js';
+import theOperator from './Operator.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -144,7 +144,7 @@ class OsmRouteMasterValidator {
 			if ( this.#routeMaster.tags.name !== vehicle + this.#routeMaster.tags.ref ) {
 				theReport.add (
 					'p',
-					'Error M007: invalid name for route_master (must be ' + vehicle + this.#routeMaster.tags.ref + ')'
+					'Error M007: invalid name for route_master (must be ' + vehicle + ' ' + this.#routeMaster.tags.ref + ')'
 				);
 				this.#errorCounter ++;
 			}
@@ -169,7 +169,7 @@ class OsmRouteMasterValidator {
 	}
 
 	/**
-	 * Verify that only one route_master use a route
+	 * Verify that a route is attached to only one route_master
 	 */
 
 	#validateOnlyOneRouteMaster ( ) {
@@ -200,21 +200,30 @@ class OsmRouteMasterValidator {
 	}
 
 	/**
-	 * Coming soon
-	 * @param {String} osmId Coming soon
-	 * @returns {boolean} Coming soon
+	 * A list of TagKeyValue to use for the validation of tags
+	 * @returns {Array.<TagKeyValue>} An array with TagKeyValues to use for the validation of tags
 	 */
 
-	#isOsmExcluded ( osmId ) {
-		const excludeData = theExcludeList.getExcludedOsmRelationData ( osmId );
-		if ( excludeData?.reason ) {
-			theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
-			return true;
-		}
-		if ( excludeData?.note ) {
-			theReport.add ( 'p', excludeData.note );
-		}
-		return false;
+	#routeMasterTagKeyValues ( ) {
+		return [
+			new TagKeyValue ( 'description', null ),
+			new TagKeyValue (
+				( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route_master',
+				theDocConfig.vehicle
+			),
+			new TagKeyValue (
+				'type',
+				( 'used' === theDocConfig.type ? '' : theDocConfig.type + ':' ) + 'route_master'
+			),
+			new TagKeyValue (
+				'operator',
+				[ theOperator.osmOperator ]
+			),
+			new TagKeyValue (
+				'network',
+				[ theDocConfig.network ]
+			)
+		];
 	}
 
 	/**
@@ -225,7 +234,7 @@ class OsmRouteMasterValidator {
 
 		this.#errorCounter = 0;
 
-		// heading for the route masterin the report
+		// heading for the route master in the report
 		theReport.add (
 			'h1',
 			'Route_master: ' +
@@ -234,7 +243,7 @@ class OsmRouteMasterValidator {
 			this.#routeMaster
 		);
 
-		if ( this.#isOsmExcluded ( this.#routeMaster.id ) ) {
+		if ( theExcludeList.isOsmExcluded ( this.#routeMaster.id, true ) ) {
 			return;
 		}
 
@@ -242,9 +251,9 @@ class OsmRouteMasterValidator {
 		theReport.add ( 'h3', 'Validation of tags, roles and members for route master' );
 
 		// validation of the route_master
-		this.#errorCounter += new TagsValidator ( this.#routeMaster, TagsBuilder.RouteMasterTags ).validate ( );
-		this.#errorCounter += new OperatorValidator ( this.#routeMaster ).validate ( );
-		this.#errorCounter += new NetworkValidator ( this.#routeMaster ).validate ( );
+
+		this.#errorCounter += new TagsValidator ( this.#routeMaster.tags, this.#routeMasterTagKeyValues ( ) ).validate ( );
+
 		this.#errorCounter += new FixmeValidator ( this.#routeMaster ).validate ( );
 
 		this.#validateMembers ( );

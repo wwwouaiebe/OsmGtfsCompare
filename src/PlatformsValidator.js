@@ -84,8 +84,8 @@ class PlatformsValidator {
 		// No network
 		if (
 			! osmObject.tags.network
-				||
-				! osmObject.tags.network.includes ( theDocConfig.network )
+			||
+			! osmObject.tags.network.includes ( theDocConfig.network )
 		) {
 			this.#platformsWithoutNetwork.push ( osmObject );
 		}
@@ -93,8 +93,8 @@ class PlatformsValidator {
 		// No operator
 		if (
 			! osmObject.tags.operator
-				||
-				! osmObject.tags.operator.includes ( theOperator.osmOperator )
+			||
+			! osmObject.tags.operator.includes ( theOperator.osmOperator )
 		) {
 			this.#platformsWithoutOperator.push ( osmObject );
 		}

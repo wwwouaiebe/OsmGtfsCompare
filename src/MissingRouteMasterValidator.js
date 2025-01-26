@@ -54,7 +54,6 @@ class MissingRouteMasterValidator {
 						'Error M001: route wihout route_master ' + theReport.getOsmLink ( element ),
 						element
 					);
-					errorsCounter ++;
 				}
 			);
 		}

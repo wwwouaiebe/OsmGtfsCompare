@@ -132,29 +132,21 @@ Add a ref tag
 
 Add a name tag
 
-### Error T002: invalid value ... for tag...
+### Error T001: The value of the tag ... must be one of ... (found ...)
 
-Correct the tag
+Correct the value of the tag
 
-### Error T003: no ... tag
+### Error T002: The value of the tag ... must include ... (found ...)
+
+Correct the value of the tag
+
+### Error T003: The value of the tag ... must be ... (found ...)
+
+Correct the value of the tag
+
+### Error T004: No tag ...
 
 A tag is missing for a route or a route_master. Add the tag
-
-### Error T004: the operator tag is not valid  ... 
-
-Correct the operator tag
-
-### Error T005: no operator tag found
-
-Add the operator tag
-
-### Error T006: the network tag is not valid  ...
-
-Correct the network tag
-
-### Error T007: no network tag found
-
-Add a network tag.
 
 ### Error C001: the osm description tag of the route_master is not equal to the GTFS route long name
 

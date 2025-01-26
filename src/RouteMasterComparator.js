@@ -205,20 +205,6 @@ class RouteMasterComparator {
 
 	/**
 	 * Coming soon
-	 * @param {String} osmId Coming soon
-	 * @returns {boolean} Coming soon
-	 */
-
-	#isOsmExcluded ( osmId ) {
-		const excludeData = theExcludeList.getExcludedOsmRelationData ( osmId );
-		if ( excludeData?.reason ) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Coming soon
 	 */
 
 	#compareRoutes ( ) {
@@ -229,7 +215,7 @@ class RouteMasterComparator {
 					osmRoute.name + ( osmRoute.via ? ' via ' + osmRoute.via.replaceAll ( ';', ', ' ) : '' ),
 					osmRoute
 				);
-				if ( ! this.#isOsmExcluded ( osmRoute.id ) ) {
+				if ( ! theExcludeList.isOsmExcluded ( osmRoute.id, false ) ) {
 					theReport.add ( 'h3', 'GTFS comparison results for route' );
 					this.#comparePlatformsHight ( osmRoute );
 				}
@@ -318,7 +304,7 @@ class RouteMasterComparator {
 			this.#osmRouteMaster
 		);
 
-		if ( this.#isOsmExcluded ( osmRouteMaster.id ) ) {
+		if ( theExcludeList.isOsmExcluded ( osmRouteMaster.id, false ) ) {
 			return;
 		}
 

@@ -279,27 +279,31 @@ class RouteMasterComparator {
 				// loop on the osm routes , searching an osm route with the same sequence of platforms
 				// and reporting similar routes
 				let isIncluded = false;
-				this.#osmRouteMaster.routes.forEach (
-					osmRoute => {
-						if ( osmRoute.platforms.match ( gtfsRoute.platformsString ) ) {
-							if ( ! isIncluded ) {
-								theReport.add ( 'p', gtfsRoute.name + ' 🟣', null, gtfsRoute.shapePk );
-								isIncluded = true;
+				let isValidDate = new Date ( gtfsRoute.endDate ).valueOf ( ) > Date.now ( );
+				if ( isValidDate ) {
+					this.#osmRouteMaster.routes.forEach (
+						osmRoute => {
+							if ( osmRoute.platforms.match ( gtfsRoute.platformsString ) ) {
+								if ( ! isIncluded ) {
+									theReport.add ( 'p', gtfsRoute.name + ' 🟣', null, gtfsRoute.shapePk );
+									isIncluded = true;
+								}
+								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute, null );
+								theReport.addToDo ( 1 );
 							}
-							theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute, null );
+						}
+					);
+					if ( ! isIncluded ) {
+
+						// reporting the route as missing if the route start date is in the past
+						theReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
+						if ( isValidDate ) {
 							theReport.addToDo ( 1 );
 						}
 					}
-				);
-
-				if ( ! isIncluded ) {
-
-					// reporting the route as missing if the route start date is in the past
-					let isValidDate = new Date ( gtfsRoute.endDate ).valueOf ( ) > Date.now ( );
-					theReport.add ( 'p', gtfsRoute.name + ( isValidDate ? ' 🔴' : ' ⚫' ), null, gtfsRoute.shapePk );
-					if ( isValidDate ) {
-						theReport.addToDo ( 1 );
-					}
+				}
+				else {
+					theReport.add ( 'p', gtfsRoute.name + ' ⚫', null, gtfsRoute.shapePk );
 				}
 			}
 		);

@@ -375,6 +375,10 @@ class Report {
 			||
 			-1 !== text.indexOf ( '🟣' )
 			||
+			-1 !== text.indexOf ( '⚫' )
+			||
+			-1 !== text.indexOf ( '⚪' )
+			||
 			text.startsWith ( 'Error' )
 			||
 			text.startsWith ( 'Warning' )

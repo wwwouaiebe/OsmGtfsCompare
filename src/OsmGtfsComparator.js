@@ -70,10 +70,20 @@ class OsmGtfsComparator {
 					theReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
 					routeMaster.routes.forEach (
 						route => {
-							theReport.add ( 'p', route.name + ' 🔴', null, route.shapePk );
+							let isValidStartDate = new Date ( route.startDate ).valueOf ( ) < Date.now ( );
+							let isValidEndDate = new Date ( route.endDate ).valueOf ( ) > Date.now ( );
+							if ( isValidEndDate && isValidStartDate ) {
+								theReport.add ( 'p', route.name + ' 🔴', null, route.shapePk );
+								theReport.addToDo ( 1 );
+							}
+							else if ( isValidStartDate ) {
+								theReport.add ( 'p', route.name + ' ⚫', null, route.shapePk );
+							}
+							else {
+								theReport.add ( 'p', route.name + ' ⚪', null, route.shapePk );
+							}
 						}
 					);
-					theReport.addToDo ( routeMaster.routes.length );
 				}
 			}
 		);

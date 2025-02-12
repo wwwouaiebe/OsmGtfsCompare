@@ -85,7 +85,7 @@ class RouteMasterComparator {
 		theReport.add ( 'p', 'Platforms to remove in the osm relation:' + missingGtfsPlatforms );
 
 		// Warning when no missing platforms
-		if ( '' === missingOsmPlatforms && '' === missingOsmPlatforms ) {
+		if ( '' === missingOsmPlatforms && '' === missingGtfsPlatforms ) {
 			theReport.add ( 'p', 'No platforms to add or to remove. Verify the order of the platforms and the duplicates' );
 		}
 	}
@@ -279,8 +279,9 @@ class RouteMasterComparator {
 				// loop on the osm routes , searching an osm route with the same sequence of platforms
 				// and reporting similar routes
 				let isIncluded = false;
-				let isValidDate = new Date ( gtfsRoute.endDate ).valueOf ( ) > Date.now ( );
-				if ( isValidDate ) {
+				let isValidStartDate = new Date ( gtfsRoute.startDate ).valueOf ( ) < Date.now ( );
+				let isValidEndDate = new Date ( gtfsRoute.endDate ).valueOf ( ) > Date.now ( );
+				if ( isValidEndDate && isValidStartDate ) {
 					this.#osmRouteMaster.routes.forEach (
 						osmRoute => {
 							if ( osmRoute.platforms.match ( gtfsRoute.platformsString ) ) {
@@ -297,13 +298,14 @@ class RouteMasterComparator {
 
 						// reporting the route as missing if the route start date is in the past
 						theReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
-						if ( isValidDate ) {
-							theReport.addToDo ( 1 );
-						}
+						theReport.addToDo ( 1 );
 					}
 				}
-				else {
+				else if ( isValidStartDate ) {
 					theReport.add ( 'p', gtfsRoute.name + ' ⚫', null, gtfsRoute.shapePk );
+				}
+				else {
+					theReport.add ( 'p', gtfsRoute.name + ' ⚪', null, gtfsRoute.shapePk );
 				}
 			}
 		);

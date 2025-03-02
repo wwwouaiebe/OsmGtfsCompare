@@ -712,21 +712,6 @@
 			"excludeList" :{
 				"osm" : {
 					"excludedRelations" : [
-						{
-							"id" : 17233781,
-							"note" : "The platform GRAND-SART Fontaine ( X784ama ) don't exists in the real life...",
-							"name" : "Bus 14: Grand Halleux Église → Manhay Athénée"
-						},
-						{
-							"id" : 17233784,
-							"note" : "The platform GRAND-SART Fontaine ( X784amb ) don't exists in the real life...",
-							"name" : "Bus 14: Manhay Athénée → Grand Halleux Église"
-						},
-						{
-							"id" : 15877326,
-							"note" : "A bus stop is missing in the GTFS files(Virton Val d'Away Haut X608baa)",
-							"name" : "Bus 38: Virton Arcades → Virton Arcades"
-						}
 					],
 					"translatedRefPlatforms" : [
 					]
@@ -735,16 +720,6 @@
 					"excludedRelations" : [
 					],
 					"disusedRefPlatforms" :[
-						{
-							"ref" : "X784ama",
-							"name" : "Grand-Sart Fontaine",
-							"reason" : "The platform don't exists in the real life..."
-						},
-						{
-							"ref" : "X784amb",
-							"name" : "Grand-Sart Fontaine",
-							"reason" : "The platform don't exists in the real life..."
-						}
 					],
 					"translatedRefPlatforms" : [
 				   ]

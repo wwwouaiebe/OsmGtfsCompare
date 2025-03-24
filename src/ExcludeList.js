@@ -247,6 +247,29 @@ class ExcludeList {
 	}
 
 	/**
+	 * Report platforms encoded os disused in the operator file
+	 */
+
+	reportGtfsExcludedPlatforms ( ) {
+		theReport.add ( 'h1', 'Excluded gtfs platforms' );
+		if ( 0 === this.#gtfsDisusedRefPlatforms.size ) {
+			theReport.add ( 'p', 'Nothing found' );
+		}
+		else {
+			this.#gtfsDisusedRefPlatforms.forEach (
+				gtfsDisusedRefPlatform => {
+					theReport.add (
+						'p',
+						gtfsDisusedRefPlatform.name + ' ' +
+						gtfsDisusedRefPlatform.ref + ' (' +
+						gtfsDisusedRefPlatform.reason + ')'
+					);
+				}
+			);
+		}
+	}
+
+	/**
 	 * The constructor
 	 */
 

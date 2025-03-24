@@ -615,6 +615,21 @@
 							"ref" : "Lbomc--8",
 							"name" : "Boncelles Maison Communale",
 							"reason" : "Error in the GTFS file"
+						},
+						{
+							"ref" : "LLrc1652",
+							"name" : "LA REID Rue du Canada 165",
+							"reason" : "Not possible to find this platform on the field"
+						},
+						{
+							"ref" : "LLrc1992",
+							"name" : " LA REID Rue du Canada 199 ",
+							"reason" : "Not possible to find this platform on the field"
+						},
+						{
+							"ref" : "LLrcour2",
+							"name" : "LA REID Les Cours",
+							"reason" : "Not possible to find this platform on the field"
 						}
 					],
 					"translatedRefPlatforms" : [
@@ -659,12 +674,6 @@
 							"to" : "LTRpery1",
 							"reason" : "Temporary translation due du error in GTFS files",
 							"note" : "Trooz Péry"
-						},
-						{
-							"from" : "Lbocarr3",
-							"to" : "Lbocarr2",
-							"reason" : "Temporary translation due du error in GTFS files",
-							"note" : "Boncelles Carrefour"
 						},
 						{
 							"from" : "LMastat4",

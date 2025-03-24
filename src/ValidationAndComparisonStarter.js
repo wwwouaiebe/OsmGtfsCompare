@@ -75,6 +75,9 @@ class ValidationAndComparisonStarter {
 		// Validating the platforms
 		new PlatformsValidator ( ).validate ( );
 
+		// Report excluded gtfs platforms
+		theExcludeList.reportGtfsExcludedPlatforms ( );
+
 		// Search routes without route_master
 		await new RoutesWithoutRouteMasterValidator ( ).fetchData ( );
 

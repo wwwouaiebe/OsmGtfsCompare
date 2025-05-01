@@ -156,15 +156,20 @@ class OsmRouteMasterValidator {
 	 */
 
 	#validateRoutes ( ) {
+		let routeArray = [];
 		this.#routeMaster.members.forEach (
 			member => {
 				if ( 'relation' === member.type ) {
 					let route = theOsmDataLoader.routes.get ( member.ref );
 					if ( route ) {
-						new OsmRouteValidator ( ).validateRoute ( route );
+						routeArray.push ( route );
 					}
 				}
 			}
+		);
+		routeArray.sort ( ( first, second ) => first.tags.name.localeCompare ( second.tags.name ) );
+		routeArray.forEach (
+			route => new OsmRouteValidator ( ).validateRoute ( route )
 		);
 	}
 

@@ -56,6 +56,9 @@ class OsmGtfsComparator {
 		// loop on the GTFS routes master
 		theGtfsTree.routesMaster.forEach (
 			routeMaster => {
+				if ( theDocConfig.vehicle !== [ 'tram', 'subway', 'train', 'bus', 'ferry,' ] [ routeMaster.type ] ) {
+					return;
+				}
 
 				const excludedString = theExcludeList.getExcludedGTFSRelationReason ( routeMaster.ref );
 				if ( excludedString ) {
@@ -165,7 +168,7 @@ class OsmGtfsComparator {
 			}
 		);
 
-		if ( ! theDocConfig.ref ) {
+		if ( ! theDocConfig.ref && 'used' === theDocConfig.type ) {
 			this.#searchMissingOsmRouteMaster ( );
 		}
 	}

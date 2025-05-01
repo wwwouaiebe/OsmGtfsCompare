@@ -66,7 +66,11 @@ class NameFromToRefValidator {
 			&&
 			this.#route?.tags?.from !== this.#platforms[ 0 ]?.tags?.name
 			&&
-			this.#route?.tags?.from !== ( this.#platforms [ 0 ]?.tags [ 'name:' + this.#route?.tags?.operator ] ?? '' )
+			(
+				this.#route?.tags?.from.toLowerCase ( )
+				!==
+				( this.#platforms [ 0 ]?.tags [ 'name:operator:' + this.#route?.tags?.operator ] ?? '' ).toLowerCase ( )
+			)
 		) {
 			theReport.add (
 				'p',
@@ -87,9 +91,10 @@ class NameFromToRefValidator {
 			this.#route?.tags?.to !== this.#platforms.toReversed ( )[ 0 ]?.tags?.name
 			&&
 			(
-				this.#route?.tags?.to
+				this.#route?.tags?.to.toLowerCase ( )
 				!==
-				( this.#platforms.toReversed ( ) [ 0 ]?.tags [ 'name:' + this.#route?.tags?.operator ] ?? '' )
+				// eslint-disable-next-line max-len
+				( this.#platforms.toReversed ( ) [ 0 ]?.tags [ 'name:operator:' + this.#route?.tags?.operator ] ?? '' ).toLowerCase ( )
 			)
 		) {
 			theReport.add (

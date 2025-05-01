@@ -281,6 +281,7 @@ class RouteMasterComparator {
 				let isIncluded = false;
 				let isValidStartDate = new Date ( gtfsRoute.startDate ).valueOf ( ) < Date.now ( );
 				let isValidEndDate = new Date ( gtfsRoute.endDate ).valueOf ( ) > Date.now ( );
+
 				if ( isValidEndDate && isValidStartDate ) {
 					this.#osmRouteMaster.routes.forEach (
 						osmRoute => {
@@ -288,9 +289,9 @@ class RouteMasterComparator {
 								if ( ! isIncluded ) {
 									theReport.add ( 'p', gtfsRoute.name + ' 🟣', null, gtfsRoute.shapePk );
 									isIncluded = true;
+									theReport.addToDo ( 1 );
 								}
 								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute, null );
-								theReport.addToDo ( 1 );
 							}
 						}
 					);
@@ -301,7 +302,8 @@ class RouteMasterComparator {
 						theReport.addToDo ( 1 );
 					}
 				}
-				else if ( isValidStartDate ) {
+				// eslint-disable-next-line no-negated-condition
+				else if ( ! isValidEndDate ) {
 					theReport.add ( 'p', gtfsRoute.name + ' ⚫', null, gtfsRoute.shapePk );
 				}
 				else {

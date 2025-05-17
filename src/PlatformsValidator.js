@@ -59,10 +59,18 @@ class PlatformsValidator {
 	#platformsWithoutOperator = [];
 
 	/**
+	 * An array with platforms without operator
+	 * @type {Array.<Object>}
+	 */
+
+	#platformsWithoutPublicTransport = [];
+
+	/**
 	 * this method control the platforms and add the platforms to the arrays, depending of the errors found
 	 * @param {Object} osmObject The object to control
 	 */
 
+	// eslint-disable-next-line complexity
 	#controlPlatform ( osmObject ) {
 
 		// filtering on bus_stop and tram_stop
@@ -70,6 +78,10 @@ class PlatformsValidator {
 			'bus_stop' !== osmObject?.tags?.highway
 			&&
 			'tram_stop' !== osmObject?.tags?.railway
+			&&
+			'platform' !== osmObject?.tags?.railway
+			&&
+			'platform' !== osmObject?.tags?.way
 		) {
 			return;
 		}
@@ -97,6 +109,15 @@ class PlatformsValidator {
 			! osmObject.tags.operator.includes ( theOperator.osmOperator )
 		) {
 			this.#platformsWithoutOperator.push ( osmObject );
+		}
+
+		// No public_transport
+		if (
+			'platform' !== osmObject?.tags?.public_transport
+			&&
+			'stop_position' !== osmObject?.tags?.public_transport
+		) {
+			this.#platformsWithoutPublicTransport.push ( osmObject );
 		}
 	}
 
@@ -160,6 +181,20 @@ class PlatformsValidator {
 		}
 	}
 
+	#reportPlatformsWithoutPublicTransport ( ) {
+		theReport.add ( 'h1', 'Platforms whithout "public_transport=platform" tag' );
+		if ( 0 === this.#platformsWithoutPublicTransport.length ) {
+			theReport.add ( 'p', 'Nothing found' );
+		}
+		else {
+			this.#platformsWithoutPublicTransport.forEach (
+				osmObject => {
+					theReport.add ( 'p', osmObject.tags.name, osmObject );
+				}
+			);
+		}
+	}
+
 	/**
 	 * Validate the platforms
 	 */
@@ -170,9 +205,15 @@ class PlatformsValidator {
 				this.#controlPlatform ( node );
 			}
 		);
+		theOsmDataLoader.ways.forEach (
+			node => {
+				this.#controlPlatform ( node );
+			}
+		);
 		this.#reportPlatformsMore1Ref ( );
 		this.#reportPlatformsWithoutNetwork ( );
 		this.#reportPlatformsWithoutOperator ( );
+		this.#reportPlatformsWithoutPublicTransport ( );
 
 	}
 

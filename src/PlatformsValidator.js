@@ -95,18 +95,26 @@ class PlatformsValidator {
 
 		// No network
 		if (
-			! osmObject.tags.network
-			||
-			! osmObject.tags.network.includes ( theDocConfig.network )
+			'platform' === osmObject?.tags?.public_transport
+			&&
+			(
+				! osmObject.tags.network
+				||
+				! osmObject.tags.network.includes ( theDocConfig.network )
+			)
 		) {
 			this.#platformsWithoutNetwork.push ( osmObject );
 		}
 
 		// No operator
 		if (
-			! osmObject.tags.operator
-			||
-			! osmObject.tags.operator.includes ( theOperator.osmOperator )
+			'platform' === osmObject?.tags?.public_transport
+			&&
+			(
+				! osmObject.tags.operator
+				||
+				! osmObject.tags.operator.includes ( theOperator.osmOperator )
+			)
 		) {
 			this.#platformsWithoutOperator.push ( osmObject );
 		}
@@ -180,6 +188,10 @@ class PlatformsValidator {
 			);
 		}
 	}
+
+	/**
+	 * Report platforms without public_transport=platform tag
+	 */
 
 	#reportPlatformsWithoutPublicTransport ( ) {
 		theReport.add ( 'h1', 'Platforms whithout "public_transport=platform" tag' );

@@ -22,7 +22,7 @@ Changes:
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
 import theDocConfig from './DocConfig.js';
 import theOsmDataLoader from './OsmDataLoader.js';
 
@@ -76,9 +76,9 @@ class RolesValidator {
 					emptyRole = true;
 				}
 				else if ( emptyRole && '' !== member.role ) {
-					theReport.add (
+					theRelationsReport.add (
 						'p',
-						'Error R008: an unordered object with a role (' + theReport.getOsmLink ( member ) +
+						'Error R008: an unordered object with a role (' + theRelationsReport.getOsmLink ( member ) +
                         ') is found in the ways of route '
 					);
 					this.#errorCounter ++;
@@ -101,9 +101,9 @@ class RolesValidator {
 			let busStop = theOsmDataLoader.nodes.get ( member.ref );
 			this.#platforms.push ( busStop );
 			if ( 'bus_stop' !== busStop?.tags?.highway ) {
-				theReport.add (
+				theRelationsReport.add (
 					'p',
-					'Error R009: an invalid node (' + theReport.getOsmLink ( busStop ) +
+					'Error R009: an invalid node (' + theRelationsReport.getOsmLink ( busStop ) +
 						') is used as platform for the route'
 				);
 				this.#errorCounter ++;
@@ -117,9 +117,9 @@ class RolesValidator {
 				||
 				( 'platform' !== platform?.tags?.railway && 'tram' === theDocConfig.vehicle )
 			) {
-				theReport.add (
+				theRelationsReport.add (
 					'p',
-					'Error R010: an invalid way (' + theReport.getOsmLink ( member ) +
+					'Error R010: an invalid way (' + theRelationsReport.getOsmLink ( member ) +
 						') is used as platform for the route'
 				);
 				this.#errorCounter ++;
@@ -137,18 +137,18 @@ class RolesValidator {
 		if ( 'node' === member.type ) {
 			let stopPosition = theOsmDataLoader.nodes.get ( member.ref );
 			if ( 'stop_position' !== stopPosition?.tags?.public_transport ) {
-				theReport.add (
+				theRelationsReport.add (
 					'p',
-					'Error R011: an invalid node (' + theReport.getOsmLink ( stopPosition ) +
+					'Error R011: an invalid node (' + theRelationsReport.getOsmLink ( stopPosition ) +
 						') is used as stop_position for the route'
 				);
 				this.#errorCounter ++;
 			}
 		}
 		else {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
-				'Error R012: an invalid object (' + theReport.getOsmLink ( member ) +
+				'Error R012: an invalid object (' + theRelationsReport.getOsmLink ( member ) +
 					') is used as stop_position for the route'
 			);
 			this.#errorCounter ++;
@@ -184,9 +184,9 @@ class RolesValidator {
 		];
 
 		if ( 'construction' === way?.tags?.highway ) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
-				'Warning R017: a road under construction (' + theReport.getOsmLink ( way ) +
+				'Warning R017: a road under construction (' + theRelationsReport.getOsmLink ( way ) +
 				') is used as way for the route'
 			);
 			this.#errorCounter ++;
@@ -198,9 +198,9 @@ class RolesValidator {
 			&&
 			'yes' !== way?.tags [ theDocConfig.vehicle ]
 	   ) {
-		   theReport.add (
+		   theRelationsReport.add (
 				'p',
-				'Error R013: an invalid highway (' + theReport.getOsmLink ( way ) +
+				'Error R013: an invalid highway (' + theRelationsReport.getOsmLink ( way ) +
 				') is used as way for the route'
 		   );
 		   this.#errorCounter ++;
@@ -219,9 +219,9 @@ class RolesValidator {
 
 	#validateWayForTram ( way ) {
 		if ( 'tram' !== way?.tags?.railway ) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
-				'Error R014: an invalid railway (' + theReport.getOsmLink ( way ) +
+				'Error R014: an invalid railway (' + theRelationsReport.getOsmLink ( way ) +
 				') is used as way for the route'
 			);
 			this.#errorCounter ++;
@@ -237,9 +237,9 @@ class RolesValidator {
 
 	#validateWayForSubway ( way ) {
 		if ( 'subway' !== way?.tags?.railway ) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
-				'Error R014: an invalid railway (' + theReport.getOsmLink ( way ) +
+				'Error R014: an invalid railway (' + theRelationsReport.getOsmLink ( way ) +
 				') is used as way for the route'
 			);
 			this.#errorCounter ++;
@@ -269,9 +269,9 @@ class RolesValidator {
 			}
 		}
 		else {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
-				'Error R015: an invalid object (' + theReport.getOsmLink ( member ) +
+				'Error R015: an invalid object (' + theRelationsReport.getOsmLink ( member ) +
 					') is used as way for the route'
 			);
 			this.#errorCounter ++;
@@ -301,10 +301,10 @@ class RolesValidator {
 					this.#validateWayRole ( member );
 					break;
 				default :
-					theReport.add (
+					theRelationsReport.add (
 						'p',
 						'Error R016: an unknow role (' + member.role +
-                            ') is found in the route for the osm object ' + theReport.getOsmLink ( member )
+                            ') is found in the route for the osm object ' + theRelationsReport.getOsmLink ( member )
 					);
 					this.#errorCounter ++;
 					break;

@@ -26,7 +26,9 @@ Doc reviewed 20250124
 import theOsmDataLoader from './OsmDataLoader.js';
 import GtfsTreeBuilder from './GtfsTreeBuilder.js';
 import OsmTreeBuilder from './OsmTreeBuilder.js';
-import theReport from './Report.js';
+import thePlatformsReport from './PlatformsReport.js';
+import theRelationsReport from './RelationsReport.js';
+import theStatsReport from './StatsReport.js';
 import theExcludeList from './ExcludeList.js';
 import GtfsDataLoader from './GtfsDataLoader.js';
 import OsmGtfsComparator from './OsmGtfsComparator.js';
@@ -67,7 +69,9 @@ class ValidationAndComparisonStarter {
 		await theExcludeList.loadData ( );
 
 		// opening report
-		theReport.open ( );
+		thePlatformsReport.open ( );
+		theRelationsReport.open ( );
+		theStatsReport.open ( );
 
 		// loading osm data
 		await theOsmDataLoader.fetchData (	);
@@ -99,7 +103,9 @@ class ValidationAndComparisonStarter {
 		}
 
 		// close...
-		theReport.close ( );
+		thePlatformsReport.close ( );
+		theRelationsReport.close ( );
+		theStatsReport.close ( );
 	}
 }
 

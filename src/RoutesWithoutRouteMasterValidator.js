@@ -23,7 +23,7 @@ Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
 import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
@@ -41,17 +41,17 @@ class RoutesWithoutRouteMasterValidator {
 
 	#reportMissingRouteMaster ( elements ) {
 
-		theReport.add ( 'h1', 'Routes without route_master' );
+		theRelationsReport.add ( 'h1', 'Routes without route_master' );
 
 		if ( 0 === elements.length ) {
-			theReport.add ( 'p', 'Nothing found' );
+			theRelationsReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			elements.forEach (
 				element => {
-					theReport.add (
+					theRelationsReport.add (
 						'p',
-						'Error M001: route wihout route_master ' + theReport.getOsmLink ( element ),
+						'Error M001: route wihout route_master ' + theRelationsReport.getOsmLink ( element ),
 						element
 					);
 				}

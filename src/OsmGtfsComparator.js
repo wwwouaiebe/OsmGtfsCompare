@@ -25,7 +25,8 @@ Doc reviewed 20250126
 
 import RouteMasterComparator from './RouteMasterComparator.js';
 import { theGtfsTree, theOsmTree } from './DataTree.js';
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
+import theStatsReport from './StatsReport.js';
 import theExcludeList from './ExcludeList.js';
 import theDocConfig from './DocConfig.js';
 
@@ -51,7 +52,7 @@ class OsmGtfsComparator {
 
 	#searchMissingOsmRouteMaster ( ) {
 
-		theReport.add ( 'h1', 'Gtfs relations not found in the osm data' );
+		theRelationsReport.add ( 'h1', 'Gtfs relations not found in the osm data' );
 
 		// loop on the GTFS routes master
 		theGtfsTree.routesMaster.forEach (
@@ -64,26 +65,26 @@ class OsmGtfsComparator {
 				if ( excludedString ) {
 
 					// Reporting the relation if excluded
-					theReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
-					theReport.add ( 'p', excludedString );
+					theRelationsReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
+					theRelationsReport.add ( 'p', excludedString );
 				}
 				else if ( ! routeMaster.osmRouteMaster ) {
 
 					// Reporting the relations if no osm route master
-					theReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
+					theRelationsReport.add ( 'h2', 'gtfs route ref : ' + routeMaster.ref + ' ' + routeMaster.description );
 					routeMaster.routes.forEach (
 						route => {
 							let isValidStartDate = new Date ( route.startDate ).valueOf ( ) < Date.now ( );
 							let isValidEndDate = new Date ( route.endDate ).valueOf ( ) > Date.now ( );
 							if ( isValidEndDate && isValidStartDate ) {
-								theReport.add ( 'p', route.name + ' 🔴', null, route.shapePk );
-								theReport.addToDo ( 1 );
+								theRelationsReport.add ( 'p', route.name + ' 🔴', null, route.shapePk );
+								theStatsReport.addToDo ( 1 );
 							}
 							else if ( isValidStartDate ) {
-								theReport.add ( 'p', route.name + ' ⚫', null, route.shapePk );
+								theRelationsReport.add ( 'p', route.name + ' ⚫', null, route.shapePk );
 							}
 							else {
-								theReport.add ( 'p', route.name + ' ⚪', null, route.shapePk );
+								theRelationsReport.add ( 'p', route.name + ' ⚪', null, route.shapePk );
 							}
 						}
 					);
@@ -142,7 +143,7 @@ class OsmGtfsComparator {
 			break;
 		}
 		if ( ! gtfsRouteMaster ) {
-			theReport.add ( 'h2', errorMessage );
+			theRelationsReport.add ( 'h2', errorMessage );
 		}
 		return gtfsRouteMaster;
 	}

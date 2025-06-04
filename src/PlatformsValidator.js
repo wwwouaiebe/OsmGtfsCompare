@@ -25,7 +25,7 @@ Doc reviewed 20250124
 
 import theOsmDataLoader from './OsmDataLoader.js';
 import theExcludeList from './ExcludeList.js';
-import theReport from './Report.js';
+import thePlatformsReport from './PlatformsReport.js';
 import theDocConfig from './DocConfig.js';
 import theOperator from './Operator.js';
 
@@ -134,14 +134,14 @@ class PlatformsValidator {
 	 */
 
 	#reportPlatformsMore1Ref ( ) {
-		theReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
+		thePlatformsReport.add ( 'h1', 'Platforms with more than 1 ref:' + theDocConfig.network );
 		if ( 0 === this.#platformsWithMoreThanOneRef.length ) {
-			theReport.add ( 'p', 'Nothing found' );
+			thePlatformsReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			this.#platformsWithMoreThanOneRef.forEach (
 				osmObject => {
-					theReport.add (
+					thePlatformsReport.add (
 						'p',
 						osmObject.tags.name + ' ' + osmObject.tags[ 'ref:' + theDocConfig.network ],
 						osmObject );
@@ -156,14 +156,18 @@ class PlatformsValidator {
 
 	#reportPlatformsWithoutNetwork ( ) {
 
-		theReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
+		thePlatformsReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
 		if ( 0 === this.#platformsWithoutNetwork.length ) {
-			theReport.add ( 'p', 'Nothing found' );
+			thePlatformsReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			this.#platformsWithoutNetwork.forEach (
 				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + '- network : ' + ( osmObject.tags.network ?? '' ), osmObject );
+					thePlatformsReport.add (
+						'p',
+						osmObject.tags.name + '- network : ' + ( osmObject.tags.network ?? '' ),
+						osmObject
+					);
 				}
 			);
 
@@ -176,14 +180,18 @@ class PlatformsValidator {
 
 	#reportPlatformsWithoutOperator ( ) {
 
-		theReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
+		thePlatformsReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
 		if ( 0 === this.#platformsWithoutOperator.length ) {
-			theReport.add ( 'p', 'Nothing found' );
+			thePlatformsReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			this.#platformsWithoutOperator.forEach (
 				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name + '- operator : ' + ( osmObject.tags.operator ?? '' ), osmObject );
+					thePlatformsReport.add (
+						'p',
+						osmObject.tags.name + '- operator : ' + ( osmObject.tags.operator ?? '' ),
+						osmObject
+					);
 				}
 			);
 		}
@@ -194,14 +202,14 @@ class PlatformsValidator {
 	 */
 
 	#reportPlatformsWithoutPublicTransport ( ) {
-		theReport.add ( 'h1', 'Platforms whithout "public_transport=platform" tag' );
+		thePlatformsReport.add ( 'h1', 'Platforms whithout "public_transport=platform" tag' );
 		if ( 0 === this.#platformsWithoutPublicTransport.length ) {
-			theReport.add ( 'p', 'Nothing found' );
+			thePlatformsReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			this.#platformsWithoutPublicTransport.forEach (
 				osmObject => {
-					theReport.add ( 'p', osmObject.tags.name, osmObject );
+					thePlatformsReport.add ( 'p', osmObject.tags.name, osmObject );
 				}
 			);
 		}

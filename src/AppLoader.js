@@ -27,6 +27,7 @@ import theVersion from './version.js';
 import GoButtonClickEL from './GoButtonClickEL.js';
 import AutoStartup from './AutoStartup.js';
 import ErrorsOnlyButtonClickEL from './ErrorsOnlyButtonClickEL.js';
+import HeadingReportButtonClickEL from './HeadingReportButtonClickEL.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -53,6 +54,21 @@ class AppLoader {
 		// Adding event listeners on buttons
 		document.getElementById ( 'goInput' ).addEventListener ( 'click', new GoButtonClickEL ( ), false );
 		document.getElementById ( 'errorsOnlyInput' ).addEventListener ( 'click', new ErrorsOnlyButtonClickEL ( ), false );
+		document.getElementById ( 'relationsButton' ).addEventListener (
+			'click',
+			new HeadingReportButtonClickEL ( 'relationsButton', 'relationsPane' ),
+			false
+		);
+		document.getElementById ( 'platformsButton' ).addEventListener (
+			'click',
+			new HeadingReportButtonClickEL ( 'platformsButton', 'platformsPane' ),
+			false
+		);
+		document.getElementById ( 'statsButton' ).addEventListener (
+			'click',
+			new HeadingReportButtonClickEL ( 'statsButton', 'statsPane' ),
+			false
+		);
 
 		// Adding version
 		document.getElementById ( 'version' ).innerText = 'Version: ' + theVersion;

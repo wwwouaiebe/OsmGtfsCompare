@@ -24,7 +24,8 @@ Doc reviewed 20250126
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theExcludeList from './ExcludeList.js';
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
+import theStatsReport from './StatsReport.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -68,7 +69,7 @@ class RouteMasterComparator {
 					}
 				}
 			);
-		theReport.add ( 'p', 'Platforms to add in the osm relation:' + missingOsmPlatforms );
+		theRelationsReport.add ( 'p', 'Platforms to add in the osm relation:' + missingOsmPlatforms );
 
 		// loop on the OSM platforms
 		let missingGtfsPlatforms = '';
@@ -82,11 +83,14 @@ class RouteMasterComparator {
 					}
 				}
 			);
-		theReport.add ( 'p', 'Platforms to remove in the osm relation:' + missingGtfsPlatforms );
+		theRelationsReport.add ( 'p', 'Platforms to remove in the osm relation:' + missingGtfsPlatforms );
 
 		// Warning when no missing platforms
 		if ( '' === missingOsmPlatforms && '' === missingGtfsPlatforms ) {
-			theReport.add ( 'p', 'No platforms to add or to remove. Verify the order of the platforms and the duplicates' );
+			theRelationsReport.add (
+				'p',
+				'No platforms to add or to remove. Verify the order of the platforms and the duplicates'
+			);
 		}
 	}
 
@@ -116,14 +120,14 @@ class RouteMasterComparator {
 		case 0 :
 
 			// No gtfs route found.
- 			theReport.add ( 'p', 'No gtfs route found 🔴' );
+ 			theRelationsReport.add ( 'p', 'No gtfs route found 🔴' );
 			break;
 
 		case 1 :
 
 			// only one GTFS route found. Completing the report and making a list of missing platforms
-			theReport.add ( 'p', 'A gtfs route with similar from and to platforms found 🟡' );
-			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
+			theRelationsReport.add ( 'p', 'A gtfs route with similar from and to platforms found 🟡' );
+			theRelationsReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
 			this.#searchMissingPlatforms ( osmRoute, possibleGtfsRoutes [ 0 ] );
 			possibleGtfsRoutes [ 0 ].osmRoute = true;
 			break;
@@ -131,10 +135,10 @@ class RouteMasterComparator {
 		default :
 
 			// Multiple GTFS route found. Completing the report and making a list of missing platforms
-			theReport.add ( 'p', 'Multiple gtfs routes with similar from and to platforms found 🟡' );
+			theRelationsReport.add ( 'p', 'Multiple gtfs routes with similar from and to platforms found 🟡' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
-					theReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
+					theRelationsReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
 					this.#searchMissingPlatforms ( osmRoute, possibleGtfsRoute );
 					possibleGtfsRoute.osmRoute = true;
 				}
@@ -178,8 +182,8 @@ class RouteMasterComparator {
 		case 1 :
 
 			// only one GTFS route found. Completing the report and making a list of missing platforms
-			theReport.add ( 'p', 'A gtfs route with from and to platforms found 🔵' );
-			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
+			theRelationsReport.add ( 'p', 'A gtfs route with from and to platforms found 🔵' );
+			theRelationsReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
 			this.#searchMissingPlatforms ( osmRoute, possibleGtfsRoutes [ 0 ] );
 			possibleGtfsRoutes [ 0 ].osmRoute = true;
 			break;
@@ -187,10 +191,10 @@ class RouteMasterComparator {
 		default :
 
 			// Multiple GTFS route found. Completing the report and making a list of missing platforms
-			theReport.add ( 'p', 'Multiple gtfs routes with from and to platforms found 🔵' );
+			theRelationsReport.add ( 'p', 'Multiple gtfs routes with from and to platforms found 🔵' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
-					theReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
+					theRelationsReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
 					this.#searchMissingPlatforms ( osmRoute, possibleGtfsRoute );
 					possibleGtfsRoute.osmRoute = true;
 				}
@@ -221,7 +225,7 @@ class RouteMasterComparator {
 		switch ( possibleGtfsRoutes.length ) {
 
 		case 0 :
-			theReport.addDoneNotOk ( );
+			theStatsReport.addDoneNotOk ( );
 
 			// No gtfs route found. We will try to compare only the starting and ending platforms
 			this.#compareFromToHight ( osmRoute );
@@ -230,23 +234,23 @@ class RouteMasterComparator {
 		case 1 :
 
 			// only one GTFS route found. Completing the report
-			theReport.add ( 'p', 'A gtfs route with all platforms found 🟢' );
-			theReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
+			theRelationsReport.add ( 'p', 'A gtfs route with all platforms found 🟢' );
+			theRelationsReport.add ( 'p', possibleGtfsRoutes [ 0 ].name, null, possibleGtfsRoutes [ 0 ].shapePk );
 			possibleGtfsRoutes [ 0 ].osmRoute = true;
-			theReport.addDoneOk ( );
+			theStatsReport.addDoneOk ( );
 			break;
 
 		default :
 
 			// Multiple GTFS routes found (Yes that can...). Completing the report
-			theReport.add ( 'p', 'Multiple gtfs routes with all platforms found 🟢' );
+			theRelationsReport.add ( 'p', 'Multiple gtfs routes with all platforms found 🟢' );
 			possibleGtfsRoutes.forEach (
 				possibleGtfsRoute => {
-					theReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
+					theRelationsReport.add ( 'p', possibleGtfsRoute.name, null, possibleGtfsRoute.shapePk );
 					possibleGtfsRoute.osmRoute = true;
 				}
 			);
-			theReport.addDoneOk ( );
+			theStatsReport.addDoneOk ( );
 			break;
 		}
 	}
@@ -272,7 +276,7 @@ class RouteMasterComparator {
 
 				// Heading
 				if ( addHeading ) {
-					theReport.add ( 'h2', 'Missing osm relations' );
+					theRelationsReport.add ( 'h2', 'Missing osm relations' );
 					addHeading = false;
 				}
 
@@ -287,27 +291,27 @@ class RouteMasterComparator {
 						osmRoute => {
 							if ( osmRoute.platforms.match ( gtfsRoute.platformsString ) ) {
 								if ( ! isIncluded ) {
-									theReport.add ( 'p', gtfsRoute.name + ' 🟣', null, gtfsRoute.shapePk );
+									theRelationsReport.add ( 'p', gtfsRoute.name + ' 🟣', null, gtfsRoute.shapePk );
 									isIncluded = true;
-									theReport.addToDo ( 1 );
+									theStatsReport.addToDo ( 1 );
 								}
-								theReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute, null );
+								theRelationsReport.add ( 'p', 'This relation is a part of ' + osmRoute.name, osmRoute, null );
 							}
 						}
 					);
 					if ( ! isIncluded ) {
 
 						// reporting the route as missing if the route start date is in the past
-						theReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
-						theReport.addToDo ( 1 );
+						theRelationsReport.add ( 'p', gtfsRoute.name + ' 🔴', null, gtfsRoute.shapePk );
+						theStatsReport.addToDo ( 1 );
 					}
 				}
 				// eslint-disable-next-line no-negated-condition
 				else if ( ! isValidEndDate ) {
-					theReport.add ( 'p', gtfsRoute.name + ' ⚫', null, gtfsRoute.shapePk );
+					theRelationsReport.add ( 'p', gtfsRoute.name + ' ⚫', null, gtfsRoute.shapePk );
 				}
 				else {
-					theReport.add ( 'p', gtfsRoute.name + ' ⚪', null, gtfsRoute.shapePk );
+					theRelationsReport.add ( 'p', gtfsRoute.name + ' ⚪', null, gtfsRoute.shapePk );
 				}
 			}
 		);
@@ -322,13 +326,13 @@ class RouteMasterComparator {
 		// loop on the osm routes
 		this.#osmRouteMaster.routes.forEach (
 			osmRoute => {
-				theReport.add (
+				theRelationsReport.add (
 					'h2',
 					osmRoute.name + ( osmRoute.via ? ' via ' + osmRoute.via.replaceAll ( ';', ', ' ) : '' ),
 					osmRoute
 				);
 				if ( ! theExcludeList.isOsmExcluded ( osmRoute.id, false ) ) {
-					theReport.add ( 'h3', 'GTFS comparison results for route' );
+					theRelationsReport.add ( 'h3', 'GTFS comparison results for route' );
 
 					// starting to compare the platforms
 					this.#comparePlatformsHight ( osmRoute );
@@ -350,7 +354,7 @@ class RouteMasterComparator {
 			!==
 			( this.#gtfsRouteMaster.description ?? '' ).toLowerCase ( ).replaceAll ( ' ', '' )
 		) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error C001: the osm description of the route_master ( ' +
 				this.#osmRouteMaster.description +
@@ -360,7 +364,7 @@ class RouteMasterComparator {
 			);
 			return false;
 		}
-		theReport.add ( 'p', 'No validation errors found for route_master' );
+		theRelationsReport.add ( 'p', 'No validation errors found for route_master' );
 
 		return true;
 	}
@@ -375,7 +379,7 @@ class RouteMasterComparator {
 
 		this.#gtfsRouteMaster = gtfsRouteMaster;
 		this.#osmRouteMaster = osmRouteMaster;
-		theReport.add (
+		theRelationsReport.add (
 			'h1',
 			this.#osmRouteMaster.name + ': ' + ( this.#osmRouteMaster.description ?? '' ),
 			this.#osmRouteMaster
@@ -385,7 +389,7 @@ class RouteMasterComparator {
 			return;
 		}
 
-		theReport.add ( 'h3', 'GTFS comparison results for route_master' );
+		theRelationsReport.add ( 'h3', 'GTFS comparison results for route_master' );
 
 		this.#compareRouteMasterDescription ( );
 

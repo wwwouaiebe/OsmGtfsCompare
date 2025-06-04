@@ -23,7 +23,7 @@ Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
 import theDocConfig from './DocConfig.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
@@ -72,7 +72,7 @@ class NameFromToRefValidator {
 				( this.#platforms [ 0 ]?.tags [ 'name:operator:' + this.#route?.tags?.operator ] ?? '' ).toLowerCase ( )
 			)
 		) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error R003: the from tag is not equal to the name of the first platform for route '
 			);
@@ -97,7 +97,7 @@ class NameFromToRefValidator {
 				( this.#platforms.toReversed ( ) [ 0 ]?.tags [ 'name:operator:' + this.#route?.tags?.operator ] ?? '' ).toLowerCase ( )
 			)
 		) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error R005: the to tag is not equal to the name of the last platform for route'
 			);
@@ -123,7 +123,7 @@ class NameFromToRefValidator {
 		if ( this.#haveTagsNameFromToRef ( ) ) {
 			let goodName = vehicle + this.#route?.tags?.ref + ': ' + this.#route?.tags?.from + ' → ' + this.#route?.tags?.to;
 			if ( this.#route?.tags?.name.replaceAll ( '=>', '→' ) !== goodName ) {
-				theReport.add (
+				theRelationsReport.add (
 					'p',
 					'Error R006: Invalid name ("' + this.#route?.tags?.name + '" but expected "' + goodName + '") for route '
 				);
@@ -142,7 +142,7 @@ class NameFromToRefValidator {
 		if ( ! this.#route?.tags?.from ) {
 
 			// no from tag
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error R002: a from tag is not found for route'
 			);
@@ -152,7 +152,7 @@ class NameFromToRefValidator {
 		if ( ! this.#route?.tags?.to ) {
 
 			// no to tag
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error R004: a to tag is not found for route'
 			);
@@ -162,7 +162,7 @@ class NameFromToRefValidator {
 		if ( ! this.#route?.tags?.ref ) {
 
 			// no ref tag
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error R020: a ref tag is not found for route'
 			);
@@ -172,7 +172,7 @@ class NameFromToRefValidator {
 		if ( ! this.#route?.tags?.name ) {
 
 			// no name tag
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error R021: a name tag is not found for route'
 			);

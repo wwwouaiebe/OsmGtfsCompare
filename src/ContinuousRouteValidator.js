@@ -23,7 +23,7 @@ Doc reviewed 20250124
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -114,11 +114,11 @@ class ContinuousRouteValidator {
 						&&
 						! this.#waysViaRoundabout ( way, previousWay )
 					) {
-						theReport.add (
+						theRelationsReport.add (
 							'p',
-							'Error R001: hole found for route ' + theReport.getOsmLink ( this.#route ) +
-                            ' between way id ' + theReport.getOsmLink ( previousWay ) +
-                            ' and way id ' + theReport.getOsmLink ( way )
+							'Error R001: hole found for route ' + theRelationsReport.getOsmLink ( this.#route ) +
+                            ' between way id ' + theRelationsReport.getOsmLink ( previousWay ) +
+                            ' and way id ' + theRelationsReport.getOsmLink ( way )
 						);
 						this.#errorCounter ++;
 						previousWay = null;

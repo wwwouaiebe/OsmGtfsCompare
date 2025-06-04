@@ -23,7 +23,7 @@ Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
 import TagKeyValue from './TagKeyValue.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
@@ -69,7 +69,7 @@ class TagsValidator {
 		);
 		if ( ! isValid ) {
 			this.#errorCounter ++;
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error T001: The value of the tag ' + tagKeyValue.key + ' must be one of "' +
 					expectedValue.toString ( ) +
@@ -92,7 +92,7 @@ class TagsValidator {
 		);
 		if ( ! isValid ) {
 			this.#errorCounter ++;
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error T002: The value of the tag ' + tagKeyValue.key + ' must include "' +
 					expectedValue +
@@ -112,7 +112,7 @@ class TagsValidator {
 		let isValid = tagValue === expectedValue;
 		if ( ! isValid ) {
 			this.#errorCounter ++;
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error T003: The value of the tag ' + tagKeyValue.key + ' must be "' +
 					expectedValue +
@@ -148,7 +148,7 @@ class TagsValidator {
 					}
 				}
 				else {
-					theReport.add (
+					theRelationsReport.add (
 						'p',
 						'Error T004: No tag ' + tagKeyValue.key
 					);

@@ -23,7 +23,7 @@ Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
 import TagsValidator from './TagsValidator.js';
 import theDocConfig from './DocConfig.js';
 import FixmeValidator from './FixmeValidator.js';
@@ -67,7 +67,7 @@ class OsmRouteMasterValidator {
 				if ( 'relation' === member.type ) {
 					let route = theOsmDataLoader.routes.get ( member.ref );
 					if ( ! route ) {
-						theReport.add (
+						theRelationsReport.add (
 							'p',
 							'Error M003: a relation member of the route master is not a ' +
                             theDocConfig.vehicle + ' relation'
@@ -76,7 +76,7 @@ class OsmRouteMasterValidator {
 					}
 				}
 				else {
-					theReport.add (
+					theRelationsReport.add (
 						'p',
 						'Error M004: a member of the route master is not a relation (' +
                         member.type + ' ' + member.ref + ' )'
@@ -93,7 +93,7 @@ class OsmRouteMasterValidator {
 
 	#validateRefTag ( ) {
 		if ( ! this.#routeMaster?.tags?.ref ) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error M005: route_master without ref tag '
 			);
@@ -113,7 +113,7 @@ class OsmRouteMasterValidator {
 					let route = theOsmDataLoader.routes.get ( member.ref );
 					if ( route ) {
 						if ( this.#routeMaster.tags.ref !== route.tags.ref ) {
-							theReport.add (
+							theRelationsReport.add (
 								'p',
 								'Error M006: ref tag of the route master (' + this.#routeMaster.tags.ref +
 								') is not the same than the ref tag of the route (' + route.tags.ref + ')'
@@ -132,7 +132,7 @@ class OsmRouteMasterValidator {
 
 	#validateName ( ) {
 		if ( ! this.#routeMaster?.tags?.name ) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Error M008: no name tag for route_master'
 			);
@@ -142,7 +142,7 @@ class OsmRouteMasterValidator {
 			let vehicle = theDocConfig.vehicle.substring ( 0, 1 ).toUpperCase ( ) +
        			theDocConfig.vehicle.substring ( 1 ) + ' ';
 			if ( this.#routeMaster.tags.name !== vehicle + this.#routeMaster.tags.ref ) {
-				theReport.add (
+				theRelationsReport.add (
 					'p',
 					'Error M007: invalid name for route_master (must be ' + vehicle + ' ' + this.#routeMaster.tags.ref + ')'
 				);
@@ -179,7 +179,7 @@ class OsmRouteMasterValidator {
 
 	#validateOnlyOneRouteMaster ( ) {
 		let errorCounter = 0;
-		theReport.add ( 'h1', 'Routes with more than one route_master' );
+		theRelationsReport.add ( 'h1', 'Routes with more than one route_master' );
 		theOsmDataLoader.routes.forEach (
 			route => {
 				if ( 1 !== route.routeMasters.length ) {
@@ -187,20 +187,20 @@ class OsmRouteMasterValidator {
 					route.routeMasters.forEach (
 						routeMaster => {
 							text +=
-								theReport.getOsmLink (
+								theRelationsReport.getOsmLink (
 									theOsmDataLoader.routeMasters.find ( element => element.id === routeMaster )
 								)
 								+ ' ';
 						}
 					);
-					text += ') routes:' + theReport.getOsmLink ( route );
-					theReport.add ( 'p', text );
+					text += ') routes:' + theRelationsReport.getOsmLink ( route );
+					theRelationsReport.add ( 'p', text );
 					errorCounter ++;
 				}
 			}
 		);
 		if ( 0 === errorCounter ) {
-			theReport.add ( 'p', 'Nothing found' );
+			theRelationsReport.add ( 'p', 'Nothing found' );
 		}
 	}
 
@@ -240,7 +240,7 @@ class OsmRouteMasterValidator {
 		this.#errorCounter = 0;
 
 		// heading for the route master in the report
-		theReport.add (
+		theRelationsReport.add (
 			'h1',
 			'Route_master: ' +
 			( this.#routeMaster.tags.name ?? '' ) + ' ' +
@@ -253,7 +253,7 @@ class OsmRouteMasterValidator {
 		}
 
 		// heading for validation
-		theReport.add ( 'h3', 'Validation of tags, roles and members for route master' );
+		theRelationsReport.add ( 'h3', 'Validation of tags, roles and members for route master' );
 
 		// validation of the route_master
 
@@ -267,7 +267,7 @@ class OsmRouteMasterValidator {
 		this.#validateName ( );
 
 		if ( 0 === this.#errorCounter ) {
-			theReport.add ( 'p', 'No validation errors found for route_master' );
+			theRelationsReport.add ( 'p', 'No validation errors found for route_master' );
 		}
 
 		this.#validateRoutes ( );

@@ -23,7 +23,7 @@ Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -54,7 +54,7 @@ class FixmeValidator {
 	validate ( ) {
 		this.#errorCounter = 0;
 		if ( this.#osmObject?.tags?.fixme ) {
-			theReport.add (
+			theRelationsReport.add (
 				'p',
 				'Warning R019: a fixme exists for this object (' + this.#osmObject.tags.fixme + ')'
 			);

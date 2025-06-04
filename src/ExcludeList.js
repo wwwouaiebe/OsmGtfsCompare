@@ -24,7 +24,8 @@ Doc reviewed 20250124
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
 import theOperator from './Operator.js';
-import theReport from './Report.js';
+import thePlatformsReport from './PlatformsReport.js';
+import theRelationsReport from './RelationsReport.js';
 
 /* ------------------------------------------------------------------------------------------------------------------------- */
 /**
@@ -210,13 +211,16 @@ class ExcludeList {
 		const excludeData = this.#excludedRelationsOsm.get ( osmId );
 		if ( excludeData?.reason ) {
 			 if ( addToReport ) {
-				theReport.add ( 'p', 'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )' );
+				theRelationsReport.add (
+					'p',
+					'This relation is excluded from the comparison  ( reason : ' + excludeData.reason + ' )'
+				);
 			 }
 			return true;
 		}
 
 		if ( excludeData?.note && addToReport ) {
-			theReport.add ( 'p', excludeData.note );
+			theRelationsReport.add ( 'p', excludeData.note );
 		}
 		return false;
 
@@ -251,14 +255,14 @@ class ExcludeList {
 	 */
 
 	reportGtfsExcludedPlatforms ( ) {
-		theReport.add ( 'h1', 'Excluded gtfs platforms' );
+		thePlatformsReport.add ( 'h1', 'Excluded gtfs platforms' );
 		if ( 0 === this.#gtfsDisusedRefPlatforms.size ) {
-			theReport.add ( 'p', 'Nothing found' );
+			thePlatformsReport.add ( 'p', 'Nothing found' );
 		}
 		else {
 			this.#gtfsDisusedRefPlatforms.forEach (
 				gtfsDisusedRefPlatform => {
-					theReport.add (
+					thePlatformsReport.add (
 						'p',
 						gtfsDisusedRefPlatform.name + ' ' +
 						gtfsDisusedRefPlatform.ref + ' (' +

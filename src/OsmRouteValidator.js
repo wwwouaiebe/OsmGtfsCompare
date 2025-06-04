@@ -23,7 +23,7 @@ Doc reviewed 20250126
 */
 /* ------------------------------------------------------------------------------------------------------------------------- */
 
-import theReport from './Report.js';
+import theRelationsReport from './RelationsReport.js';
 import TagsValidator from './TagsValidator.js';
 import RolesValidator from './RolesValidator.js';
 import ContinuousRouteValidator from './ContinuousRouteValidator.js';
@@ -110,7 +110,7 @@ class OsmRouteValidator {
 		this.#ways = [];
 		this.#errorCounter = 0;
 
-		theReport.add (
+		theRelationsReport.add (
 			'h2',
 			'Route: ' +
 			( this.#route.tags.name ?? '' ) + ' ' +
@@ -122,7 +122,7 @@ class OsmRouteValidator {
 			return;
 		}
 
-		theReport.add ( 'h3', 'Validation of tags, roles and members for route' );
+		theRelationsReport.add ( 'h3', 'Validation of tags, roles and members for route' );
 
 		this.#errorCounter += new TagsValidator ( this.#route.tags, this.#routeTagKeyValues ( ) ).validate ( );
 		this.#errorCounter += new FixmeValidator ( this.#route ).validate ( );
@@ -131,7 +131,7 @@ class OsmRouteValidator {
 		this.#errorCounter += new NameFromToRefValidator ( this.#route, this.#platforms ).validate ( );
 
 		if ( 0 === this.#errorCounter ) {
-			theReport.add ( 'p', 'No validation errors found for route' );
+			theRelationsReport.add ( 'p', 'No validation errors found for route' );
 		}
 	}
 

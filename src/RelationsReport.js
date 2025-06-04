@@ -128,10 +128,7 @@ class RelationsReport extends Report {
 		}
 
 		// adding bus shortcuts
-		let routesLinksdiv = document.createElement ( 'div' );
-		routesLinksdiv.id = 'routesLinks';
-
-		this.#report.insertBefore ( routesLinksdiv, this.#report.firstChild );
+		let routesLinksdiv = document.getElementById ( 'routesLinks' );
 
 		theOsmDataLoader.routeMasters.forEach (
 			routeMaster => {
@@ -161,11 +158,17 @@ class RelationsReport extends Report {
 
 		// reset of the errorOnly class
 		this.#report.classList.remove ( 'errorsOnly' );
-
+		
 		// clear the report
 		while ( this.#report.firstChild ) {
 			this.#report.removeChild ( this.#report.firstChild );
 		}
+
+		let routesLinksdiv = document.getElementById ( 'routesLinks' );
+		while ( routesLinksdiv.firstChild ) {
+			routesLinksdiv.removeChild ( routesLinksdiv.firstChild );
+		}
+
 	}
 
 	/**

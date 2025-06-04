@@ -96,17 +96,6 @@ header {
 	z-index: 500;
 }
 
-header span.fontLarge {
-	/* For sun, moon and help buttons */
-	margin-left: 2em;
-	font-size: 140%;
-}
-
-.busShortcutAnchor{
-
-	margin-right: 0.1em;
-}
-
 footer {
 	border-top-style: solid ;
 	border-top-width: 0.1em;
@@ -131,6 +120,17 @@ main {
 label {
     margin-left: 1em;
     margin-right: 1em;
+}
+
+.fontLarge {
+	/* For sun, moon and help buttons */
+	margin-left: 2em;
+	font-size: 140%;
+}
+
+.busShortcutAnchor{
+
+	margin-right: 0.1em;
 }
 
 .isWarning {
@@ -249,6 +249,7 @@ main.errorsOnly div.haveErrors > p {
 	overflow: hidden;
 	color:red;
 	background-color: red;
+	text-align: center;
 }
 
 #routesLinks:hover {

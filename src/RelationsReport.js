@@ -158,7 +158,7 @@ class RelationsReport extends Report {
 
 		// reset of the errorOnly class
 		this.#report.classList.remove ( 'errorsOnly' );
-		
+
 		// clear the report
 		while ( this.#report.firstChild ) {
 			this.#report.removeChild ( this.#report.firstChild );
@@ -306,9 +306,9 @@ class RelationsReport extends Report {
 			||
 			-1 !== text.indexOf ( '🟣' )
 			||
-			-1 !== text.indexOf ( '⚫' )
+			-1 !== text.indexOf ( '†' )
 			||
-			-1 !== text.indexOf ( '⚪' )
+			-1 !== text.indexOf ( '🆕' )
 			||
 			text.startsWith ( 'Error' )
 			||

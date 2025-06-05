@@ -81,10 +81,10 @@ class OsmGtfsComparator {
 								theStatsReport.addToDo ( 1 );
 							}
 							else if ( isValidStartDate ) {
-								theRelationsReport.add ( 'p', route.name + ' ⚫', null, route.shapePk );
+								theRelationsReport.add ( 'p', route.name + ' †', null, route.shapePk );
 							}
 							else {
-								theRelationsReport.add ( 'p', route.name + ' ⚪', null, route.shapePk );
+								theRelationsReport.add ( 'p', route.name + ' 🆕', null, route.shapePk );
 							}
 						}
 					);

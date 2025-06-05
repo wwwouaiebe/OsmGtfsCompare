@@ -50,9 +50,6 @@ class JosmButtonClickEL {
 		let osmObjId = event.target.dataset.osmObjId;
 		let osmObjType = event.target.dataset.osmObjType;
 
-		// changing the button color
-		event.target.classList.add ( 'josmButtonVisited' );
-
 		// reading the newJosmLayer checkbox
 		let newJosmLayer =
 			document.getElementById ( 'newJosmLayer' ).checked
@@ -82,6 +79,9 @@ class JosmButtonClickEL {
 			.then (
 				response => {
 					console.info ( String ( response.status ) + ' ' + response.statusText );
+
+					// changing the button color
+					event.target.classList.add ( 'josmButtonVisited' );
 				}
 			)
 			.catch (

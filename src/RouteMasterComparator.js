@@ -308,10 +308,10 @@ class RouteMasterComparator {
 				}
 				// eslint-disable-next-line no-negated-condition
 				else if ( ! isValidEndDate ) {
-					theRelationsReport.add ( 'p', gtfsRoute.name + ' ⚫', null, gtfsRoute.shapePk );
+					theRelationsReport.add ( 'p', gtfsRoute.name + ' †', null, gtfsRoute.shapePk );
 				}
 				else {
-					theRelationsReport.add ( 'p', gtfsRoute.name + ' ⚪', null, gtfsRoute.shapePk );
+					theRelationsReport.add ( 'p', gtfsRoute.name + ' 🆕', null, gtfsRoute.shapePk );
 				}
 			}
 		);

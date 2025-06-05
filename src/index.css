@@ -186,66 +186,43 @@ label {
 	color: red;
 }
 
-main.errorsOnly div > h1,
-main.errorsOnly div > h2,
-main.errorsOnly div > h3,
-main.errorsOnly div > p
-{
-	width: 0;
-	height: 0;
-	margin: 0 ;
-	padding: 0 ;
-	border-width: 0 !important;
-	border-style: none !important;
-	visibility: hidden;
-	transform: scale(0);
+.josmButton{
+	margin-left: 1em;
+	background-color: rgb(41, 193, 243);
+	color: white;
 }
 
-main.errorsOnly div.haveErrors > h1,
-main.errorsOnly div.haveErrors > h2,
-main.errorsOnly div.haveErrors > h3,
-main.errorsOnly div.haveErrors > p
-{
-	width:auto;
-	height:auto;
-	visibility:visible;
-	transform: scale(1);
+.josmButton.josmButtonVisited {
+	background-color: gray;
+	color:black;
 }
 
-main.errorsOnly div.haveErrors > h1 {
-	margin-left:1em;
-	padding-top : 3em;
-	margin-bottom: 1em;
+.josmButton:hover, .josmButton.josmButtonVisited:hover {
+	background-color: blue;
+	color: white;
+	cursor: pointer;
 }
 
-main.errorsOnly div.haveErrors > h2 {
-    margin-top : 1em;
-    margin-left : 3em;
-	margin-bottom : 1em;
+.gpxButton {
+	font-size: 80%;
+	padding: 0.2em;
+	margin-right: 1em;
+	margin-bottom: 0.2em;
+	background-color: rgb(41, 193, 243);
+	color:white;
 }
 
-main.errorsOnly div.haveErrors > h3 {
-    padding-top : 1em;
-    padding-left : 5em;
-	padding-bottom : 1em;
+.gpxButton:hover, .gpxButton.gpxButtonVisited:hover {
+	background-color: blue;
+	color: white;
 }
 
-main.errorsOnly div.haveErrors > p {
-	margin-left: 7em;
+.gpxButton.gpxButtonVisited {
+	background-color: gray;
 }
 
-.paneButton {
-	display: inline-block;
-	border-style: solid;
-	border-width: 0.1em;
-	padding-top: 0.3em;
-	padding-left: 2em;
-	padding-right: 2em;
-	background-color: lightgray;
-}
-
-.selectedPaneButton {
-	background-color: white;
+#cyDarkLight {
+	margin-left: 2em;;
 }
 
 .pane {
@@ -289,6 +266,68 @@ main.errorsOnly div.haveErrors > p {
 	margin-left: 7em;
 }
 
+.pane.errorsOnly div > h1,
+.pane.errorsOnly div > h2,
+.pane.errorsOnly div > h3,
+.pane.errorsOnly div > p
+{
+	width: 0;
+	height: 0;
+	margin: 0 ;
+	padding: 0 ;
+	border-width: 0 !important;
+	border-style: none !important;
+	visibility: hidden;
+	transform: scale(0);
+}
+
+.pane.errorsOnly div.haveErrors > h1,
+.pane.errorsOnly div.haveErrors > h2,
+.pane.errorsOnly div.haveErrors > h3,
+.pane.errorsOnly div.haveErrors > p
+{
+	width:auto;
+	height:auto;
+	visibility:visible;
+	transform: scale(1);
+}
+
+.pane.errorsOnly div.haveErrors > h1 {
+	margin-left:1em;
+	padding-top : 3em;
+	margin-bottom: 1em;
+}
+
+.pane.errorsOnly div.haveErrors > h2 {
+    margin-top : 1em;
+    margin-left : 3em;
+	margin-bottom : 1em;
+}
+
+.pane.errorsOnly div.haveErrors > h3 {
+    padding-top : 1em;
+    padding-left : 5em;
+	padding-bottom : 1em;
+}
+
+.pane.errorsOnly div.haveErrors > p {
+	margin-left: 7em;
+}
+
+.paneButton {
+	display: inline-block;
+	border-style: solid;
+	border-width: 0.1em;
+	padding-top: 0.3em;
+	padding-left: 2em;
+	padding-right: 2em;
+	background-color: lightgray;
+}
+
+.selectedPaneButton {
+	background-color: white;
+}
+
 .hiddenPane,
 .hiddenPane h1,
 .hiddenPane h2,
@@ -305,51 +344,3 @@ main.errorsOnly div.haveErrors > p {
 	visibility: hidden;
 	transform: scale(0);
 }
-
-.gpxButton {
-	font-size: 80%;
-	padding: 0.2em;
-	margin-right: 1em;
-	margin-bottom: 0.2em;
-	background-color: blue;
-	color:white;
-}
-
-.gpxButton.visited {
-	background-color: gray;
-}
-
-.josmButton{
-	margin-left: 1em;
-	background-color: rgb(41, 193, 243);
-	color: white;
-}
-
-.josmButton.josmButtonVisited {
-	background-color: gray;
-	color:black;
-}
-
-.josmButton:hover, .josmButton.josmButtonVisited:hover {
-	background-color: blue;
-	color: white;
-	cursor: pointer;
-}
-
-.gpxButton {
-	font-size: 80%;
-	padding: 0.2em;
-	margin-right: 1em;
-	margin-bottom: 0.2em;
-	background-color: blue;
-	color:white;
-}
-
-.gpxButton.visited {
-	background-color: gray;
-}
-
-#cyDarkLight {
-	margin-left: 2em;;
-}
-

@@ -28,7 +28,7 @@ class HeadingReportButtonClickEL {
 		);
 		document.getElementById ( this.#paneId ).classList.remove ( 'hiddenPane' );
 
-		if ( 'relationsButton' === this.#buttonId ) { 
+		if ( 'relationsButton' === this.#buttonId ) {
 			document.getElementById ( 'routesLinks' ).classList.remove ( 'hiddenPane' );
 		}
 		else {

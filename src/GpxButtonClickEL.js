@@ -74,7 +74,7 @@ class GpxButtonClickEL {
 	handleEvent ( clickEvent ) {
 
 		// set the button as visited
-		clickEvent.target.classList.add ( 'visited' );
+		clickEvent.target.classList.add ( 'gpxButtonVisited' );
 
 		// Building the gtfs file
 		new GpxFactory ( ).buildGpx ( this.#getRouteFromShapePk ( clickEvent.target.dataset.shapePk ) );

@@ -1,5 +1,5 @@
 /*
-Copyright - 2024 - wwwouaiebe - Contact: https://www.ouaie.be/
+Copyright - 2024 2025 - wwwouaiebe - Contact: https://www.ouaie.be/
 
 This  program is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -75,13 +75,6 @@ Structure of the report:
 class RelationsReport extends Report {
 
 	/**
-	 * The HTMLElement where the report will be added
-	 * @type {HTMLElement}
-	 */
-
-	#report;
-
-	/**
 	 * The current div with a h1 heading where the element of the report will be added
 	 * @type {HTMLElement}
 	 */
@@ -108,6 +101,16 @@ class RelationsReport extends Report {
 	 */
 
 	#currentHTMLElement = null;
+
+	/**
+	 * The constructor
+	 */
+
+	constructor ( ) {
+		super ( );
+		this.report = document.getElementById ( 'relationsPane' );
+		Object.freeze ( this );
+	}
 
 	/**
 	 * This method close the report (= do some actions at the end of the process)
@@ -151,18 +154,13 @@ class RelationsReport extends Report {
 
 	open ( ) {
 
+		super.open ( );
+
 		// show the animation
 		document.getElementById ( 'waitAnimation' ).style.visibility = 'visible';
 
-		this.#report = document.getElementById ( 'relationsPane' );
-
 		// reset of the errorOnly class
-		this.#report.classList.remove ( 'errorsOnly' );
-
-		// clear the report
-		while ( this.#report.firstChild ) {
-			this.#report.removeChild ( this.#report.firstChild );
-		}
+		this.report.classList.remove ( 'errorsOnly' );
 
 		let routesLinksdiv = document.getElementById ( 'routesLinks' );
 		while ( routesLinksdiv.firstChild ) {
@@ -190,7 +188,7 @@ class RelationsReport extends Report {
 
 			// creating the currentH1Div...
 			this.#currentH1Div = document.createElement ( 'div' );
-			this.#report.appendChild ( this.#currentH1Div );
+			this.report.appendChild ( this.#currentH1Div );
 			this.#currentH1Div.appendChild ( this.#currentHTMLElement );
 
 			// and the currentDataDiv
@@ -344,18 +342,11 @@ class RelationsReport extends Report {
 		return gpxDownload;
 	}
 
-	/**
-	 * The constructor
-	 */
-
-	constructor ( ) {
-		super ( );
-		Object.freeze ( this );
-	}
 }
 
 /**
  * The one and only one object Report
+ * @type {RelationsReport}
  */
 
 const theRelationsReport = new RelationsReport ( );

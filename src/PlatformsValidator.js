@@ -1,5 +1,5 @@
 /*
-Copyright - 2024 - wwwouaiebe - Contact: https://www.ouaie.be/
+Copyright - 2024 2025 - wwwouaiebe - Contact: https://www.ouaie.be/
 
 This  program is free software;
 you can redistribute it and/or modify it under the terms of the
@@ -66,34 +66,42 @@ class PlatformsValidator {
 	#platformsWithoutPublicTransport = [];
 
 	/**
-	 * this method control the platforms and add the platforms to the arrays, depending of the errors found
-	 * @param {Object} osmObject The object to control
+	 * Test if an object is a bus or tram platform
+	 * @param {Object} osmObject
+	 * @returns {boolean} true when the object is a platform
 	 */
 
-	// eslint-disable-next-line complexity
-	#controlPlatform ( osmObject ) {
-
-		// filtering on bus_stop and tram_stop
-		if (
-			'bus_stop' !== osmObject?.tags?.highway
-			&&
-			'tram_stop' !== osmObject?.tags?.railway
-			&&
-			'platform' !== osmObject?.tags?.railway
-			&&
-			'platform' !== osmObject?.tags?.way
-		) {
-			return;
+	#isPlatform ( osmObject ) {
+		if ( 'bus' === theDocConfig.vehicle ) {
+			return 'bus_stop' === osmObject?.tags?.highway || 'platform' === osmObject?.tags?.highway;
+		}
+		else if ( 'tram' === theDocConfig.vehicle ) {
+			return 'platform' === osmObject?.tags?.railway || 'tram_stop' !== osmObject?.tags?.railway;
 		}
 
-		// More than 1 ref:NETWORK Adding to the array and to the exclude list
+		return false;
+
+	}
+
+	/**
+	 * Test if a platform have only 1 value in the tag ref:network
+	 * @param {Object} osmObject
+	 */
+
+	#controlPlatformsMore1Ref ( osmObject ) {
 		let osmRef = osmObject.tags [ 'ref:' + theDocConfig.network ];
 		if ( osmRef && 1 < osmRef.split ( ';' ).length ) {
 			theExcludeList.translateOsmPlatform ( osmRef );
 			this.#platformsWithMoreThanOneRef.push ( osmObject );
 		}
+	}
 
-		// No network
+	/**
+	 * Test if an platform have a valid network tag
+	 * @param {Object} osmObject
+	 */
+
+	#controlPlatformsWithoutNetwork ( osmObject ) {
 		if (
 			'platform' === osmObject?.tags?.public_transport
 			&&
@@ -105,8 +113,14 @@ class PlatformsValidator {
 		) {
 			this.#platformsWithoutNetwork.push ( osmObject );
 		}
+	}
 
-		// No operator
+	/**
+	 * Test if an platform have a valid operator tag
+	 * @param {Object} osmObject
+	 */
+
+	#controlPlatformsWithoutOperator ( osmObject ) {
 		if (
 			'platform' === osmObject?.tags?.public_transport
 			&&
@@ -118,14 +132,34 @@ class PlatformsValidator {
 		) {
 			this.#platformsWithoutOperator.push ( osmObject );
 		}
+	}
 
-		// No public_transport
+	/**
+	 * Test if an platform have a valid public_transport tag
+	 * @param {Object} osmObject
+	 */
+
+	#controlPlatformsWithoutPublicTransport ( osmObject ) {
 		if (
 			'platform' !== osmObject?.tags?.public_transport
 			&&
 			'stop_position' !== osmObject?.tags?.public_transport
 		) {
 			this.#platformsWithoutPublicTransport.push ( osmObject );
+		}
+	}
+
+	/**
+	 * this method control the platforms and add the platforms to the arrays, depending of the errors found
+	 * @param {Object} osmObject The object to control
+	 */
+
+	#controlPlatform ( osmObject ) {
+		if ( this.#isPlatform ( osmObject ) ) {
+			this.#controlPlatformsMore1Ref ( osmObject );
+			this.#controlPlatformsWithoutNetwork ( osmObject );
+			this.#controlPlatformsWithoutOperator ( osmObject );
+			this.#controlPlatformsWithoutPublicTransport ( osmObject );
 		}
 	}
 
@@ -155,7 +189,6 @@ class PlatformsValidator {
 	 */
 
 	#reportPlatformsWithoutNetwork ( ) {
-
 		thePlatformsReport.add ( 'h1', 'Platforms where the network tag dont include ' + theDocConfig.network );
 		if ( 0 === this.#platformsWithoutNetwork.length ) {
 			thePlatformsReport.add ( 'p', 'Nothing found' );
@@ -170,7 +203,6 @@ class PlatformsValidator {
 					);
 				}
 			);
-
 		}
 	}
 
@@ -179,7 +211,6 @@ class PlatformsValidator {
 	 */
 
 	#reportPlatformsWithoutOperator ( ) {
-
 		thePlatformsReport.add ( 'h1', 'Platforms where the operator tag dont include ' + theOperator.osmOperator );
 		if ( 0 === this.#platformsWithoutOperator.length ) {
 			thePlatformsReport.add ( 'p', 'Nothing found' );
@@ -220,16 +251,19 @@ class PlatformsValidator {
 	 */
 
 	validate ( ) {
+
 		theOsmDataLoader.nodes.forEach (
 			node => {
 				this.#controlPlatform ( node );
 			}
 		);
+
 		theOsmDataLoader.ways.forEach (
-			node => {
-				this.#controlPlatform ( node );
+			way => {
+				this.#controlPlatform ( way );
 			}
 		);
+
 		this.#reportPlatformsMore1Ref ( );
 		this.#reportPlatformsWithoutNetwork ( );
 		this.#reportPlatformsWithoutOperator ( );
